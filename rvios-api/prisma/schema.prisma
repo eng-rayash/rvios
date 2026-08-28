@@ -5,9 +5,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// DATABASE_URL يشير إلى مجمّع المعاملات (المنفذ 6543) للتشغيل،
+// وDIRECT_URL إلى مجمّع الجلسات (المنفذ 5432) للهجرات.
+//
+// لماذا الاثنان: الهجرات تحتاج اتصالاً لا يمرّ بمجمّع المعاملات
+// (تستخدم عبارات مُعدّة وقفل استشاري لا يدعمهما). ولماذا المجمّع
+// بدل الاتصال المباشر بـ db.<ref>.supabase.co: ذاك IPv6 فقط،
+// وخوادم Render تخرج عبر IPv4 — فيفشل الاتصال بلا رسالة مفهومة.
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ── Enums ──────────────────────────────────────────────────────

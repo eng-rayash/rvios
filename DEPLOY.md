@@ -10,27 +10,40 @@
 
 ---
 
-## 🔴 انحراف قائم في خدمة Render — يجب إصلاحه قبل أي نشر
+## البنية الحالية (2026-08-29)
 
-خدمة `rvios-api` على Render (`srv-d9kfo6rtqb8s73bedjrg`) تعمل حالياً بـ:
+| الطبقة | أين | ملاحظة |
+|---|---|---|
+| قاعدة البيانات | Supabase `rvios-platform` — `eu-central-1` | `lnrqrkemkqrcrsbtcsrc` |
+| الـ API | Render `rvios-api-eu` — `frankfurt` | `srv-da91rv5g1s2s738uemng` |
+| الواجهات الثلاث | Vercel | لم تُنشأ بعد |
 
-```
-Repository     github.com/eng-rayash/rvios-api          ← المستودع القديم
-Build Command  pnpm install && pnpm build && npx prisma db push && npx ts-node prisma/seed.ts
-Start Command  npx prisma db push && yarn start
-Pre-Deploy     (غير مضبوط)
-```
+**لماذا فرانكفورت للاثنين:** القاعدة والـ API يجب أن يتجاورا — طلب API واحد
+قد يُصدر عدة استعلامات، وكل استعلام عابر للمحيط يضاعف زمن الاستجابة. وفرانكفورت
+أقرب لمستخدمي الخليج من أوريغون.
 
-ثلاث مشاكل، كل واحدة كافية لإفساد الإنتاج:
+**الخدمة القديمة `rvios-api` (`srv-d9kfo6rtqb8s73bedjrg`) في أوريغون متروكة**،
+ومعها قاعدة Render المجانية `rvios-db` التي انتهت صلاحيتها في 2026-08-27
+(الخطة المجانية تنتهي بعد ٣٠ يوماً، لا تُعلَّق فحسب). بيانات الإنتاج القديمة
+لم تُستعد — البداية من `db:seed`.
 
-1. **`prisma db push` في أمر البناء وأمر الإقلاع معاً** — هذا بالضبط ما
-   يحظره القسم التالي، وهو سبب فشل نشر 2026-08-10. وفي `Start Command`
-   أخطر: يعيد تشكيل مخطط الإنتاج عند **كل** إعادة تشغيل للخدمة.
-2. **`npx ts-node prisma/seed.ts` في البناء** — يعيد بذر البيانات في كل نشر.
-3. **`yarn start`** بينما المشروع يعمل بـ pnpm.
+### Supabase — سلسلتا الاتصال
 
-القيم الصحيحة في جدول [Render — خدمة الـ API](#render--خدمة-الـ-api) أدناه.
-لا تبدّل المستودع قبل تطبيق خطوة الباسلاين في «المتطلبات المسبقة».
+من Dashboard ← Connect، ولا تستخدم الاتصال المباشر:
+
+| المتغيّر | المصدر | المنفذ |
+|---|---|---|
+| `DATABASE_URL` | Transaction pooler + `?pgbouncer=true` | 6543 |
+| `DIRECT_URL` | Session pooler | 5432 |
+
+`db.<ref>.supabase.co` المباشر يعمل على **IPv6 فقط**، وخوادم Render تخرج بـ IPv4 —
+فيفشل الاتصال برسالة غامضة. المجمّعان كلاهما IPv4.
+
+والهجرات تحتاج `DIRECT_URL` لأنها تستخدم عبارات مُعدّة وقفلاً استشارياً لا
+يدعمهما مجمّع المعاملات.
+
+**لا تستخدم مفتاح `service_role` من NestJS إطلاقاً** — Prisma يتصل بسلسلة اتصال
+عادية ولا يحتاجه. انظر [SECURITY.md](SECURITY.md).
 
 ---
 
@@ -65,29 +78,37 @@ Error: Use the --accept-data-loss flag
 |---|---|
 | `CF_ACCESS_KEY_ID` + `CF_SECRET_ACCESS_KEY` | Cloudflare → R2 → API Tokens: أنشئ زوجاً وأبطل القديم |
 | `JWT_SECRET` + `JWT_REFRESH_SECRET` | `openssl rand -hex 32` لكل واحد — سيُسجَّل خروج الجميع، وهو مطلوب |
-| كلمة مرور Postgres | Render → Postgres → Reset Password |
+| كلمة مرور Postgres | Supabase → Settings → Database → Reset password |
 | `SEED_ADMIN_PASSWORD` | قيمة جديدة ثم `pnpm db:seed` |
 
 ثم اضبطها في **متغيّرات بيئة Render**، لا في ملف.
 
-### ٢. باسلاين قاعدة الإنتاج
+بما أن القاعدة جديدة والأسرار تُكتب من الصفر، ولّد قيماً **جديدة** بدل
+المسرَّبة — فيتحقّق التدوير بنفس الخطوة بلا عمل إضافي.
 
-قاعدة الإنتاج أُنشئت بـ `db push` فلا تملك جدول `_prisma_migrations`.
-قبل أول نشر، من **Render → Shell** على خدمة الـ API:
+### ٢. لا باسلاين — القاعدة جديدة
+
+على قاعدة Supabase الفارغة يبني `migrate deploy` المخطط كاملاً من `0_init`
+فصاعداً. **لا تشغّل `migrate resolve --applied 0_init`** — سيخبر Prisma أن
+`0_init` مطبَّق أصلاً فتُتخطّى، ولن تُنشأ الجداول، ويسقط التطبيق عند أول
+استعلام.
+
+خطوة الباسلاين كانت تخصّ قاعدة Render القديمة المولَّدة بـ `db push`، وقد
+سقطت مع سقوطها.
+
+### ٣. البذر بعد أول هجرة ناجحة
 
 ```bash
-pnpm --filter rvios-api exec prisma migrate resolve --applied 0_init
+pnpm db:seed
 ```
 
-هذا يخبر Prisma أن المخطط القديم مطبَّق أصلاً، فيبدأ `migrate deploy`
-من `1_portfolio`.
+من **Render → Shell**، مرة واحدة. يُنشئ حساب المدير بقيمة `SEED_ADMIN_PASSWORD`
+المضبوطة في متغيّرات البيئة.
 
-`0_init` مولَّد من مخطط commit `06e2089` — أي **ما على الإنتاج بالضبط**.
+(`prisma db seed` لا يعمل — لا يوجد بلوك `prisma.seed` في `package.json`.
+السكربت المعرَّف هو `db:seed` من الجذر ← `prisma:seed` ← `ts-node prisma/seed.ts`.)
 
-### ٣. نسخة احتياطية
-
-`1_portfolio` تعدّل جدول `projects` القائم. الهجرات لا تتراجع تلقائياً.
-خذ نسخة من **Render → Postgres → Backups** قبل أول `migrate deploy`.
+ولتعبئة المعرض: `pnpm --filter rvios-api run prisma:seed-projects`.
 
 ---
 
@@ -111,18 +132,28 @@ pnpm --filter rvios-api exec prisma migrate resolve --applied 0_init
 ### متغيّرات بيئة Render
 
 ```
-DATABASE_URL           (من Render Postgres — Internal URL)
-JWT_SECRET             (مُدوَّر)
-JWT_REFRESH_SECRET     (مُدوَّر)
-JWT_EXPIRES_IN         15m
-JWT_REFRESH_EXPIRES_IN 7d
+DATABASE_URL           (Supabase Transaction pooler :6543 + ?pgbouncer=true)
+DIRECT_URL             (Supabase Session pooler :5432)
+JWT_SECRET             (مُدوَّر — openssl rand -hex 32)
+JWT_REFRESH_SECRET     (مُدوَّر — openssl rand -hex 32)
+SEED_ADMIN_EMAIL       (بريد المدير)
+SEED_ADMIN_PASSWORD    (مُدوَّرة — القديمة كانت في .env.example العام)
+JWT_EXPIRES_IN         15m                    ← مضبوط
+JWT_REFRESH_EXPIRES_IN 7d                     ← مضبوط
+CF_BUCKET_NAME         rvios-media            ← مضبوط
+NODE_VERSION           20                     ← مضبوط
 CORS_ORIGINS           https://<site>,https://<dashboard>,https://<owner>
 CF_ACCOUNT_ID          (من Cloudflare)
 CF_ACCESS_KEY_ID       (مُدوَّر)
 CF_SECRET_ACCESS_KEY   (مُدوَّر)
-CF_BUCKET_NAME         rvios-media
 CF_PUBLIC_URL          https://<r2-public-host>
 ```
+
+الأربعة المؤشَّرة بـ ← مضبوطة على `rvios-api-eu` أصلاً. والباقي يُضبط يدوياً
+من اللوحة — قيم الأسرار لا تمرّ عبر أداة ولا تُكتب في ملف.
+
+`CORS_ORIGINS` تُضبط بعد إنشاء مشاريع Vercel ومعرفة نطاقاتها. حتى ذلك الحين
+القيمة الافتراضية `http://localhost:3000` فقط، أي أن الواجهات المنشورة ستُرفض.
 
 `configuration.ts` يفشل عند الإقلاع إن غاب `DATABASE_URL` أو `JWT_SECRET`
 أو `JWT_REFRESH_SECRET` — فشل صريح خير من العمل بسرّ افتراضي معروف.
