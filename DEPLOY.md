@@ -3,6 +3,35 @@
 > هذا الملف هو مصدر الحقيقة لإعدادات النشر. إعدادات لوحات Render وVercel
 > يجب أن تطابقه حرفياً — ما يُضبط في لوحة ولا يُوثَّق هنا يضيع عند أول تغيير فريق.
 
+**المستودع:** `github.com/eng-rayash/rvios` — مستودع واحد لكل التطبيقات.
+المستودعات الأربعة السابقة (`rvios-api`, `rvios-site`, `rvios-dashboard`,
+`rvios-owner`) متروكة ولا يُنشَر منها. اقرأ [SECURITY.md](SECURITY.md) قبل
+أي نشر — أسرار الإنتاج كانت مكشوفة وتدويرها شرط مسبق.
+
+---
+
+## 🔴 انحراف قائم في خدمة Render — يجب إصلاحه قبل أي نشر
+
+خدمة `rvios-api` على Render (`srv-d9kfo6rtqb8s73bedjrg`) تعمل حالياً بـ:
+
+```
+Repository     github.com/eng-rayash/rvios-api          ← المستودع القديم
+Build Command  pnpm install && pnpm build && npx prisma db push && npx ts-node prisma/seed.ts
+Start Command  npx prisma db push && yarn start
+Pre-Deploy     (غير مضبوط)
+```
+
+ثلاث مشاكل، كل واحدة كافية لإفساد الإنتاج:
+
+1. **`prisma db push` في أمر البناء وأمر الإقلاع معاً** — هذا بالضبط ما
+   يحظره القسم التالي، وهو سبب فشل نشر 2026-08-10. وفي `Start Command`
+   أخطر: يعيد تشكيل مخطط الإنتاج عند **كل** إعادة تشغيل للخدمة.
+2. **`npx ts-node prisma/seed.ts` في البناء** — يعيد بذر البيانات في كل نشر.
+3. **`yarn start`** بينما المشروع يعمل بـ pnpm.
+
+القيم الصحيحة في جدول [Render — خدمة الـ API](#render--خدمة-الـ-api) أدناه.
+لا تبدّل المستودع قبل تطبيق خطوة الباسلاين في «المتطلبات المسبقة».
+
 ---
 
 ## ⛔ القاعدة الأولى: `prisma db push` ممنوع في أي مسار نشر
