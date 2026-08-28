@@ -1,0 +1,79 @@
+/* ============================================================
+   RVIOS — Design Proposals · Shared skeleton
+   لا ألوان ولا أحجام هنا إطلاقاً. كل قيمة بصرية تأتي من
+   كتلة :root في ملف المقترح نفسه — وهي التسليم الحقيقي
+   الذي سيُنسخ إلى packages/design-tokens.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background: var(--color-surface-0);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); line-height: var(--leading-tight); }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+/* ── أدوات المعاينة (ليست جزءاً من نظام التصميم) ────────── */
+
+.pv-bar {
+  position: sticky; top: 0; z-index: var(--z-sticky);
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-surface-1);
+  border-bottom: 1px solid var(--color-border-default);
+  font-family: var(--font-mono); font-size: var(--text-xs);
+}
+.pv-bar strong { font-family: var(--font-body); font-size: var(--text-sm); }
+.pv-bar nav { display: flex; gap: var(--space-1); margin-inline-start: auto; flex-wrap: wrap; }
+.pv-bar nav a {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+}
+.pv-bar nav a:hover { border-color: var(--color-primary-500); color: var(--color-primary-500); }
+.pv-toggle {
+  padding: var(--space-1) var(--space-3);
+  background: none;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono); font-size: var(--text-xs);
+}
+
+.pv-panel { border-bottom: 1px dashed var(--color-border-strong); }
+.pv-label {
+  display: flex; align-items: baseline; gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-surface-2);
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-family: var(--font-mono); font-size: var(--text-xs);
+  color: var(--color-text-secondary); letter-spacing: .08em;
+}
+.pv-label b { color: var(--color-primary-500); }
+
+.container { width: min(100% - 2 * var(--space-6), 1200px); margin-inline: auto; }
+
+/* شبكة التوكنز */
+.tok-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); }
+.tok { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-sm); overflow: hidden; }
+.tok i { display: block; height: 56px; }
+.tok span { display: block; padding: var(--space-2) var(--space-3); font-family: var(--font-mono); font-size: 11px; line-height: 1.6; }
+.tok span em { display: block; color: var(--color-text-secondary); font-style: normal; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+}

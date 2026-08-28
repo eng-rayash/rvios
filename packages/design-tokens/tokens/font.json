@@ -1,0 +1,28 @@
+{
+  "$description": "خطوط الهوية. الملفات في packages/brand-assets وتُنسخ إلى public/ لكل تطبيق.",
+
+  "family": {
+    "display": "\"Yapari\", \"Maghfira\", serif",
+    "$body-note": "Generator = Hacen Liner Screen. ينقصه … و ﷼ و € و NBSP فتسقط على خط النظام تلقائياً.",
+    "body":    "\"Generator\", system-ui, sans-serif",
+    "mono":    "\"Givonic\", ui-monospace, monospace"
+  },
+
+  "face": {
+    "$description": "المصدر الوحيد لتعريفات @font-face — يمنع تكرارها في كل تطبيق.",
+    "Generator": [
+      { "file": "Hacen Liner Screen.ttf", "format": "truetype", "weight": "400" },
+      { "file": "Hacen Liner Screen.ttf", "format": "truetype", "weight": "700" }
+    ],
+    "Yapari": [
+      { "file": "YapariTrial-Bold.ttf", "format": "truetype", "weight": "700" },
+      { "file": "YapariTrial-ExtraBold.ttf", "format": "truetype", "weight": "800" }
+    ],
+    "Maghfira": [
+      { "file": "rtl-maghfira-ramadan.ttf", "format": "truetype", "weight": "700" }
+    ],
+    "Givonic": [
+      { "file": "Givonic-Regular.otf", "format": "opentype", "weight": "400" }
+    ]
+  }
+}

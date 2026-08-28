@@ -1,0 +1,49 @@
+/* ============================================================
+   خطوط الهوية — نسخة محلية من rvios-site/public/fonts
+   (منسوخة ليعمل المقترح مستقلاً عبر file:// أو أي خادم ثابت)
+   خط النص المعتمد: Hacen Liner Screen، المعلَن كعائلة "Generator".
+   الموقع اليوم يعرّف --font-panorama: "Hacen" وهو اسم عائلة
+   غير موجود، فيسقط النص كله إلى Givonic (خط لاتيني).
+   ============================================================ */
+
+@font-face {
+  font-family: "Generator";
+  src: url("fonts/Hacen Liner Screen.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hacen";
+  src: url("fonts/Hacen%20Liner%20Screen.ttf") format("truetype");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Yapari";
+  src: url("fonts/YapariTrial-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Yapari";
+  src: url("fonts/YapariTrial-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maghfira";
+  src: url("fonts/rtl-maghfira-ramadan.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Givonic";
+  src: url("fonts/Givonic-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}

@@ -1,0 +1,324 @@
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ──────────────────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum ServiceStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ContactStatus {
+  UNREAD
+  READ
+  REPLIED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum MetricDirection {
+  UP
+  DOWN
+  NEUTRAL
+}
+
+enum SettingType {
+  STRING
+  JSON
+  BOOLEAN
+  NUMBER
+}
+
+// ── Models ─────────────────────────────────────────────────────
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  role          UserRole       @default(EDITOR)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id     String @id @default(cuid())
+  /// بصمة SHA-256 للتوكن، لا التوكن نفسه
+  token  String @unique
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// يجمع سلسلة التدوير في جلسة واحدة: إعادة استعمال توكن مُدوَّر تُبطل
+  /// العائلة كلها لا التوكن وحده.
+  familyId  String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([familyId])
+  @@map("refresh_tokens")
+}
+
+model Category {
+  id     String @id @default(cuid())
+  name   String
+  nameEn String
+  slug   String @unique
+  posts  Post[]
+
+  @@map("categories")
+}
+
+model Post {
+  id              String     @id @default(cuid())
+  title           String
+  titleEn         String?
+  slug            String     @unique
+  description     String
+  content         String     @db.Text
+  metaDescription String
+  keywords        String[]
+  tags            String[]
+  heroImageUrl    String?
+  heroImageAlt    String?
+  readingTime     Int        @default(5)
+  status          PostStatus @default(DRAFT)
+  featured        Boolean    @default(false)
+  views           Int        @default(0)
+  categoryId      String
+  category        Category   @relation(fields: [categoryId], references: [id])
+  publishedAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("posts")
+}
+
+model Service {
+  id            String           @id @default(cuid())
+  title         String
+  titleEn       String
+  slug          String           @unique
+  description   String           @db.Text
+  descriptionEn String           @db.Text
+  icon          String?
+  features      String[]
+  order         Int              @default(0)
+  status        ServiceStatus    @default(ACTIVE)
+  projects      ProjectService[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@map("services")
+}
+
+model Project {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  titleEn     String?
+  /// سطر واحد للبطاقة وللـ meta description
+  summary     String
+  /// نبذة عامة تُعرض في مقدّمة صفحة المشروع
+  description String  @db.Text
+
+  // ── السرد ────────────────────────────────────────────────
+  challenge String? @db.Text
+  solution  String? @db.Text
+  outcome   String? @db.Text
+  /// خطوات الحل: [{ title, desc }] — سرد لا يُستعلَم عنه، فـ Json كافٍ
+  approach  Json    @default("[]")
+
+  // ── العميل والسياق ───────────────────────────────────────
+  client         String?
+  clientLogoUrl  String?
+  industry       String?
+  year           Int?
+  durationMonths Int?
+  /// مثل: «تصميم وتطوير كامل»
+  role           String?
+  teamSize       Int?
+
+  // ── التصنيف ──────────────────────────────────────────────
+  technologies String[]
+  categoryId   String?
+  category     ProjectCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  services     ProjectService[]
+
+  // ── الوسائط ──────────────────────────────────────────────
+  coverImageUrl String?
+  coverImageAlt String?
+  /// placeholder فوري يمنع قفزة التخطيط أثناء تحميل الصورة
+  coverBlurHash String?
+  gallery       ProjectImage[]
+
+  // ── شهادة العميل ─────────────────────────────────────────
+  testimonialQuote     String? @db.Text
+  testimonialAuthor    String?
+  testimonialRole      String?
+  testimonialAvatarUrl String?
+
+  // ── النتائج ──────────────────────────────────────────────
+  metrics ProjectMetric[]
+
+  // ── الروابط والنشر ───────────────────────────────────────
+  liveUrl     String?
+  repoUrl     String?
+  featured    Boolean       @default(false)
+  order       Int           @default(0)
+  status      ProjectStatus @default(DRAFT)
+  publishedAt DateTime?
+  views       Int           @default(0)
+
+  // ── SEO ──────────────────────────────────────────────────
+  metaTitle       String?
+  metaDescription String?
+  ogImageUrl      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, featured, order])
+  @@index([status, publishedAt])
+  @@index([categoryId])
+  @@map("projects")
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  caption   String?
+  width     Int?
+  height    Int?
+  blurHash  String?
+  order     Int     @default(0)
+
+  @@index([projectId, order])
+  @@map("project_images")
+}
+
+model ProjectMetric {
+  id        String          @id @default(cuid())
+  projectId String
+  project   Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  /// «زيادة التحويل»
+  label     String
+  /// نص لا رقم: يستوعب «٣٢» و«×٤» و«‏<١ث» والأرقام العربية
+  value     String
+  /// «٪» أو «ثانية»
+  unit      String?
+  direction MetricDirection @default(UP)
+  order     Int             @default(0)
+
+  @@index([projectId, order])
+  @@map("project_metrics")
+}
+
+model ProjectCategory {
+  id       String    @id @default(cuid())
+  name     String
+  nameEn   String
+  slug     String    @unique
+  order    Int       @default(0)
+  projects Project[]
+
+  @@map("project_categories")
+}
+
+/// يربط المشروع بالخدمات التي قدّمناها فيه — يفتح «مشاريع في هذه الخدمة»
+/// على صفحة الخدمة بلا استعلام إضافي.
+model ProjectService {
+  projectId String
+  serviceId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, serviceId])
+  @@map("project_services")
+}
+
+model Media {
+  id           String    @id @default(cuid())
+  url          String
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  type         MediaType
+  uploadedAt   DateTime  @default(now())
+
+  @@map("media")
+}
+
+model Contact {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  service   String?
+  message   String        @db.Text
+  status    ContactStatus @default(UNREAD)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("contacts")
+}
+
+model Setting {
+  id    String      @id @default(cuid())
+  key   String      @unique
+  value String      @db.Text
+  type  SettingType @default(STRING)
+  label String?
+
+  @@map("settings")
+}
+
+model OwnerProfile {
+  id        String   @id @default(cuid())
+  name      String
+  title     String
+  titleEn   String
+  bio       String   @db.Text
+  bioEn     String   @db.Text
+  avatarUrl String?
+  skills    String[]
+  links     Json     @default("{}")
+  resumeUrl String?
+  updatedAt DateTime @updatedAt
+
+  @@map("owner_profiles")
+}

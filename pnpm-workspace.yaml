@@ -1,0 +1,11 @@
+packages:
+  - "rvios-site"
+  - "rvios-dashboard"
+  - "rvios-owner"
+  - "rvios-api"
+  - "packages/*"
+allowBuilds:
+  '@nestjs/core': true
+  '@prisma/client': true
+  '@prisma/engines': true
+  prisma: true

@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RVIOS — مقترح A · أرشيف ملكي</title>
+<link rel="stylesheet" href="../_shared/fonts.css">
+<link rel="stylesheet" href="../_shared/base.css">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   التسليم الحقيقي: كتلة التوكنز.
+   المقترح A — «أرشيف ملكي»
+   إيفوري دافئ · عنّابي حاضر بقوة · شعيرات ذهبية · حواف حادة
+   الوريث المؤسسي لأسلوب rvios-owner التحريري.
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* ── Primary ── */
+  --color-primary-50:  #F7E4E4;
+  --color-primary-100: #EFC9CA;
+  --color-primary-300: #C7484C;
+  --color-primary-500: #9E2226;
+  --color-primary-700: #7A1A1D;
+  --color-primary-900: #52080B;
+
+  /* ── Gold ── */
+  --color-gold-100: #F5E9CE;
+  --color-gold-500: #C8A45D;
+  --color-gold-700: #9E7E3A;
+
+  /* ── Ink ── */
+  --color-ink-900: #191310;
+  --color-ink-700: #3A2C25;
+  --color-ink-500: #6B5851;
+  --color-ink-300: #A2938B;
+
+  /* ── Surfaces ── */
+  --color-surface-0: #FAF8ED;
+  --color-surface-1: #F3EFDF;
+  --color-surface-2: #EAE4CE;
+  --color-surface-3: #FFFFFF;
+
+  /* ── Borders ── */
+  --color-border-subtle:  #E4DCC4;
+  --color-border-default: #D6CBAC;
+  --color-border-strong:  #BFB18C;
+
+  /* ── Text ── */
+  --color-text-primary:   var(--color-ink-900);
+  --color-text-secondary: var(--color-ink-500);
+  --color-text-inverse:   #FAF8ED;
+  --color-text-on-primary:#FAF8ED;
+
+  /* ── Status ── */
+  --color-success: #2F6F4E;
+  --color-warning: #A9781C;
+  --color-danger:  #A32020;
+  --color-info:    #2A5C8A;
+
+  /* ── Radius — حواف حادة، هذه شخصية المقترح ── */
+  --radius-xs: 0px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-full: 999px;
+
+  /* ── Spacing — سلّم 4px ── */
+  --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+  --space-5: 20px;  --space-6: 24px;  --space-8: 32px;  --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+
+  /* ── Shadow — شبه معدومة؛ الفصل بالخطوط لا بالظل ── */
+  --shadow-xs: 0 1px 0 rgba(25,19,16,.04);
+  --shadow-sm: 0 1px 2px rgba(25,19,16,.06);
+  --shadow-md: 0 2px 8px rgba(25,19,16,.07);
+  --shadow-lg: 0 8px 28px rgba(25,19,16,.10);
+  --shadow-glow: 0 0 0 1px var(--color-gold-500);
+
+  /* ── Typography ── */
+  --font-display: "Yapari", "Maghfira", serif;
+  --font-body: "Generator", system-ui, sans-serif;
+  --font-mono: "Givonic", ui-monospace, monospace;
+
+  --text-xs: 12px;   --text-sm: 14px;   --text-base: 16px; --text-lg: 18px;
+  --text-xl: 22px;   --text-2xl: 28px;  --text-3xl: 36px;  --text-4xl: 48px;
+  --text-5xl: 68px;
+
+  --leading-tight: 1.18;
+  --leading-normal: 1.85;
+  --leading-loose: 2.05;
+
+  /* ── Motion ── */
+  --motion-fast: 150ms; --motion-base: 300ms; --motion-slow: 600ms;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+
+  /* ── Z ── */
+  --z-base: 0; --z-dropdown: 100; --z-sticky: 200;
+  --z-overlay: 300; --z-modal: 400; --z-toast: 500;
+}
+
+:root[data-theme="dark"] {
+  --color-surface-0: #14100C;
+  --color-surface-1: #1D1813;
+  --color-surface-2: #26201A;
+  --color-surface-3: #2F2820;
+  --color-border-subtle:  #2E2820;
+  --color-border-default: #3D352A;
+  --color-border-strong:  #55493A;
+  --color-text-primary:   #F2ECDA;
+  --color-text-secondary: #A99C86;
+  --color-primary-500: #C7484C;
+  --color-primary-700: #9E2226;
+  --shadow-md: 0 2px 8px rgba(0,0,0,.5);
+  --shadow-lg: 0 8px 28px rgba(0,0,0,.6);
+}
+
+/* ═══════════ أنماط المقترح ═══════════ */
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-mono); font-size: var(--text-xs);
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--color-primary-500);
+}
+.eyebrow::before {
+  content: ""; width: 28px; height: 1px; background: var(--color-gold-500);
+}
+
+.sec { padding-block: var(--space-24); }
+.sec-head { display: grid; gap: var(--space-4); margin-bottom: var(--space-16); max-width: 62ch; }
+.sec-head h2 { font-size: var(--text-4xl); font-weight: 700; letter-spacing: -.01em; }
+.sec-head p { color: var(--color-text-secondary); font-size: var(--text-lg); }
+
+.rule { height: 1px; background: linear-gradient(90deg, var(--color-gold-500), transparent); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-sm); border: 1px solid transparent;
+  font-size: var(--text-sm); font-weight: 700;
+  transition: all var(--motion-fast) var(--ease-out);
+}
+.btn-primary { background: var(--color-primary-500); color: var(--color-text-on-primary); }
+.btn-primary:hover { background: var(--color-primary-700); }
+.btn-ghost { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+.btn-ghost:hover { border-color: var(--color-primary-500); color: var(--color-primary-500); }
+
+/* ── Hero ── */
+.hero {
+  position: relative; padding-block: var(--space-24) var(--space-20);
+  background:
+    radial-gradient(90% 70% at 88% 8%, rgba(158,34,38,.10), transparent 60%),
+    radial-gradient(70% 60% at 4% 92%, rgba(200,164,93,.14), transparent 60%);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.hero h1 {
+  font-size: var(--text-5xl); font-weight: 800; max-width: 16ch;
+  margin-block: var(--space-6) var(--space-6);
+}
+.hero h1 .accent { color: var(--color-primary-500); }
+.hero p { max-width: 54ch; color: var(--color-text-secondary); font-size: var(--text-lg); }
+.hero-cta { display: flex; gap: var(--space-3); margin-top: var(--space-10); flex-wrap: wrap; }
+
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin-top: var(--space-20); border-top: 1px solid var(--color-gold-500);
+}
+.stat { padding: var(--space-6) var(--space-4) 0; border-inline-start: 1px solid var(--color-border-subtle); }
+.stat:first-child { border-inline-start: 0; padding-inline-start: 0; }
+.stat b { display: block; font-family: var(--font-display); font-size: var(--text-4xl); font-weight: 800; }
+.stat span { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary); letter-spacing: .1em; }
+
+/* ── الخدمات: صفوف تحريرية لا بطاقات ── */
+.srv-list { border-top: 1px solid var(--color-border-default); }
+.srv {
+  display: grid; grid-template-columns: 76px 1fr auto; gap: var(--space-6);
+  align-items: start; padding-block: var(--space-8);
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.srv:hover { background: var(--color-surface-1); }
+.srv-num { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-gold-700); padding-top: 6px; }
+.srv h3 { font-size: var(--text-xl); font-weight: 700; margin-bottom: var(--space-2); }
+.srv p { color: var(--color-text-secondary); max-width: 68ch; }
+.srv-tags { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-4); }
+.tag {
+  font-family: var(--font-mono); font-size: 11px; padding: 3px var(--space-2);
+  border: 1px solid var(--color-border-default); color: var(--color-text-secondary);
+}
+.srv-go { align-self: center; color: var(--color-primary-500); font-size: var(--text-xl); }
+
+/* ── المعرض ── */
+.work-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-8); }
+.work-card {
+  border: 1px solid var(--color-border-default); background: var(--color-surface-3);
+  transition: border-color var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out);
+}
+.work-card:hover { border-color: var(--color-gold-500); transform: translateY(-3px); }
+.work-thumb {
+  aspect-ratio: 4/3; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--color-ink-900), var(--color-primary-900));
+  display: grid; place-items: center;
+  border-bottom: 1px solid var(--color-border-default);
+}
+.work-thumb span {
+  font-family: var(--font-display); font-size: var(--text-4xl); font-weight: 800;
+  color: rgba(250,248,237,.13);
+}
+.work-year {
+  position: absolute; inset-block-start: var(--space-3); inset-inline-end: var(--space-3);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+  padding: 2px var(--space-2); background: var(--color-surface-0); color: var(--color-text-secondary);
+}
+.work-body { padding: var(--space-6); }
+.work-client { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-gold-700); letter-spacing: .12em; }
+.work-card h3 { font-size: var(--text-lg); font-weight: 700; margin-block: var(--space-2) var(--space-3); }
+.work-card p { color: var(--color-text-secondary); font-size: var(--text-sm); }
+.work-metric {
+  display: flex; align-items: baseline; gap: var(--space-2);
+  margin-top: var(--space-5); padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+}
+.work-metric b { font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-primary-500); }
+.work-metric span { font-size: var(--text-xs); color: var(--color-text-secondary); }
+
+/* رأس صفحة المشروع */
+.proj-hero { background: var(--color-ink-900); color: var(--color-text-inverse); padding-block: var(--space-20); }
+.proj-hero .eyebrow { color: var(--color-gold-500); }
+.proj-hero h1 { font-size: var(--text-4xl); font-weight: 800; margin-block: var(--space-5) var(--space-5); max-width: 20ch; }
+.proj-hero p { color: rgba(250,248,237,.62); max-width: 62ch; font-size: var(--text-lg); }
+.proj-meta {
+  display: flex; gap: var(--space-10); flex-wrap: wrap;
+  margin-top: var(--space-10); padding-top: var(--space-6);
+  border-top: 1px solid rgba(200,164,93,.3);
+}
+.proj-meta div span { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: rgba(250,248,237,.42); margin-bottom: 4px; }
+.proj-meta div b { font-size: var(--text-base); font-weight: 700; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: var(--space-6); margin-top: var(--space-12); }
+.metric { border-inline-start: 2px solid var(--color-gold-500); padding-inline-start: var(--space-4); }
+.metric b { display: block; font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 800; color: var(--color-gold-500); }
+.metric span { font-size: var(--text-sm); color: rgba(250,248,237,.62); }
+
+/* ── لوحة التحكم ── */
+.dash { display: grid; grid-template-columns: 232px 1fr; min-height: 620px; background: var(--color-surface-1); }
+.dash-side { background: var(--color-ink-900); color: var(--color-text-inverse); padding: var(--space-6) 0; }
+.dash-brand { padding: 0 var(--space-6) var(--space-6); font-family: var(--font-display); font-size: var(--text-xl); font-weight: 800; letter-spacing: .04em; }
+.dash-nav a {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-6); font-size: var(--text-sm);
+  color: rgba(250,248,237,.58); border-inline-start: 2px solid transparent;
+}
+.dash-nav a:hover { color: var(--color-text-inverse); background: rgba(250,248,237,.04); }
+.dash-nav a.on { color: var(--color-text-inverse); border-inline-start-color: var(--color-gold-500); background: rgba(200,164,93,.08); }
+.dash-nav i { width: 6px; height: 6px; background: currentColor; border-radius: var(--radius-full); opacity: .5; }
+.dash-main { padding: var(--space-8); }
+.dash-head { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-8); }
+.dash-head h2 { font-size: var(--text-2xl); font-weight: 700; }
+.dash-head .count { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary); }
+.dash-head .btn { margin-inline-start: auto; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: var(--space-4); margin-bottom: var(--space-8); }
+.kpi { background: var(--color-surface-3); border: 1px solid var(--color-border-default); padding: var(--space-5); }
+.kpi span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; color: var(--color-text-secondary); }
+.kpi b { display: block; font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 800; margin-top: var(--space-2); }
+table { width: 100%; border-collapse: collapse; background: var(--color-surface-3); border: 1px solid var(--color-border-default); }
+th {
+  text-align: start; padding: var(--space-3) var(--space-4);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+  color: var(--color-text-secondary); background: var(--color-surface-1);
+  border-bottom: 1px solid var(--color-border-default); font-weight: 400;
+}
+td { padding: var(--space-4); font-size: var(--text-sm); border-bottom: 1px solid var(--color-border-subtle); }
+tr:last-child td { border-bottom: 0; }
+.badge { font-family: var(--font-mono); font-size: 11px; padding: 2px var(--space-2); border: 1px solid; }
+.badge.ok  { color: var(--color-success); border-color: var(--color-success); }
+.badge.wip { color: var(--color-warning); border-color: var(--color-warning); }
+.badge.off { color: var(--color-text-secondary); border-color: var(--color-border-strong); }
+.field { display: grid; gap: var(--space-2); max-width: 380px; margin-top: var(--space-6); }
+.field label { font-size: var(--text-sm); font-weight: 700; }
+.field input {
+  padding: var(--space-3) var(--space-4); font: inherit; font-size: var(--text-sm);
+  background: var(--color-surface-3); color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default); border-radius: var(--radius-sm);
+}
+.field input:focus { outline: 2px solid var(--color-primary-500); outline-offset: -1px; border-color: transparent; }
+
+/* ══════════ عارض الأعمال — Coverflow ══════════
+   الاستعارة: لوحات مؤطَّرة على جدار أرشيف داكن.
+   حواف حادة، شعيرة ذهبية للفعّالة، وحجاب حبري دافئ للجانبية
+   (لا أسود خالص — الأسود يقطع مع الإيفوري). */
+
+.cf-wrap {
+  background: var(--color-ink-900);
+  padding-block: var(--space-16) var(--space-10);
+  overflow: hidden;
+}
+.cf-head {
+  display: flex; align-items: flex-end; gap: var(--space-6);
+  margin-bottom: var(--space-12); flex-wrap: wrap;
+}
+.cf-head .eyebrow { color: var(--color-gold-500); }
+.cf-head h2 { color: var(--color-text-inverse); font-size: var(--text-3xl); font-weight: 800; margin-top: var(--space-3); }
+.cf-count {
+  margin-inline-start: auto; font-family: var(--font-mono);
+  font-size: var(--text-sm); letter-spacing: .18em; color: var(--color-gold-500);
+}
+
+.cf {
+  position: relative;
+  perspective: 1600px;
+  display: grid; place-items: center;
+  min-height: 460px;
+  outline: none;
+}
+.cf:focus-visible { outline: 1px solid var(--color-gold-500); outline-offset: var(--space-4); }
+
+.cf-track {
+  position: relative;
+  width: min(560px, 82vw); aspect-ratio: 4 / 3;
+  transform-style: preserve-3d;
+}
+
+.cf-card {
+  position: absolute; inset-block-start: 50%; inset-inline-start: 50%;
+  width: 100%; height: 100%;
+  transform-origin: center center;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-surface-2);
+  box-shadow: 0 1px 0 rgba(200,164,93,.14), var(--shadow-lg);
+  cursor: pointer;
+  transition:
+    transform var(--motion-slow) var(--ease-out),
+    opacity var(--motion-slow) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
+}
+.cf-card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border: 1px solid rgba(200,164,93,.22);
+  border-radius: inherit;
+  transition: border-color var(--motion-base) var(--ease-out);
+}
+.cf-card.is-active { cursor: default; box-shadow: 0 0 0 1px var(--color-gold-500), var(--shadow-lg); }
+.cf-card.is-active::after { border-color: var(--color-gold-500); }
+.cf-card:focus-visible { outline: 2px solid var(--color-gold-500); outline-offset: 3px; }
+
+.cf-veil {
+  position: absolute; inset: 0; pointer-events: none; z-index: 3;
+  background: var(--color-ink-900);
+  transition: opacity var(--motion-slow) var(--ease-out);
+}
+
+/* لقطة منتج مُركَّبة بالـ CSS — نائبة عن صور المشاريع الحقيقية.
+   اخترناها بدل تدرّج فارغ لأن ما نبيعه أنظمة، فالنائب يجب أن يبدو نظاماً. */
+.shot { position: absolute; inset: 0; display: grid; grid-template-rows: 26px 1fr; background: var(--shot-bg, #12171D); }
+.shot-bar { display: flex; align-items: center; gap: 5px; padding-inline: var(--space-3); background: rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.07); }
+.shot-bar i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.18); }
+.shot-body { display: grid; grid-template-columns: 62px 1fr; }
+.shot-side { border-inline-end: 1px solid rgba(255,255,255,.07); padding: var(--space-3) var(--space-2); display: grid; gap: 7px; align-content: start; }
+.shot-side em { display: block; height: 6px; border-radius: 1px; background: rgba(255,255,255,.13); }
+.shot-side em.on { background: var(--shot-accent, #C7484C); }
+.shot-main { padding: var(--space-4); display: grid; gap: var(--space-3); align-content: start; }
+.shot-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.shot-kpis div { height: 34px; border-radius: 2px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.06); }
+.shot-kpis div:first-child { border-color: var(--shot-accent, #C7484C); }
+.shot-chart { display: flex; align-items: flex-end; gap: 5px; height: 92px; padding: var(--space-2); background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 2px; }
+.shot-chart i { flex: 1; border-radius: 1px 1px 0 0; background: rgba(255,255,255,.14); height: var(--h, 40%); }
+.shot-chart i:nth-child(3n) { background: var(--shot-accent, #C7484C); opacity: .85; }
+.shot-rows { display: grid; gap: 5px; }
+.shot-rows em { height: 8px; border-radius: 1px; background: rgba(255,255,255,.08); }
+.shot-rows em:nth-child(2) { width: 78%; }
+.shot-rows em:nth-child(3) { width: 54%; }
+
+.cf-cap {
+  position: absolute; inset-inline: 0; inset-block-end: 0; z-index: 4;
+  padding: var(--space-16) var(--space-6) var(--space-5);
+  background: linear-gradient(to top, rgba(20,15,12,.94) 12%, rgba(20,15,12,0) 100%);
+  pointer-events: none;
+}
+.cf-cap span {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em;
+  color: var(--color-gold-500);
+}
+.cf-cap h3 {
+  color: var(--color-text-inverse); font-size: var(--text-xl); font-weight: 800;
+  margin-top: var(--space-2); line-height: var(--leading-tight);
+}
+.cf-cap p { color: rgba(250,248,237,.6); font-size: var(--text-sm); margin-top: var(--space-1); }
+
+.cf-ctl { display: flex; align-items: center; gap: var(--space-4); justify-content: center; margin-top: var(--space-10); }
+.cf-btn {
+  width: 44px; height: 44px; display: grid; place-items: center;
+  background: transparent; color: var(--color-text-inverse);
+  border: 1px solid rgba(200,164,93,.4); border-radius: var(--radius-sm);
+  font-size: var(--text-lg);
+  transition: all var(--motion-fast) var(--ease-out);
+}
+.cf-btn:hover { border-color: var(--color-gold-500); color: var(--color-gold-500); background: rgba(200,164,93,.08); }
+.cf-btn:focus-visible { outline: 2px solid var(--color-gold-500); outline-offset: 2px; }
+.cf-dots { display: flex; gap: var(--space-2); }
+.cf-dot {
+  width: 26px; height: 2px; padding: 0; border: 0; background: rgba(250,248,237,.22);
+  transition: background var(--motion-base) var(--ease-out);
+}
+.cf-dot.is-on { background: var(--color-gold-500); }
+.cf-dot:focus-visible { outline: 2px solid var(--color-gold-500); outline-offset: 4px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (max-width: 860px) {
+  .dash { grid-template-columns: 1fr; }
+  .dash-side { display: none; }
+  .srv { grid-template-columns: 44px 1fr; }
+  .srv-go { display: none; }
+  .cf { min-height: 360px; }
+  .cf-track { width: min(400px, 84vw); }
+  :root { --text-5xl: 40px; --text-4xl: 32px; --space-24: 56px; }
+}
+</style>
+</head>
+<body>
+
+<div class="pv-bar">
+  <strong>المقترح A — أرشيف ملكي</strong>
+  <span>إيفوري · عنّابي حاضر · شعيرات ذهبية · حواف حادة</span>
+  <nav>
+    <a href="#p1">الرئيسية</a><a href="#p2">المعرض</a><a href="#p3">العارض</a><a href="#p4">اللوحة</a><a href="#p5">التوكنز</a>
+    <a href="../compare.html">مقارنة</a>
+  </nav>
+  <button class="pv-toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">◐ الوضع</button>
+</div>
+
+<!-- ═══ لوحة 1: الصفحة الرئيسية ═══ -->
+<section class="pv-panel" id="p1">
+  <div class="pv-label"><b>لوحة ١</b> الصفحة الرئيسية</div>
+
+  <div class="hero">
+    <div class="container">
+      <span class="eyebrow">RVIOS TECHNOLOGIES</span>
+      <h1>نبني الأنظمة التي <span class="accent">تُدار بها</span> الشركات</h1>
+      <p>من الفكرة إلى منتج يعمل. تطوير برمجيات، تصميم منتجات، بنية سحابية، وأتمتة ذكية — بمعايير هندسية لا تقبل أنصاف الحلول.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#p2">شاهد أعمالنا</a>
+        <a class="btn btn-ghost" href="#">ابدأ مشروعك</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>٢٤</b><span>مشروعاً منجزاً</span></div>
+        <div class="stat"><b>٧</b><span>قطاعات</span></div>
+        <div class="stat"><b>٩٨٪</b><span>رضا العملاء</span></div>
+        <div class="stat"><b>٢٠١٩</b><span>منذ</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec container">
+    <div class="sec-head">
+      <span class="eyebrow">ما نقدّمه</span>
+      <h2>خدمات مبنية على الهندسة، لا على العروض التقديمية</h2>
+      <p>خمسة مسارات متكاملة. تبدأ من حيث أنت، وتنتهي بنظام تملكه بالكامل.</p>
+    </div>
+    <div class="srv-list">
+      <article class="srv">
+        <div class="srv-num">٠١</div>
+        <div>
+          <h3>تطوير البرمجيات والأنظمة</h3>
+          <p>تطبيقات ويب وموبايل وأنظمة ERP مخصّصة، مبنية لتتوسّع معك لا لتُعاد كتابتها بعد سنة.</p>
+          <div class="srv-tags"><span class="tag">Web Apps</span><span class="tag">Mobile</span><span class="tag">ERP</span><span class="tag">APIs</span></div>
+        </div>
+        <div class="srv-go">←</div>
+      </article>
+      <article class="srv">
+        <div class="srv-num">٠٢</div>
+        <div>
+          <h3>تصميم المنتجات وتجربة المستخدم</h3>
+          <p>واجهات تُختبر مع مستخدمين حقيقيين، وأنظمة تصميم تبقى متسقة بعد عشرين شاشة.</p>
+          <div class="srv-tags"><span class="tag">UI/UX</span><span class="tag">Design Systems</span><span class="tag">Prototyping</span></div>
+        </div>
+        <div class="srv-go">←</div>
+      </article>
+      <article class="srv">
+        <div class="srv-num">٠٣</div>
+        <div>
+          <h3>البنية التحتية السحابية</h3>
+          <p>بنية موثوقة وقابلة للتوسّع، مع CI/CD ومراقبة فعلية بدل التخمين عند الأعطال.</p>
+          <div class="srv-tags"><span class="tag">AWS</span><span class="tag">Docker</span><span class="tag">CI/CD</span><span class="tag">DevOps</span></div>
+        </div>
+        <div class="srv-go">←</div>
+      </article>
+      <article class="srv">
+        <div class="srv-num">٠٤</div>
+        <div>
+          <h3>الأتمتة والذكاء الاصطناعي</h3>
+          <p>تحويل العمليات اليدوية إلى أنظمة تعمل وحدها وتنتج بيانات قابلة للقرار.</p>
+          <div class="srv-tags"><span class="tag">Automation</span><span class="tag">AI</span><span class="tag">Analytics</span></div>
+        </div>
+        <div class="srv-go">←</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ لوحة 2: المعرض ═══ -->
+<section class="pv-panel" id="p2">
+  <div class="pv-label"><b>لوحة ٢</b> معرض الأعمال — الشبكة وصفحة المشروع</div>
+
+  <div class="sec container">
+    <div class="sec-head">
+      <span class="eyebrow">٢٤ مشروعاً · ٧ قطاعات</span>
+      <h2>أعمالنا</h2>
+      <p>كل مشروع هنا نظام يعمل اليوم في يد عميل حقيقي.</p>
+    </div>
+    <div class="work-grid">
+      <article class="work-card">
+        <div class="work-thumb"><span>ن</span><em class="work-year">٢٠٢٥</em></div>
+        <div class="work-body">
+          <span class="work-client">مجموعة نُهى التجارية</span>
+          <h3>منصة إدارة سلسلة التوريد</h3>
+          <p>نظام متكامل لتتبّع المخزون عبر ١٢ فرعاً، مع تنبؤ بالطلب.</p>
+          <div class="work-metric"><b>٣٢٪</b><span>انخفاض في تكلفة المخزون</span></div>
+        </div>
+      </article>
+      <article class="work-card">
+        <div class="work-thumb"><span>ر</span><em class="work-year">٢٠٢٤</em></div>
+        <div class="work-body">
+          <span class="work-client">بنك الرافد</span>
+          <h3>تطبيق الخدمات المصرفية</h3>
+          <p>إعادة بناء كاملة لتجربة العميل على iOS وAndroid.</p>
+          <div class="work-metric"><b>٤٫٨</b><span>تقييم المتجر بعد الإطلاق</span></div>
+        </div>
+      </article>
+      <article class="work-card">
+        <div class="work-thumb"><span>ص</span><em class="work-year">٢٠٢٤</em></div>
+        <div class="work-body">
+          <span class="work-client">شركة صناعات المستقبل</span>
+          <h3>أتمتة خط الإنتاج</h3>
+          <p>ربط أجهزة المصنع بلوحة قرار لحظية ونظام تنبيهات.</p>
+          <div class="work-metric"><b>×٤</b><span>سرعة اكتشاف الأعطال</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="proj-hero">
+    <div class="container">
+      <span class="eyebrow">دراسة حالة</span>
+      <h1>منصة إدارة سلسلة التوريد</h1>
+      <p>كيف حوّلنا اثني عشر مستودعاً تعمل بجداول Excel منفصلة إلى نظام واحد يرى المخزون لحظياً ويتنبأ بالنفاد قبل حدوثه.</p>
+      <div class="proj-meta">
+        <div><span>العميل</span><b>مجموعة نُهى</b></div>
+        <div><span>القطاع</span><b>التجزئة</b></div>
+        <div><span>السنة</span><b>٢٠٢٥</b></div>
+        <div><span>المدة</span><b>٧ أشهر</b></div>
+        <div><span>الدور</span><b>تصميم وتطوير كامل</b></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><b>٣٢٪</b><span>انخفاض تكلفة المخزون</span></div>
+        <div class="metric"><b>×٤</b><span>سرعة الجرد</span></div>
+        <div class="metric"><b>٩٩٫٩٪</b><span>زمن التشغيل</span></div>
+        <div class="metric"><b>&lt;١ث</b><span>زمن الاستجابة</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ لوحة 3: عارض الأعمال (Coverflow) ═══ -->
+<section class="pv-panel" id="p3">
+  <div class="pv-label"><b>لوحة ٣</b> عارض الأعمال — Coverflow · انقر بطاقة، أو استخدم الأسهم، أو اسحب</div>
+
+  <div class="cf-wrap"
+       data-coverflow data-gap="200" data-tilt="12" data-side-tilt="4" data-dim="0.55" data-autoplay="0">
+    <div class="container">
+      <div class="cf-head">
+        <div>
+          <span class="eyebrow">مختارات</span>
+          <h2>أعمال بارزة</h2>
+        </div>
+        <span class="cf-count" data-cf-counter>٠١ / ٠٥</span>
+      </div>
+    </div>
+
+    <div class="cf" tabindex="0" role="group" aria-roledescription="عارض" aria-label="عارض الأعمال البارزة">
+      <div class="cf-track" data-cf-track>
+
+        <article class="cf-card" data-cf-card data-title="منصة إدارة سلسلة التوريد" role="button">
+          <div class="shot" style="--shot-bg:#12171D;--shot-accent:#C7484C">
+            <div class="shot-bar"><i></i><i></i><i></i></div>
+            <div class="shot-body">
+              <div class="shot-side"><em class="on"></em><em></em><em></em><em></em><em></em></div>
+              <div class="shot-main">
+                <div class="shot-kpis"><div></div><div></div><div></div></div>
+                <div class="shot-chart"><i style="--h:38%"></i><i style="--h:62%"></i><i style="--h:47%"></i><i style="--h:78%"></i><i style="--h:55%"></i><i style="--h:91%"></i><i style="--h:44%"></i><i style="--h:68%"></i></div>
+                <div class="shot-rows"><em></em><em></em><em></em></div>
+              </div>
+            </div>
+          </div>
+          <div class="cf-cap">
+            <span>مجموعة نُهى · ٢٠٢٥</span>
+            <h3>منصة إدارة سلسلة التوريد</h3>
+            <p>٣٢٪ انخفاض في تكلفة المخزون عبر ١٢ فرعاً</p>
+          </div>
+          <div class="cf-veil" data-cf-veil></div>
+        </article>
+
+        <article class="cf-card" data-cf-card data-title="تطبيق الخدمات المصرفية" role="button">
+          <div class="shot" style="--shot-bg:#141018;--shot-accent:#C8A45D">
+            <div class="shot-bar"><i></i><i></i><i></i></div>
+            <div class="shot-body">
+              <div class="shot-side"><em></em><em class="on"></em><em></em><em></em></div>
+              <div class="shot-main">
+                <div class="shot-kpis"><div></div><div></div><div></div></div>
+                <div class="shot-chart"><i style="--h:70%"></i><i style="--h:52%"></i><i style="--h:84%"></i><i style="--h:41%"></i><i style="--h:66%"></i><i style="--h:58%"></i><i style="--h:88%"></i><i style="--h:49%"></i></div>
+                <div class="shot-rows"><em></em><em></em><em></em></div>
+              </div>
+            </div>
+          </div>
+          <div class="cf-cap">
+            <span>بنك الرافد · ٢٠٢٤</span>
+            <h3>تطبيق الخدمات المصرفية</h3>
+            <p>٤٫٨ تقييم المتجر بعد إعادة البناء الكاملة</p>
+          </div>
+          <div class="cf-veil" data-cf-veil></div>
+        </article>
+
+        <article class="cf-card" data-cf-card data-title="أتمتة خط الإنتاج" role="button">
+          <div class="shot" style="--shot-bg:#101614;--shot-accent:#9E2226">
+            <div class="shot-bar"><i></i><i></i><i></i></div>
+            <div class="shot-body">
+              <div class="shot-side"><em></em><em></em><em class="on"></em><em></em><em></em></div>
+              <div class="shot-main">
+                <div class="shot-kpis"><div></div><div></div><div></div></div>
+                <div class="shot-chart"><i style="--h:46%"></i><i style="--h:73%"></i><i style="--h:39%"></i><i style="--h:81%"></i><i style="--h:60%"></i><i style="--h:52%"></i><i style="--h:94%"></i><i style="--h:57%"></i></div>
+                <div class="shot-rows"><em></em><em></em><em></em></div>
+              </div>
+            </div>
+          </div>
+          <div class="cf-cap">
+            <span>صناعات المستقبل · ٢٠٢٤</span>
+            <h3>أتمتة خط الإنتاج</h3>
+            <p>×٤ سرعة اكتشاف الأعطال على أرض المصنع</p>
+          </div>
+          <div class="cf-veil" data-cf-veil></div>
+        </article>
+
+        <article class="cf-card" data-cf-card data-title="بوابة الخدمات الحكومية" role="button">
+          <div class="shot" style="--shot-bg:#0F1418;--shot-accent:#C8A45D">
+            <div class="shot-bar"><i></i><i></i><i></i></div>
+            <div class="shot-body">
+              <div class="shot-side"><em></em><em></em><em></em><em class="on"></em></div>
+              <div class="shot-main">
+                <div class="shot-kpis"><div></div><div></div><div></div></div>
+                <div class="shot-chart"><i style="--h:55%"></i><i style="--h:43%"></i><i style="--h:76%"></i><i style="--h:64%"></i><i style="--h:87%"></i><i style="--h:50%"></i><i style="--h:71%"></i><i style="--h:36%"></i></div>
+                <div class="shot-rows"><em></em><em></em><em></em></div>
+              </div>
+            </div>
+          </div>
+          <div class="cf-cap">
+            <span>هيئة التحوّل الرقمي · ٢٠٢٣</span>
+            <h3>بوابة الخدمات الحكومية</h3>
+            <p>١٤ خدمة موحّدة في مسار واحد للمواطن</p>
+          </div>
+          <div class="cf-veil" data-cf-veil></div>
+        </article>
+
+        <article class="cf-card" data-cf-card data-title="نظام إدارة العيادات" role="button">
+          <div class="shot" style="--shot-bg:#151218;--shot-accent:#C7484C">
+            <div class="shot-bar"><i></i><i></i><i></i></div>
+            <div class="shot-body">
+              <div class="shot-side"><em class="on"></em><em></em><em></em><em></em><em></em></div>
+              <div class="shot-main">
+                <div class="shot-kpis"><div></div><div></div><div></div></div>
+                <div class="shot-chart"><i style="--h:63%"></i><i style="--h:48%"></i><i style="--h:82%"></i><i style="--h:57%"></i><i style="--h:40%"></i><i style="--h:75%"></i><i style="--h:53%"></i><i style="--h:69%"></i></div>
+                <div class="shot-rows"><em></em><em></em><em></em></div>
+              </div>
+            </div>
+          </div>
+          <div class="cf-cap">
+            <span>مركز الشفاء · ٢٠٢٣</span>
+            <h3>نظام إدارة العيادات</h3>
+            <p>٦٠٪ تقليص في زمن انتظار المريض</p>
+          </div>
+          <div class="cf-veil" data-cf-veil></div>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="cf-ctl">
+      <button class="cf-btn" type="button" data-cf-prev aria-label="العمل السابق">→</button>
+      <div class="cf-dots" data-cf-dots role="tablist" aria-label="التنقّل بين الأعمال"></div>
+      <button class="cf-btn" type="button" data-cf-next aria-label="العمل التالي">←</button>
+    </div>
+    <p class="sr-only" aria-live="polite" data-cf-live></p>
+  </div>
+</section>
+
+<!-- ═══ لوحة 4: لوحة التحكم ═══ -->
+<section class="pv-panel" id="p4">
+  <div class="pv-label"><b>لوحة ٤</b> لوحة التحكم — اختبار الكثافة العالية</div>
+  <div class="dash">
+    <aside class="dash-side">
+      <div class="dash-brand">RVIOS</div>
+      <nav class="dash-nav">
+        <a href="#"><i></i>الرئيسية</a>
+        <a href="#" class="on"><i></i>المشاريع</a>
+        <a href="#"><i></i>المقالات</a>
+        <a href="#"><i></i>الخدمات</a>
+        <a href="#"><i></i>الرسائل</a>
+        <a href="#"><i></i>الوسائط</a>
+        <a href="#"><i></i>الإعدادات</a>
+      </nav>
+    </aside>
+    <main class="dash-main">
+      <div class="dash-head">
+        <h2>المشاريع</h2>
+        <span class="count">٢٤ مشروعاً · ٣ مسودات</span>
+        <a class="btn btn-primary" href="#">+ مشروع جديد</a>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><span>منشورة</span><b>٢١</b></div>
+        <div class="kpi"><span>مسودات</span><b>٣</b></div>
+        <div class="kpi"><span>مشاهدات الشهر</span><b>١٤٫٢ك</b></div>
+        <div class="kpi"><span>رسائل جديدة</span><b>٧</b></div>
+      </div>
+      <table>
+        <thead><tr><th>المشروع</th><th>العميل</th><th>القطاع</th><th>السنة</th><th>الحالة</th></tr></thead>
+        <tbody>
+          <tr><td>منصة إدارة سلسلة التوريد</td><td>مجموعة نُهى</td><td>التجزئة</td><td>٢٠٢٥</td><td><span class="badge ok">منشور</span></td></tr>
+          <tr><td>تطبيق الخدمات المصرفية</td><td>بنك الرافد</td><td>مالي</td><td>٢٠٢٤</td><td><span class="badge ok">منشور</span></td></tr>
+          <tr><td>أتمتة خط الإنتاج</td><td>صناعات المستقبل</td><td>صناعي</td><td>٢٠٢٤</td><td><span class="badge wip">مسودة</span></td></tr>
+          <tr><td>بوابة الخدمات الحكومية</td><td>هيئة التحوّل</td><td>حكومي</td><td>٢٠٢٣</td><td><span class="badge ok">منشور</span></td></tr>
+          <tr><td>نظام إدارة العيادات</td><td>مركز الشفاء</td><td>صحي</td><td>٢٠٢٣</td><td><span class="badge off">مؤرشف</span></td></tr>
+        </tbody>
+      </table>
+      <div class="field">
+        <label for="a-slug">الرابط الدائم (slug)</label>
+        <input id="a-slug" value="supply-chain-platform">
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- ═══ لوحة 5: التوكنز ═══ -->
+<section class="pv-panel" id="p5">
+  <div class="pv-label"><b>لوحة ٥</b> التوكنز — ما سيُنسخ حرفياً إلى packages/design-tokens</div>
+  <div class="sec container">
+    <h2 style="font-size:var(--text-2xl);margin-bottom:var(--space-6)">الألوان</h2>
+    <div class="tok-grid" id="swatches"></div>
+
+    <h2 style="font-size:var(--text-2xl);margin-block:var(--space-12) var(--space-6)">سلّم النصوص</h2>
+    <div id="typescale"></div>
+
+    <h2 style="font-size:var(--text-2xl);margin-block:var(--space-12) var(--space-6)">الحواف والظلال</h2>
+    <div style="display:flex;gap:var(--space-6);flex-wrap:wrap" id="shapes"></div>
+  </div>
+</section>
+
+<script src="../_shared/preview.js"></script>
+<script src="../_shared/coverflow.js"></script>
+</body>
+</html>

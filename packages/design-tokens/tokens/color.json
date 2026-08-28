@@ -1,0 +1,124 @@
+{
+  "$description": "لوحة «أرشيف ملكي» — المعتمدة من design/proposals/a-heritage",
+
+  "base": {
+    "$description": "القيم الخام. لا تُستهلك مباشرة في الكود — استهلك الطبقة الدلالية.",
+    "primary": {
+      "50":  "#F7E4E4",
+      "100": "#EFC9CA",
+      "300": "#C7484C",
+      "500": "#9E2226",
+      "700": "#7A1A1D",
+      "900": "#52080B"
+    },
+    "gold": {
+      "100": "#F5E9CE",
+      "500": "#C8A45D",
+      "700": "#9E7E3A"
+    },
+    "ink": {
+      "300": "#A2938B",
+      "500": "#6B5851",
+      "700": "#3A2C25",
+      "900": "#191310"
+    },
+    "cream": {
+      "0":   "#FFFFFF",
+      "50":  "#FAF8ED",
+      "100": "#F3EFDF",
+      "200": "#EAE4CE",
+      "300": "#E4DCC4",
+      "400": "#D6CBAC",
+      "500": "#BFB18C"
+    },
+    "night": {
+      "0":   "#14100C",
+      "50":  "#1D1813",
+      "100": "#26201A",
+      "200": "#2F2820",
+      "300": "#2E2820",
+      "400": "#3D352A",
+      "500": "#55493A",
+      "700": "#A99C86",
+      "900": "#F2ECDA"
+    },
+    "status": {
+      "success": "#2F6F4E",
+      "warning": "#A9781C",
+      "danger":  "#A32020",
+      "info":    "#2A5C8A"
+    }
+  },
+
+  "semantic": {
+    "$description": "ما يستهلكه الكود. الوضع الداكن يعيد تعريف هذه الطبقة وحدها.",
+    "primary": {
+      "50":  "{base.primary.50}",
+      "100": "{base.primary.100}",
+      "300": "{base.primary.300}",
+      "500": "{base.primary.500}",
+      "700": "{base.primary.700}",
+      "900": "{base.primary.900}"
+    },
+    "gold": {
+      "100": "{base.gold.100}",
+      "500": "{base.gold.500}",
+      "700": "{base.gold.700}"
+    },
+    "ink": {
+      "300": "{base.ink.300}",
+      "500": "{base.ink.500}",
+      "700": "{base.ink.700}",
+      "900": "{base.ink.900}"
+    },
+    "surface": {
+      "0": "{base.cream.50}",
+      "1": "{base.cream.100}",
+      "2": "{base.cream.200}",
+      "3": "{base.cream.0}"
+    },
+    "border": {
+      "subtle":  "{base.cream.300}",
+      "default": "{base.cream.400}",
+      "strong":  "{base.cream.500}"
+    },
+    "text": {
+      "primary":    "{base.ink.900}",
+      "secondary":  "{base.ink.500}",
+      "inverse":    "{base.cream.50}",
+      "on-primary": "{base.cream.50}"
+    },
+    "success": "{base.status.success}",
+    "warning": "{base.status.warning}",
+    "danger":  "{base.status.danger}",
+    "info":    "{base.status.info}"
+  },
+
+  "dark": {
+    "$description": "تجاوزات الوضع الداكن — مفاتيح دلالية فقط، لا قيم خام جديدة.",
+    "primary": {
+      "50":  "#2A1618",
+      "500": "{base.primary.300}",
+      "700": "{base.primary.500}"
+    },
+    "surface": {
+      "0": "{base.night.0}",
+      "1": "{base.night.50}",
+      "2": "{base.night.100}",
+      "3": "{base.night.200}"
+    },
+    "border": {
+      "subtle":  "{base.night.300}",
+      "default": "{base.night.400}",
+      "strong":  "{base.night.500}"
+    },
+    "text": {
+      "primary":   "{base.night.900}",
+      "secondary": "{base.night.700}"
+    },
+    "success": "#4ADE80",
+    "warning": "#FBBF24",
+    "danger":  "#F87171",
+    "info":    "#60A5FA"
+  }
+}

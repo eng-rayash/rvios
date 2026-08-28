@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────────────────────
+# RVIOS monorepo — .gitignore موحّد
+#
+# القاعدة: لا سرّ يدخل git. ملفات .env كانت متتبَّعة في المستودعات
+# القديمة العامّة وتسبّبت في تسريب — لا تُزل قواعد الأسرار أدناه.
+# ─────────────────────────────────────────────────────────────
+
+# ── الأسرار ── لا تُعدَّل هذه الكتلة
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# ── الاعتماديات ──
+node_modules/
+.pnpm-store/
+.pnp
+.pnp.js
+.yarn/
+
+# ── مخرجات البناء ──
+dist/
+build/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# ── حِزم المشروع (مولَّدة) ──
+packages/*/dist/
+packages/brand-assets/.synced/
+
+# ── Prisma ──
+prisma/*.db
+prisma/*.db-journal
+*.sqlite
+*.sqlite3
+
+# ── منصّات النشر ──
+.vercel
+.render/
+
+# ── سجلّات ──
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── اختبارات ──
+coverage/
+.nyc_output/
+
+# ── نظام التشغيل ومحرّرات الكود ──
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# ── مستندات خارج نطاق المستودع ──
+rvios-shop-saas/
+
+# ── ملفات مؤقتة ──
+tmp/
+temp/
+*.tmp

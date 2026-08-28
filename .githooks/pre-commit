@@ -1,0 +1,43 @@
+#!/bin/sh
+# حارس محلّي — يمنع دخول الأسرار إلى commit.
+# مفعَّل عبر:  git config core.hooksPath .githooks
+
+fail=0
+
+env_files=$(git diff --cached --name-only --diff-filter=ACM \
+  | grep -E '(^|/)\.env($|\.)' | grep -v '\.example$')
+if [ -n "$env_files" ]; then
+  echo "✖ ملف بيئة في الـ commit:"
+  echo "$env_files" | sed 's/^/    /'
+  fail=1
+fi
+
+junk=$(git diff --cached --name-only --diff-filter=ACM \
+  | grep -E '(^|/)(node_modules|dist|\.next|\.turbo)/')
+if [ -n "$junk" ]; then
+  echo "✖ اعتماديات أو مخرجات بناء في الـ commit ($(echo "$junk" | wc -l) ملف)"
+  fail=1
+fi
+
+for f in $(git diff --cached --name-only --diff-filter=ACM); do
+  [ -f "$f" ] || continue
+  case "$f" in
+    *.png|*.jpg|*.jpeg|*.webp|*.ico|*.gif|*.otf|*.ttf|*.woff*|*.pdf|*.docx) continue ;;
+    .env.example|pnpm-lock.yaml|SECURITY.md) continue ;;
+  esac
+  # يشمل .md عمداً — مفتاح Supabase تسرّب عبر وثيقة تحليل تقتبسه.
+  hit=$(git show ":$f" 2>/dev/null | grep -nIaE \
+    'sb_secret_[A-Za-z0-9_-]{16,}|eyJ[A-Za-z0-9_-]{15,}\.eyJ[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{10,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{30,}|gh[pous]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{30,}|xox[baprs]-[A-Za-z0-9-]{10,}|sk-[A-Za-z0-9]{32,}|sk_live_[A-Za-z0-9]{20,}|SG\.[A-Za-z0-9_-]{20,}|postgres(ql)?://[^ "]*:[^ "@]{4,}@|-----BEGIN [A-Z ]*PRIVATE KEY-----')
+  if [ -n "$hit" ]; then
+    echo "✖ سرّ محتمل في $f:"
+    echo "$hit" | sed 's/^/    /'
+    fail=1
+  fi
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "أُلغي الـ commit. أزل ما سبق، أو تجاوز بـ --no-verify إن كنت واثقاً."
+  exit 1
+fi
+exit 0

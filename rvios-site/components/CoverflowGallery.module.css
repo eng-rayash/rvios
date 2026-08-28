@@ -1,0 +1,252 @@
+/* ============================================================
+   CoverflowGallery — لغة «أرشيف ملكي»
+   لوحات مؤطَّرة على جدار أرشيف داكن: حواف حادة، شعيرة ذهبية
+   للفعّالة، وحجاب حبري دافئ للجانبية (لا أسود خالص).
+
+   كل قيمة عبر var() مع بديل احتياطي — حتى تعمل اليوم قبل
+   وصول packages/design-tokens، وتلتقط التوكنز تلقائياً بعده.
+   ============================================================ */
+
+.wrap {
+  --_gold: var(--color-gold-500, #C8A45D);
+  --_ink: var(--color-ink-900, #191310);
+  --_ivory: var(--color-text-inverse, #FAF8ED);
+  --_radius: var(--radius-sm, 2px);
+  --_dur: var(--motion-slow, 600ms);
+  --_ease: var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+
+  background: var(--_ink);
+  padding-block: 4rem 2.5rem;
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, inherit);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--_gold);
+}
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--_gold);
+}
+.head h2 {
+  margin: 0.75rem 0 0;
+  color: var(--_ivory);
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.18;
+}
+.counter {
+  margin-inline-start: auto;
+  font-family: var(--font-mono, inherit);
+  font-size: 0.875rem;
+  letter-spacing: 0.18em;
+  color: var(--_gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.stage {
+  position: relative;
+  perspective: 1600px;
+  display: grid;
+  place-items: center;
+  min-height: 460px;
+  outline: none;
+  touch-action: pan-y;
+}
+.stage:focus-visible {
+  outline: 1px solid var(--_gold);
+  outline-offset: 1rem;
+}
+
+.track {
+  position: relative;
+  width: min(560px, 82vw);
+  aspect-ratio: 4 / 3;
+  transform-style: preserve-3d;
+}
+
+.card {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  transform-origin: center center;
+  border: 0;
+  border-radius: var(--_radius);
+  overflow: hidden;
+  background: var(--color-surface-2, #EAE4CE);
+  box-shadow: 0 1px 0 rgba(200, 164, 93, 0.14), var(--shadow-lg, 0 8px 28px rgba(25, 19, 16, 0.1));
+  text-align: start;
+  transition:
+    transform var(--_dur) var(--_ease),
+    opacity var(--_dur) var(--_ease),
+    box-shadow var(--motion-base, 300ms) var(--_ease);
+  will-change: transform;
+}
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(200, 164, 93, 0.22);
+  border-radius: inherit;
+  transition: border-color var(--motion-base, 300ms) var(--_ease);
+  z-index: 5;
+}
+.card:focus-visible {
+  outline: 2px solid var(--_gold);
+  outline-offset: 3px;
+}
+
+.isActive {
+  cursor: default;
+  box-shadow: 0 0 0 1px var(--_gold), var(--shadow-lg, 0 8px 28px rgba(25, 19, 16, 0.1));
+}
+.isActive::after {
+  border-color: var(--_gold);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: var(--_ink);
+  transition: opacity var(--_dur) var(--_ease);
+}
+
+.caption {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 4;
+  padding: 4rem 1.5rem 1.25rem;
+  background: linear-gradient(to top, rgba(20, 15, 12, 0.94) 12%, rgba(20, 15, 12, 0) 100%);
+  pointer-events: none;
+}
+.caption .meta {
+  font-family: var(--font-mono, inherit);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--_gold);
+}
+.caption h3 {
+  margin: 0.5rem 0 0;
+  color: var(--_ivory);
+  font-family: var(--font-display, inherit);
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.18;
+}
+.caption p {
+  margin: 0.25rem 0 0;
+  color: rgba(250, 248, 237, 0.6);
+  font-size: 0.875rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+.navBtn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--_ivory);
+  border: 1px solid rgba(200, 164, 93, 0.4);
+  border-radius: var(--_radius);
+  font-size: 1.125rem;
+  transition: all var(--motion-fast, 150ms) var(--_ease);
+}
+.navBtn:hover {
+  border-color: var(--_gold);
+  color: var(--_gold);
+  background: rgba(200, 164, 93, 0.08);
+}
+.navBtn:focus-visible {
+  outline: 2px solid var(--_gold);
+  outline-offset: 2px;
+}
+
+.dots {
+  display: flex;
+  gap: 0.5rem;
+}
+.dot {
+  width: 26px;
+  height: 2px;
+  padding: 0;
+  border: 0;
+  background: rgba(250, 248, 237, 0.22);
+  cursor: pointer;
+  transition: background var(--motion-base, 300ms) var(--_ease);
+}
+.dotOn {
+  background: var(--_gold);
+}
+.dot:focus-visible {
+  outline: 2px solid var(--_gold);
+  outline-offset: 4px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 860px) {
+  .stage { min-height: 360px; }
+  .track { width: min(400px, 84vw); }
+}
+
+/* الحركة تُلغى بالكامل — تبقى الوظيفة والترتيب البصري */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .veil,
+  .dot,
+  .navBtn {
+    transition: none;
+  }
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RVIOS — مقارنة المقترحات البصرية</title>
+<style>
+  :root { --bd:#D6CBAC; --bg:#FAF8ED; --fg:#191310; --mut:#6B5851; --acc:#9E2226; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); }
+  header { padding: 18px 24px; border-bottom: 1px solid var(--bd); display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  header h1 { margin:0; font-size:17px; }
+  header p { margin:0; font-size:13px; color: var(--mut); }
+  .ctl { margin-inline-start:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .ctl label { font-size:12px; color:var(--mut); }
+  .ctl button, .ctl select {
+    font: inherit; font-size:13px; padding:6px 14px; border:1px solid var(--bd);
+    background:#fff; border-radius:999px; cursor:pointer;
+  }
+  .ctl button.on { background: var(--acc); color:#fff; border-color: var(--acc); }
+
+  .stage { display:grid; grid-template-columns: repeat(3, 1fr); gap:1px; background: var(--bd); }
+  .stage.solo { grid-template-columns: 1fr; }
+  .col { background: var(--bg); display:flex; flex-direction:column; min-width:0; }
+  .col > h2 {
+    margin:0; padding:10px 14px; font-size:13px; background:#fff;
+    border-bottom:1px solid var(--bd); display:flex; align-items:center; gap:8px;
+  }
+  .col > h2 a { margin-inline-start:auto; font-size:12px; color: var(--acc); }
+  .frame-wrap { flex:1; display:grid; place-items:start center; padding:12px; overflow:auto; background: repeating-conic-gradient(#f0ece0 0 25%, #f7f4ea 0 50%) 0 0/16px 16px; }
+  iframe { border:1px solid var(--bd); background:#fff; display:block; }
+
+  .note { padding:16px 24px; font-size:13px; color:var(--mut); border-top:1px solid var(--bd); line-height:1.9; }
+  .note b { color: var(--fg); }
+  @media (max-width: 1100px) { .stage { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>RVIOS — مقارنة المقترحات البصرية</h1>
+  <p>اختر لوحة وعرضاً ووضعاً، ثم قرّر.</p>
+  <div class="ctl">
+    <label>اللوحة</label>
+    <select id="panel">
+      <option value="p1">١ · الصفحة الرئيسية</option>
+      <option value="p2">٢ · المعرض</option>
+      <option value="p3">٣ · لوحة التحكم</option>
+      <option value="p4">٤ · التوكنز</option>
+    </select>
+    <label>العرض</label>
+    <button data-w="375">جوال</button>
+    <button data-w="768">تابلت</button>
+    <button data-w="1280" class="on">سطح مكتب</button>
+    <button id="theme">◐ الوضع الداكن</button>
+  </div>
+</header>
+
+<div class="stage" id="stage">
+  <div class="col">
+    <h2><span>A · أرشيف ملكي</span><a href="a-heritage/index.html" target="_blank">فتح ↗</a></h2>
+    <div class="frame-wrap"><iframe data-src="a-heritage/index.html" title="مقترح A"></iframe></div>
+  </div>
+  <div class="col">
+    <h2><span>B · استوديو حديث</span><a href="b-studio/index.html" target="_blank">فتح ↗</a></h2>
+    <div class="frame-wrap"><iframe data-src="b-studio/index.html" title="مقترح B"></iframe></div>
+  </div>
+  <div class="col">
+    <h2><span>C · معرض داكن</span><a href="c-gallery/index.html" target="_blank">فتح ↗</a></h2>
+    <div class="frame-wrap"><iframe data-src="c-gallery/index.html" title="مقترح C"></iframe></div>
+  </div>
+</div>
+
+<p class="note">
+  <b>ما تختاره ليس «شكلاً» بل كتلة توكنز.</b> كل مقترح يبدأ بكتلة <code>:root</code> بأسماء التوكنز النهائية نفسها —
+  فالاختيار يُترجَم مباشرةً إلى <code>packages/design-tokens</code> بلا إعادة تفسير.
+  لوحة ٤ في كل مقترح تعرض تلك الكتلة مقروءةً من القيم الحيّة، وتُنبّه في شريط الأعلى إن نقص أي توكن إلزامي.<br>
+  <b>يمكن المزج:</b> مثلاً «B للموقع، C للوحة التحكم» خيار مشروع — الوضع الفاتح والداكن معرَّفان في المقترحات الثلاثة.<br>
+  <b>الخطوط حقيقية:</b> تُحمَّل مباشرة من <code>rvios-site/public/fonts</code>. هذه أول مرة يُعرض فيها
+  <code>GeneratorMobile</code> فعلياً — الخط الذي يفترض أنه خط النص الأساسي وهو معطَّل اليوم في الموقع.
+</p>
+
+<script>
+  const stage = document.getElementById('stage');
+  const frames = [...document.querySelectorAll('iframe')];
+  const panelSel = document.getElementById('panel');
+  const widthBtns = [...document.querySelectorAll('[data-w]')];
+  const themeBtn = document.getElementById('theme');
+
+  let width = 1280;
+  let dark = false;
+
+  function apply() {
+    frames.forEach((f) => {
+      f.style.width = width + 'px';
+      f.style.height = (width < 700 ? 720 : 820) + 'px';
+      f.style.transformOrigin = 'top center';
+      const avail = f.parentElement.clientWidth - 24;
+      const scale = Math.min(1, avail / width);
+      f.style.transform = `scale(${scale})`;
+      f.style.marginBottom = `${-(1 - scale) * (width < 700 ? 720 : 820)}px`;
+      f.src = `${f.dataset.src}#${panelSel.value}`;
+    });
+    // Theme is applied after each frame loads (see onload below).
+  }
+
+  function pushTheme(frame) {
+    try {
+      const doc = frame.contentDocument;
+      if (!doc) return;
+      // C is dark-first: its "light" is the override. A and B are light-first.
+      const isC = frame.dataset.src.includes('c-gallery');
+      doc.documentElement.dataset.theme = dark
+        ? (isC ? '' : 'dark')
+        : (isC ? 'light' : '');
+    } catch { /* same-origin only; ignored when opened via file:// in some browsers */ }
+  }
+
+  frames.forEach((f) => f.addEventListener('load', () => pushTheme(f)));
+
+  panelSel.addEventListener('change', apply);
+  widthBtns.forEach((b) => b.addEventListener('click', () => {
+    widthBtns.forEach((x) => x.classList.remove('on'));
+    b.classList.add('on');
+    width = +b.dataset.w;
+    stage.classList.toggle('solo', width >= 1280);
+    apply();
+  }));
+  themeBtn.addEventListener('click', () => {
+    dark = !dark;
+    themeBtn.textContent = dark ? '◐ الوضع الفاتح' : '◐ الوضع الداكن';
+    themeBtn.classList.toggle('on', dark);
+    frames.forEach(pushTheme);
+  });
+
+  window.addEventListener('resize', apply);
+  apply();
+</script>
+</body>
+</html>

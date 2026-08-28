@@ -1,0 +1,32 @@
+{
+  "name": "rvios",
+  "private": true,
+  "version": "0.1.0",
+  "description": "RVIOS Technologies — Monorepo",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "dev:api": "turbo run dev --filter=rvios-api",
+    "dev:site": "turbo run dev --filter=rvios-site",
+    "dev:dashboard": "turbo run dev --filter=rvios-dashboard",
+    "dev:owner": "turbo run dev --filter=rvios-owner",
+    "tokens:build": "pnpm --filter=@rvios/design-tokens run build && node packages/brand-assets/sync.mjs",
+    "db:deploy": "pnpm --filter=rvios-api run prisma:deploy",
+    "db:status": "pnpm --filter=rvios-api run prisma:status",
+    "db:migrate": "pnpm --filter=rvios-api run prisma:migrate",
+    "db:studio": "pnpm --filter=rvios-api run prisma:studio",
+    "db:seed": "pnpm --filter=rvios-api run prisma:seed",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@10.33.2"
+}

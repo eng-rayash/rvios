@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secrets:
+    name: حارس الأسرار
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: رفض أي ملف .env متتبَّع
+        run: |
+          found=$(git ls-files | grep -E '(^|/)\.env($|\.)' | grep -v '\.example$' || true)
+          if [ -n "$found" ]; then
+            echo "::error::ملفات بيئة متتبَّعة في git:"
+            echo "$found"
+            exit 1
+          fi
+          echo "لا ملفات .env متتبَّعة."
+
+      - name: رفض node_modules / dist المتتبَّعة
+        run: |
+          found=$(git ls-files | grep -E '(^|/)(node_modules|dist|\.next)/' || true)
+          if [ -n "$found" ]; then
+            echo "::error::مخرجات بناء أو اعتماديات متتبَّعة ($(echo "$found" | wc -l) ملف)"
+            echo "$found" | head -20
+            exit 1
+          fi
+          echo "الشجرة نظيفة."
+
+      - name: مسح المحتوى بحثاً عن أسرار
+        run: |
+          # يشمل .md عمداً: مفتاح Supabase تسرّب عبر وثيقة تحليل تقتبسه.
+          hits=$(git grep -nIE \
+            'sb_secret_[A-Za-z0-9_-]{16,}|eyJ[A-Za-z0-9_-]{15,}\.eyJ[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{10,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{30,}|gh[pous]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{30,}|xox[baprs]-[A-Za-z0-9-]{10,}|sk-[A-Za-z0-9]{32,}|sk_live_[A-Za-z0-9]{20,}|SG\.[A-Za-z0-9_-]{20,}|postgres(ql)?://[^ "'"'"'`]*:[^ "'"'"'`@]{4,}@|-----BEGIN [A-Z ]*PRIVATE KEY-----' \
+            -- . ':!.env.example' ':!SECURITY.md' || true)
+          if [ -n "$hits" ]; then
+            echo "::error::أسرار محتملة في الكود:"
+            echo "$hits"
+            exit 1
+          fi
+          echo "لا أسرار في المحتوى."
+
+  build:
+    name: بناء ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    needs: secrets
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [rvios-api, rvios-site, rvios-dashboard, rvios-owner]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: توليد عميل Prisma
+        if: matrix.app == 'rvios-api'
+        run: pnpm --filter rvios-api exec prisma generate
+
+      - name: بناء
+        run: pnpm --filter ${{ matrix.app }} build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3001/api/v1

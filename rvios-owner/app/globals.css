@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Brand Fonts
+   ============================================================ */
+@font-face {
+  font-family: "YAPARI";
+  src: url("/fonts/YapariTrial-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "RTL-Maghfira";
+  src: url("/fonts/rtl-maghfira-ramadan.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Givonic";
+  src: url("/fonts/Givonic-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Generator";
+  src: url("/fonts/Hacen Liner Screen.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --font-yapari: "YAPARI";
+  --font-maghfira: "RTL-Maghfira";
+  --font-givonic: "Givonic";
+  --font-panorama: "Generator";
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FAF8ED;
+  color: #1A120F;
+}

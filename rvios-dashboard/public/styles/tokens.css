@@ -1,0 +1,261 @@
+/* مولَّد من packages/design-tokens — لا تُحرّره يدوياً. */
+/* شغّل: pnpm --filter @rvios/design-tokens build */
+
+@font-face {
+  font-family: "Generator";
+  src: url("../fonts/Hacen%20Liner%20Screen.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Generator";
+  src: url("../fonts/Hacen%20Liner%20Screen.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Yapari";
+  src: url("../fonts/YapariTrial-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Yapari";
+  src: url("../fonts/YapariTrial-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maghfira";
+  src: url("../fonts/rtl-maghfira-ramadan.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Givonic";
+  src: url("../fonts/Givonic-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  /* ── الألوان ── */
+  --color-primary-50: #F7E4E4;
+  --color-primary-50-ch: 247 228 228;
+  --color-primary-100: #EFC9CA;
+  --color-primary-100-ch: 239 201 202;
+  --color-primary-300: #C7484C;
+  --color-primary-300-ch: 199 72 76;
+  --color-primary-500: #9E2226;
+  --color-primary-500-ch: 158 34 38;
+  --color-primary-700: #7A1A1D;
+  --color-primary-700-ch: 122 26 29;
+  --color-primary-900: #52080B;
+  --color-primary-900-ch: 82 8 11;
+  --color-gold-100: #F5E9CE;
+  --color-gold-100-ch: 245 233 206;
+  --color-gold-500: #C8A45D;
+  --color-gold-500-ch: 200 164 93;
+  --color-gold-700: #9E7E3A;
+  --color-gold-700-ch: 158 126 58;
+  --color-ink-300: #A2938B;
+  --color-ink-300-ch: 162 147 139;
+  --color-ink-500: #6B5851;
+  --color-ink-500-ch: 107 88 81;
+  --color-ink-700: #3A2C25;
+  --color-ink-700-ch: 58 44 37;
+  --color-ink-900: #191310;
+  --color-ink-900-ch: 25 19 16;
+  --color-surface-0: #FAF8ED;
+  --color-surface-0-ch: 250 248 237;
+  --color-surface-1: #F3EFDF;
+  --color-surface-1-ch: 243 239 223;
+  --color-surface-2: #EAE4CE;
+  --color-surface-2-ch: 234 228 206;
+  --color-surface-3: #FFFFFF;
+  --color-surface-3-ch: 255 255 255;
+  --color-border-subtle: #E4DCC4;
+  --color-border-subtle-ch: 228 220 196;
+  --color-border-default: #D6CBAC;
+  --color-border-default-ch: 214 203 172;
+  --color-border-strong: #BFB18C;
+  --color-border-strong-ch: 191 177 140;
+  --color-text-primary: #191310;
+  --color-text-primary-ch: 25 19 16;
+  --color-text-secondary: #6B5851;
+  --color-text-secondary-ch: 107 88 81;
+  --color-text-inverse: #FAF8ED;
+  --color-text-inverse-ch: 250 248 237;
+  --color-text-on-primary: #FAF8ED;
+  --color-text-on-primary-ch: 250 248 237;
+  --color-success: #2F6F4E;
+  --color-success-ch: 47 111 78;
+  --color-warning: #A9781C;
+  --color-warning-ch: 169 120 28;
+  --color-danger: #A32020;
+  --color-danger-ch: 163 32 32;
+  --color-info: #2A5C8A;
+  --color-info-ch: 42 92 138;
+
+  /* ── المسافات ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ── الحواف ── */
+  --radius-xs: 0px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-full: 999px;
+
+  /* ── النصوص ── */
+  --text-xs: 12px;
+  --text-xs-leading: 1.7;
+  --text-sm: 14px;
+  --text-sm-leading: 1.8;
+  --text-base: 16px;
+  --text-base-leading: 1.85;
+  --text-lg: 18px;
+  --text-lg-leading: 1.8;
+  --text-xl: 22px;
+  --text-xl-leading: 1.5;
+  --text-2xl: 28px;
+  --text-2xl-leading: 1.35;
+  --text-3xl: 36px;
+  --text-3xl-leading: 1.25;
+  --text-4xl: 48px;
+  --text-4xl-leading: 1.2;
+  --text-5xl: 68px;
+  --text-5xl-leading: 1.1;
+  --leading-tight: 1.18;
+  --leading-normal: 1.85;
+  --leading-loose: 2.05;
+
+  /* ── الخطوط ── */
+  --font-display: "Yapari", "Maghfira", serif;
+  --font-body: "Generator", system-ui, sans-serif;
+  --font-mono: "Givonic", ui-monospace, monospace;
+
+  /* ── الظلال ── */
+  --shadow-xs: 0 1px 0 rgba(25,19,16,.04);
+  --shadow-sm: 0 1px 2px rgba(25,19,16,.06);
+  --shadow-md: 0 2px 8px rgba(25,19,16,.07);
+  --shadow-lg: 0 8px 28px rgba(25,19,16,.10);
+  --shadow-glow: 0 0 0 1px #C8A45D;
+
+  /* ── الحركة ── */
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 600ms;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+
+  /* ── الطبقات ── */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* الوضع الداكن: عبر سمة صريحة أو تفضيل النظام.
+   السمة الصريحة تفوز دائماً حتى يعمل مبدّل المستخدم في الاتجاهين. */
+:root[data-theme="dark"] {
+  --color-primary-50: #2A1618;
+  --color-primary-50-ch: 42 22 24;
+  --color-primary-500: #C7484C;
+  --color-primary-500-ch: 199 72 76;
+  --color-primary-700: #9E2226;
+  --color-primary-700-ch: 158 34 38;
+  --color-surface-0: #14100C;
+  --color-surface-0-ch: 20 16 12;
+  --color-surface-1: #1D1813;
+  --color-surface-1-ch: 29 24 19;
+  --color-surface-2: #26201A;
+  --color-surface-2-ch: 38 32 26;
+  --color-surface-3: #2F2820;
+  --color-surface-3-ch: 47 40 32;
+  --color-border-subtle: #2E2820;
+  --color-border-subtle-ch: 46 40 32;
+  --color-border-default: #3D352A;
+  --color-border-default-ch: 61 53 42;
+  --color-border-strong: #55493A;
+  --color-border-strong-ch: 85 73 58;
+  --color-text-primary: #F2ECDA;
+  --color-text-primary-ch: 242 236 218;
+  --color-text-secondary: #A99C86;
+  --color-text-secondary-ch: 169 156 134;
+  --color-success: #4ADE80;
+  --color-success-ch: 74 222 128;
+  --color-warning: #FBBF24;
+  --color-warning-ch: 251 191 36;
+  --color-danger: #F87171;
+  --color-danger-ch: 248 113 113;
+  --color-info: #60A5FA;
+  --color-info-ch: 96 165 250;
+  --shadow-xs: 0 1px 0 rgba(0,0,0,.3);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.5);
+  --shadow-lg: 0 8px 28px rgba(0,0,0,.6);
+  --shadow-glow: 0 0 0 1px #C8A45D;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-primary-50: #2A1618;
+    --color-primary-50-ch: 42 22 24;
+    --color-primary-500: #C7484C;
+    --color-primary-500-ch: 199 72 76;
+    --color-primary-700: #9E2226;
+    --color-primary-700-ch: 158 34 38;
+    --color-surface-0: #14100C;
+    --color-surface-0-ch: 20 16 12;
+    --color-surface-1: #1D1813;
+    --color-surface-1-ch: 29 24 19;
+    --color-surface-2: #26201A;
+    --color-surface-2-ch: 38 32 26;
+    --color-surface-3: #2F2820;
+    --color-surface-3-ch: 47 40 32;
+    --color-border-subtle: #2E2820;
+    --color-border-subtle-ch: 46 40 32;
+    --color-border-default: #3D352A;
+    --color-border-default-ch: 61 53 42;
+    --color-border-strong: #55493A;
+    --color-border-strong-ch: 85 73 58;
+    --color-text-primary: #F2ECDA;
+    --color-text-primary-ch: 242 236 218;
+    --color-text-secondary: #A99C86;
+    --color-text-secondary-ch: 169 156 134;
+    --color-success: #4ADE80;
+    --color-success-ch: 74 222 128;
+    --color-warning: #FBBF24;
+    --color-warning-ch: 251 191 36;
+    --color-danger: #F87171;
+    --color-danger-ch: 248 113 113;
+    --color-info: #60A5FA;
+    --color-info-ch: 96 165 250;
+    --shadow-xs: 0 1px 0 rgba(0,0,0,.3);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 2px 8px rgba(0,0,0,.5);
+    --shadow-lg: 0 8px 28px rgba(0,0,0,.6);
+    --shadow-glow: 0 0 0 1px #C8A45D;
+  }
+}

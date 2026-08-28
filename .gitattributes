@@ -1,0 +1,24 @@
+# التطبيع: كل النصوص LF داخل المستودع، ويتكيّف مع النظام عند السحب.
+* text=auto eol=lf
+
+# سكربتات ويندوز تبقى CRLF
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+
+# ملفات ثنائية — لا تطبيع ولا diff
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.ico  binary
+*.gif  binary
+*.pdf  binary
+*.docx binary
+*.otf  binary
+*.ttf  binary
+*.woff  binary
+*.woff2 binary
+
+# ملفات مولَّدة — تُخفى من diff المراجعة
+pnpm-lock.yaml linguist-generated=true -diff
