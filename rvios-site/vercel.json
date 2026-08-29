@@ -1,3 +1,9 @@
 {
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_API_URL": "https://rvios-api-eu.onrender.com/api/v1",
+      "NEXT_PUBLIC_SITE_URL": "https://rvios-site.vercel.app"
+    }
+  }
 }
