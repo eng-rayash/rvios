@@ -181,9 +181,22 @@ export default function ProjectsPage() {
   async function onDragEnd({ active, over }: DragEndEvent) {
     if (!over || active.id === over.id || !projects) return;
 
-    const from = projects.findIndex((p) => p.id === active.id);
-    const to = projects.findIndex((p) => p.id === over.id);
-    const next = arrayMove(projects, from, to);
+    /* الترتيب يُحسب على المعروض لا على القائمة الكاملة: مع فلتر نشط كانت
+       الفهارس تؤخذ من قائمة فيها بطاقات مخفيّة، فتهبط البطاقة في موضع
+       غير الذي أُفلتت فيه. */
+    const shown = projects.filter((p) => filter === "ALL" || p.status === filter);
+    const from = shown.findIndex((p) => p.id === active.id);
+    const to = shown.findIndex((p) => p.id === over.id);
+    if (from < 0 || to < 0) return;
+
+    const moved = arrayMove(shown, from, to);
+    /* المخفيّ يبقى في مكانه: البطاقات الظاهرة وحدها تتبادل مواضعها. */
+    const shownIds = new Set(shown.map((p) => p.id));
+    const next = [...projects];
+    let cursor = 0;
+    for (let i = 0; i < next.length; i++) {
+      if (shownIds.has(next[i].id)) next[i] = moved[cursor++];
+    }
 
     /* تحديث متفائل ثم حفظ: السحب يجب أن يبدو فورياً، والخادم يؤكّد. */
     setProjects(next);

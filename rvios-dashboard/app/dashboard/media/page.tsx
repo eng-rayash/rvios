@@ -10,6 +10,7 @@ export default function MediaPage() {
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("ALL");
+  const [error, setError] = useState<string | null>(null);
 
   async function load() {
     if (!token) return;
@@ -24,6 +25,7 @@ export default function MediaPage() {
     const file = e.target.files?.[0];
     if (!file || !token) return;
     setUploading(true);
+    setError(null);
     try {
       const form = new FormData();
       form.append("file", file);
@@ -32,7 +34,20 @@ export default function MediaPage() {
         headers: { Authorization: `Bearer ${token}` },
         body: form,
       });
-      if (res.ok) await load();
+      if (res.ok) {
+        await load();
+      } else {
+        /* الفشل كان يُبتلع صامتاً: يختفي «جار الرفع» ولا يظهر الملف،
+           فيظنّ المستخدم أن اللوحة معطّلة بلا سبب. */
+        const body = await res.json().catch(() => ({}) as any);
+        setError(
+          Array.isArray(body.message)
+            ? body.message.join("، ")
+            : body.message || `تعذّر الرفع (${res.status})`,
+        );
+      }
+    } catch {
+      setError("تعذّر الاتصال بالسيرفر (API)");
     } finally {
       setUploading(false);
       e.target.value = "";
@@ -41,8 +56,13 @@ export default function MediaPage() {
 
   async function remove(id: string) {
     if (!confirm("حذف هذا الملف؟")) return;
-    await mediaApi.delete(token!, id);
-    load();
+    setError(null);
+    try {
+      await mediaApi.delete(token!, id);
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "تعذّر الحذف");
+    }
   }
 
   const filtered = filter === "ALL" ? media : media.filter(m => m.type === filter);
@@ -61,6 +81,16 @@ export default function MediaPage() {
             accept="image/*,video/*,application/pdf" disabled={uploading} />
         </label>
       </div>
+
+      {error && (
+        <p role="alert" style={{
+          marginBottom: 16, padding: "10px 14px", fontSize: "0.8rem",
+          border: "1px solid var(--color-danger)", color: "var(--color-danger)",
+          borderRadius: 4,
+        }}>
+          {error}
+        </p>
+      )}
 
       {/* Filter */}
       <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>

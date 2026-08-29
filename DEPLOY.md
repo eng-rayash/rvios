@@ -110,6 +110,62 @@ pnpm db:seed
 
 ولتعبئة المعرض: `pnpm --filter rvios-api run prisma:seed-projects`.
 
+### ٤. دلو R2 — إعدادان بلا بديل عن ضبطهما يدوياً
+
+رفع الصور من اللوحة يذهب من المتصفح إلى R2 مباشرة (رابط موقّع من الـ API،
+ثم `PUT` من الصفحة). هذا يعني أن الدلو نفسه يحتاج ضبطين — بلا أيّ منهما
+يفشل المسار كاملاً بينما الكود سليم:
+
+**أ. قواعد CORS** — بدونها يرفض R2 طلب الـ preflight فيسقط الرفع قبل أن
+يبدأ، والمتصفح لا يكشف السبب (`status 0`).
+
+Cloudflare ← R2 ← `rvios-media` ← **Settings** ← **CORS Policy** ← Add:
+
+```json
+[
+  {
+    "AllowedOrigins": [
+      "http://localhost:3002",
+      "https://rvios-dashboard.vercel.app"
+    ],
+    "AllowedMethods": ["PUT", "GET", "HEAD"],
+    "AllowedHeaders": ["content-type"],
+    "ExposeHeaders": ["etag"],
+    "MaxAgeSeconds": 3600
+  }
+]
+```
+
+كل نطاق تُرفع منه الصور يُضاف هنا — النطاق المخصّص للوحة حين يُربط.
+
+أو من الطرفية، بالنطاقات المضبوطة في `CORS_ORIGINS`:
+
+```bash
+pnpm --filter rvios-api run r2:cors           # عرض القواعد الحالية
+```
+
+ثم `pnpm --filter rvios-api run r2:cors -- --apply` لكتابتها.
+
+الكتابة **تستبدل** القواعد لا تضيف إليها، فيجب أن يحمل `CORS_ORIGINS`
+نطاقات الإنتاج لا localhost وحدها — وإلا انكسر الرفع من اللوحة المنشورة.
+السكربت يحذّر إن غاب نطاق `https://` من القائمة.
+
+**ب. الوصول العام للقراءة** — الصور تُعرض في الموقع واللوحة بـ `<img src>`
+بلا توقيع، فلا بدّ من مضيف عامّ:
+
+Cloudflare ← R2 ← `rvios-media` ← Settings ← **Public Access**:
+فعّل **Public Development URL** (يعطي `https://pub-<hash>.r2.dev`) أو اربط
+نطاقاً مخصّصاً، ثم ضع الناتج في `CF_PUBLIC_URL`.
+
+للتحقّق بعد الضبط:
+
+```bash
+curl -sI "$CF_PUBLIC_URL/uploads/<any-existing-key>" | head -1
+```
+
+`200` صحيح. `401` يعني أن الوصول العام ما زال مطفأً — وكل صورة في الموقع
+ستظهر مكسورة.
+
 ---
 
 ## Render — خدمة الـ API
