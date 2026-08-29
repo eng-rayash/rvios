@@ -1,63 +1,129 @@
 # الأمن — RVIOS
 
-## ⚠️ تدوير الأسرار — إلزامي وعاجل
+## خلفية التسريب
 
 المستودعات الأربعة السابقة (`rvios-api`, `rvios-dashboard`, `rvios-owner`,
 `rvios-site`) كانت **عامّة على GitHub**، وكان `rvios-api/.env` **متتبَّعاً في
-git** ومنشوراً فيها. كما كان `.env.example` يحمل بيانات حساب المدير الحقيقية.
+git** ومنشوراً فيها. و`.env.example` كان يحمل بيانات حساب المدير الحقيقية.
+و`RVIOS_APP_ANALYSIS.md` كان يقتبس مفتاح Supabase `service_role` حرفياً.
 
-**نقل الكود إلى مستودع خاص لا يبطل الأسرار المكشوفة.** ما نُشر علناً يبقى
-متاحاً عبر النسخ المخبّأة، والـ forks، وأرشيفات GitHub وزواحف الطرف الثالث.
-الطريق الوحيد للإبطال هو التدوير من لوحة كل خدمة.
+**حذف المستودعات لا يبطل الأسرار.** ما نُشر علناً يبقى في النسخ المخبّأة
+والـ forks وأرشيفات GitHub وزواحف الطرف الثالث. الإبطال الوحيد هو التدوير
+من لوحة كل خدمة.
 
-### قائمة التدوير
+## حالة التدوير
 
-| السرّ | أين تُدوَّر | ملاحظة |
-|---|---|---|
-| `CF_ACCESS_KEY_ID` + `CF_SECRET_ACCESS_KEY` | Cloudflare → R2 → API Tokens | أنشئ زوجاً جديداً ثم **أبطل القديم** — الإنشاء وحده لا يكفي |
-| `JWT_SECRET` | `openssl rand -hex 32` | يُسجَّل خروج الجميع — وهذا مطلوب |
-| `JWT_REFRESH_SECRET` | `openssl rand -hex 32` | كذلك |
-| كلمة مرور Postgres | Render → Postgres → Reset Password | ثم حدّث `DATABASE_URL` |
-| `SEED_ADMIN_PASSWORD` + حساب المدير | قيمة جديدة ثم `pnpm db:seed` | كلمة المرور القديمة كانت في `.env.example` العام |
-| `CF_ACCOUNT_ID` | لا يُدوَّر (معرّف لا سرّ) | لكنه كان مكشوفاً — راقب سجلّ الوصول إلى R2 |
-| مفتاح Supabase `service_role` | Supabase → Settings → API → Rotate | **مشروع منفصل** — انظر أدناه |
+| السرّ | الحالة |
+|---|---|
+| `JWT_SECRET` · `JWT_REFRESH_SECRET` | ✅ مُدوَّران |
+| كلمة مرور قاعدة البيانات | ✅ مُدوَّرة (وقاعدة Render القديمة حُذفت أصلاً) |
+| `SEED_ADMIN_PASSWORD` | ✅ مُدوَّرة |
+| `CF_ACCESS_KEY_ID` · `CF_SECRET_ACCESS_KEY` | ⏳ راجع القسم التالي |
+| مفتاح Supabase `service_role` | ❌ معلّق — مستودع `Mudiri` |
 
-### مفتاح Supabase `service_role` — تسريب منفصل
-
-`RVIOS_APP_ANALYSIS.md` كان يقتبس مفتاح `service_role` حرفياً كدليل على
-الثغرة. حُجب المفتاح في هذا المستودع، لكنه **ما زال في تاريخ git على
-`github.com/eng-rayash/Mudiri`** منذ commit `3d49105` — وهو مستودع مشروع
-`RVIOS_APP` لا هذا المستودع.
-
-مفتاح `service_role` يتجاوز **كل** سياسات RLS: حامله يقرأ ويكتب ويحذف على
-قواعد كل المستأجرين. رصده GitHub push protection ومنع الدفع — وهذا يعني
-أن ماسحات الطرف الثالث ترصده أيضاً.
-
-1. دوّره فوراً من لوحة Supabase.
-2. احذف السطر من مصدر `RVIOS_APP` (`lib/core/services/supabase_config.dart`).
-3. المفتاح الجديد في متغيّرات بيئة Edge Functions فقط.
-4. راجع سجلّات Supabase بحثاً عن استخدام مشبوه للمفتاح القديم.
-
-بعد التدوير: اضبط القيم الجديدة في **متغيّرات بيئة Render وVercel** — لا في ملف.
-
-### تحقّق بعد التدوير
-
-- Cloudflare → R2 → API Tokens: المفتاح القديم غير موجود في القائمة.
-- Render → Postgres → Logs: لا اتصالات ناجحة بكلمة المرور القديمة.
-- سجّل الدخول بكلمة مرور المدير القديمة — يجب أن يفشل.
-- أي رمز JWT قديم يُرفض بـ 401.
+**عن مفاتيح R2:** رفعٌ فعلي إلى R2 من الإنتاج ردّ HTTP 200، فالمفاتيح
+المضبوطة **صالحة**. لكن هذا لا يميّز الجديدة من القديمة — القديمة تعمل
+أيضاً ما دامت لم تُبطَل. الفحص الحاسم في لوحة Cloudflare: **هل ما زال
+الرمز القديم مدرجاً؟** إن كان، فالتسريب قائم.
 
 ---
 
-## الحواجز المُفعَّلة في هذا المستودع
+## مصفوفة الأسرار — من أين، وإلى أين
+
+| المتغيّر | من أين تجلبه | Render | `rvios-api/.env` |
+|---|---|:--:|:--:|
+| `DATABASE_URL` | Supabase ← Connect ← Transaction pooler `:6543` + `?pgbouncer=true` | ✔ | ✔ |
+| `DIRECT_URL` | Supabase ← Connect ← Session pooler `:5432` | ✔ | ✔ |
+| `JWT_SECRET` | تولّده أنت (أدناه) | ✔ | ✔ |
+| `JWT_REFRESH_SECRET` | تولّده أنت — **قيمة مختلفة** | ✔ | ✔ |
+| `SEED_ADMIN_EMAIL` | تختاره | ✔ | ✔ |
+| `SEED_ADMIN_PASSWORD` | تختاره | ✔ | ✔ |
+| `CF_ACCOUNT_ID` | Cloudflare ← R2 ← Overview | ✔ | ✔ |
+| `CF_ACCESS_KEY_ID` | Cloudflare ← R2 ← API Tokens | ✔ | ✔ |
+| `CF_SECRET_ACCESS_KEY` | Cloudflare ← R2 ← API Tokens (**يُعرض مرة واحدة**) | ✔ | ✔ |
+| `CF_PUBLIC_URL` | Cloudflare ← R2 ← `rvios-media` ← Settings ← Public URL | ✔ | ✔ |
+| `CF_BUCKET_NAME` | `rvios-media` | ✔ | ✔ |
+| `CORS_ORIGINS` | نطاقات Vercel الثلاثة، مفصولة بفواصل | ✔ | ✖ |
+| `NODE_VERSION` · `JWT_EXPIRES_IN` · `JWT_REFRESH_EXPIRES_IN` | ثوابت | ✔ | ✔ |
+
+**Vercel لا يأخذ أي سرّ.** `NEXT_PUBLIC_API_URL` في `vercel.json` لكل واجهة —
+قيم `NEXT_PUBLIC_*` تُحقن في حزمة المتصفّح فهي علنية بحكم تعريفها.
+
+**لماذا نسختان:** Render يخدم الإنتاج. و`rvios-api/.env` يشغّل الهجرات
+والبذر من جهازك — لأن `Pre-Deploy` وShell ميزتان مدفوعتان على Render
+(انظر [DEPLOY.md](DEPLOY.md)). فالقيمتان يجب أن تتطابقا.
+
+### توليد أسرار JWT
+
+```powershell
+$b = New-Object byte[] 32; [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b); -join ($b | ForEach-Object { $_.ToString('x2') })
+```
+
+مرتين — قيمة لكل متغيّر. **لا تستخدم `Get-Random`**: مولّد شبه‑عشوائي
+قابل للتنبّؤ من بذرته، ولا يصلح لسرّ يوقّع رموز الدخول.
+
+بديل بـ openssl (موجود مع Git، لكنه ليس على مسار PowerShell):
+
+```powershell
+& "C:\Program Files\Git\usr\bin\openssl.exe" rand -hex 32
+```
+
+---
+
+## تدوير مفاتيح R2 — بالترتيب
+
+الترتيب ليس تفصيلاً: **أبطل القديم بعد التحقّق من الجديد**، وإلا انقطع
+رفع الصور بين الخطوتين.
+
+**١. أنشئ رمزاً جديداً**
+Cloudflare ← **R2** ← **API** ← **Manage API Tokens** ← **Create API Token**
+
+| الحقل | القيمة |
+|---|---|
+| Permissions | **Object Read & Write** |
+| Specify buckets | `rvios-media` وحدها — لا "All buckets" |
+| TTL | بلا انتهاء، أو حدّده إن أردت تدويراً دورياً |
+
+قصر الصلاحية على الحاوية والعمليات المطلوبة يجعل أي تسريب لاحق أقلّ ضرراً.
+
+**٢. انسخ القيمتين فوراً**
+`Access Key ID` و`Secret Access Key` — **الثانية تُعرض مرة واحدة ولا تُسترجع**.
+إن أغلقت الصفحة قبل نسخها، احذف الرمز وأنشئ غيره.
+
+**٣. ضعهما في Render**
+[Environment](https://dashboard.render.com/web/srv-da91rv5g1s2s738uemng) ←
+`CF_ACCESS_KEY_ID` و`CF_SECRET_ACCESS_KEY`. الحفظ يعيد تشغيل الخدمة تلقائياً.
+
+**٤. ضعهما في `rvios-api/.env`** بنفس القيم.
+
+**٥. تحقّق قبل الإبطال**
+انتظر انتهاء النشر، ثم من لوحة التحكم ارفع صورة في أي مشروع. نجاح الرفع
+يعني أن الرمز الجديد يعمل.
+
+**٦. الآن أبطل القديم**
+Cloudflare ← R2 ← API Tokens ← الرمز القديم ← **Delete**.
+
+**٧. تأكّد**
+أعد رفع صورة. إن نجح، فالمنظومة تعمل على الرمز الجديد وحده — وقد أُبطل
+التسريب فعلياً لا نظرياً.
+
+---
+
+## الحواجز المُفعَّلة
 
 | الحاجز | أين | ماذا يمنع |
 |---|---|---|
-| `.gitignore` مُحصَّن | [.gitignore](.gitignore) | `.env` وكل مشتقّاته، `*.pem`, `*.key`, `node_modules/`, `dist/` |
-| خطّاف pre-commit | [.githooks/pre-commit](.githooks/pre-commit) | يوقف الـ commit محلياً قبل أن يصل GitHub |
+| `.gitignore` مُحصَّن | [.gitignore](.gitignore) | `.env` ومشتقّاته · `*.pem` · `*.key` · `node_modules/` · `dist/` |
+| خطّاف pre-commit | [.githooks/pre-commit](.githooks/pre-commit) | يوقف الـ commit محلياً قبل وصوله GitHub |
 | حارس الأسرار في CI | [.github/workflows/ci.yml](.github/workflows/ci.yml) | يُفشل أي push أو PR يُدخل سرّاً أو `node_modules` |
-| حماية الفرع `main` | إعدادات GitHub | يمنع الـ force-push وحذف الفرع |
-| المستودع خاص | إعدادات GitHub | لا قراءة عامّة |
+| GitHub secret scanning + push protection | إعدادات GitHub | أوقف دفعاً فعلياً حين حاول مفتاح Supabase المرور |
+| حماية الفرع `main` | إعدادات GitHub | لا force-push ولا حذف · تاريخ خطّي |
+| Dependabot | إعدادات GitHub | تنبيهات وتحديثات أمنية للاعتماديات |
+| Data API معطَّل في Supabase | إعدادات Supabase | مفاتيح `anon` و`publishable` لا تصل إلى أي جدول |
+
+**المستودع عام.** لا سرّ فيه — تحقّقنا بمسح المحتوى لا الأسماء فقط —
+لكن هذا يعني أن أي خطأ مستقبلي يُنشر فوراً. الحواجز أعلاه هي ما يقف بينك
+وبين تكرار ما حدث.
 
 ### تفعيل الخطّاف المحلي (مرة واحدة لكل نسخة)
 
@@ -65,17 +131,34 @@ git** ومنشوراً فيها. كما كان `.env.example` يحمل بيان�
 git config core.hooksPath .githooks
 ```
 
-على ويندوز يعمل الخطّاف عبر Git Bash المرفق مع Git for Windows.
+يعمل على ويندوز عبر Git Bash المرفق مع Git for Windows.
+
+---
+
+## مفتاح Supabase `service_role` — تسريب منفصل ومعلّق
+
+ما زال في تاريخ git على `github.com/eng-rayash/Mudiri` منذ commit `3d49105`
+— مستودع مشروع `RVIOS_APP`، لا هذا المستودع. حُجب هنا فقط.
+
+`service_role` يتجاوز **كل** سياسات RLS: حامله يقرأ ويكتب ويحذف على قواعد
+كل المستأجرين. رصده GitHub push protection ومنع دفعنا — أي أن ماسحات
+الطرف الثالث ترصده كذلك.
+
+1. دوّره من Supabase ← Settings ← API.
+2. احذف السطر من `lib/core/services/supabase_config.dart`.
+3. المفتاح الجديد في متغيّرات بيئة Edge Functions فقط.
+4. راجع سجلّات Supabase بحثاً عن استخدام مشبوه للقديم.
 
 ---
 
 ## القواعد
 
-1. **لا سرّ في git.** القيم الحقيقية في لوحات Render وVercel فقط.
+1. **لا سرّ في git.** القيم الحقيقية في لوحة Render و`rvios-api/.env` المحلي.
 2. **`.env.example` عناصر نائبة فقط** — لا قيمة عاملة واحدة.
 3. **لا تُزل كتلة الأسرار** من `.gitignore`.
-4. **لا `prisma db push` في أي مسار نشر** — انظر [DEPLOY.md](DEPLOY.md).
-5. عند الشكّ في تسريب: دوّر أولاً، وحقّق ثانياً.
+4. **لا تلصق سرّاً في محادثة** — ولا في تذكرة ولا رسالة. الملف المحلي المتجاهَل هو المكان.
+5. **لا `prisma db push` في أي مسار نشر** — انظر [DEPLOY.md](DEPLOY.md).
+6. عند الشكّ في تسريب: **دوّر أولاً، وحقّق ثانياً.**
 
 ## الإبلاغ عن ثغرة
 
