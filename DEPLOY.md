@@ -118,16 +118,37 @@ pnpm db:seed
 |---|---|
 | Root Directory | *(فارغ — جذر المستودع)* |
 | Build Command | `pnpm install --frozen-lockfile && pnpm --filter rvios-api exec prisma generate && pnpm --filter rvios-api build` |
-| **Pre-Deploy Command** | `pnpm --filter rvios-api exec prisma migrate deploy` |
 | Start Command | `pnpm --filter rvios-api start` |
 | Health Check Path | `/api/v1/health` |
 | Node Version | `20` أو أعلى |
-
-**لماذا Pre-Deploy لا Build:** Pre-Deploy يعمل بعد نجاح البناء وقبل تحويل
-الحركة إلى النسخة الجديدة. فإن فشلت الهجرة، يتوقّف النشر وتبقى النسخة
-العاملة تخدم — بدل أن يُترك مخطط نصف مطبَّق مع كود جديد.
+| **Pre-Deploy Command** | **غير متاح على الخطة المجانية** — انظر أدناه |
 
 **تأكّد أن حقل Build Command لا يحوي `db push`** — هذا ما كان يفشل.
+
+### 🔻 قيد الخطة المجانية: الهجرات تُشغَّل يدوياً
+
+`Pre-Deploy Command` و`Shell` كلاهما ميزة خطط مدفوعة على Render. فعلى
+`free` **لا مكان في مسار النشر لتشغيل `migrate deploy`**.
+
+الحلّ المعتمَد: تُشغَّل الهجرات **من جهاز المطوّر** على قاعدة Supabase مباشرة،
+قبل دفع الكود الذي يعتمد عليها. قاعدة Supabase متاحة من الإنترنت عبر
+المجمّع، فلا حاجة لصدفة على الخادم.
+
+```bash
+# في rvios-api/.env: اضبط DATABASE_URL وDIRECT_URL على سلسلتَي Supabase
+pnpm db:status     # ما المطبَّق وما المعلّق
+pnpm db:deploy     # يطبّق المعلّق
+```
+
+**لماذا لا نضع `migrate deploy` في Build Command:** البناء يعمل والنسخة
+القديمة ما زالت تخدم. فهجرة مثل `1_portfolio` — التي **تعيد تسمية** أعمدة —
+تكسر الكود العامل فوراً، قبل أن تصل النسخة الجديدة. وإن فشل البناء بعدها،
+بقي المخطط متقدّماً على الكود بلا تراجع.
+
+الترتيب الصحيح إذاً: **هجرة يدوية أولاً، ثم ادفع الكود.** وإن رقّيت الخدمة
+إلى خطة مدفوعة، أعد `Pre-Deploy Command` إلى
+`pnpm --filter rvios-api exec prisma migrate deploy` واحذف الخطوة اليدوية —
+Pre-Deploy يعمل بعد نجاح البناء وقبل تحويل الحركة، فيجمع الأمرين بأمان.
 
 ### متغيّرات بيئة Render
 
