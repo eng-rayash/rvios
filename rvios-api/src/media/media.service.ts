@@ -10,6 +10,8 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuidv4 } from 'uuid';
 import { MediaType } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { extensionFor } from './allowed-mime';
+import type { RegisterMediaDto } from './dto/register.dto';
 
 @Injectable()
 export class MediaService {
@@ -39,9 +41,7 @@ export class MediaService {
   async upload(
     file: Express.Multer.File,
   ): Promise<{ url: string; filename: string }> {
-    const ext = file.originalname.split('.').pop();
-    const filename = `${uuidv4()}.${ext}`;
-    const key = `uploads/${filename}`;
+    const key = `uploads/${uuidv4()}.${extensionFor(file.mimetype)}`;
 
     try {
       await this.s3.send(
@@ -75,9 +75,8 @@ export class MediaService {
   }
 
   // ── Get presigned upload URL (direct-from-browser upload) ─
-  async getPresignedUrl(filename: string, contentType: string) {
-    const ext = filename.split('.').pop();
-    const key = `uploads/${uuidv4()}.${ext}`;
+  async getPresignedUrl(_filename: string, contentType: string) {
+    const key = `uploads/${uuidv4()}.${extensionFor(contentType)}`;
 
     const url = await getSignedUrl(
       this.s3,
@@ -90,6 +89,34 @@ export class MediaService {
     );
 
     return { uploadUrl: url, key, publicUrl: `${this.publicUrl}/${key}` };
+  }
+
+  /**
+   * تسجيل ملف رُفع مباشرة إلى R2.
+   *
+   * تُستدعى بعد نجاح الـ PUT الموقّع. التسجيل وقت `presign` كان سيملأ
+   * المكتبة بسجلّات لملفات لم تصل، فالرابط قد يُطلب ولا يُستعمل.
+   */
+  async register(dto: RegisterMediaDto) {
+    const url = `${this.publicUrl}/${dto.key}`;
+
+    /* المفتاح uuid فالتكرار نظري، لكن إعادة المحاولة من الواجهة واردة
+       ولا نريد سجلَّين لملف واحد. */
+    const existing = await this.prisma.media.findFirst({
+      where: { filename: dto.key },
+    });
+    if (existing) return existing;
+
+    return this.prisma.media.create({
+      data: {
+        url,
+        filename: dto.key,
+        originalName: dto.originalName,
+        mimeType: dto.contentType,
+        size: dto.size,
+        type: this.detectType(dto.contentType),
+      },
+    });
   }
 
   // ── List all media ───────────────────────────────────────

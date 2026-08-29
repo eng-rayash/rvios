@@ -188,6 +188,11 @@ export const mediaApi = {
   list: (token: string) => apiFetch<any>('/media', {}, token),
   presign: (token: string, filename: string, contentType: string) =>
     apiFetch<any>('/media/presign', { method: 'POST', body: JSON.stringify({ filename, contentType }) }, token),
+  /** يُستدعى بعد نجاح الرفع المباشر — بدونه لا يظهر الملف في المكتبة */
+  register: (
+    token: string,
+    data: { key: string; originalName: string; contentType: string; size: number },
+  ) => apiFetch<any>('/media/register', { method: 'POST', body: JSON.stringify(data) }, token),
   delete: (token: string, id: string) =>
     apiFetch<any>(`/media/${id}`, { method: 'DELETE' }, token),
 };
