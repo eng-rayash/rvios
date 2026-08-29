@@ -31,16 +31,20 @@
       "400": "#D6CBAC",
       "500": "#BFB18C"
     },
-    "night": {
-      "0":   "#14100C",
-      "50":  "#1D1813",
-      "100": "#26201A",
-      "200": "#2F2820",
-      "300": "#2E2820",
-      "400": "#3D352A",
-      "500": "#55493A",
-      "700": "#A99C86",
-      "900": "#F2ECDA"
+    "graphite": {
+      "$description": "جرافيت بارد — لوحة «المعرض الداكن» من design/proposals/c-gallery. حلّت محلّ ليل «أرشيف ملكي» الدافئ حين اعتُمد الاتجاه C للموقع.",
+      "surface-0": "#0D0E10",
+      "surface-1": "#141619",
+      "surface-2": "#1B1E22",
+      "surface-3": "#24282D",
+      "border-subtle":  "#1F2328",
+      "border-default": "#2C3138",
+      "border-strong":  "#3E444D",
+      "ink-300": "#5C6169",
+      "ink-500": "#8B9099",
+      "ink-700": "#D6D8DC",
+      "ink-900": "#FFFFFF",
+      "text": "#F4F5F7"
     },
     "status": {
       "success": "#2F6F4E",
@@ -95,28 +99,50 @@
   },
 
   "dark": {
-    "$description": "تجاوزات الوضع الداكن — مفاتيح دلالية فقط، لا قيم خام جديدة.",
-    "primary": {
-      "50":  "#2A1618",
-      "500": "{base.primary.300}",
-      "700": "{base.primary.500}"
+    "$description": "تجاوزات الوضع الداكن — مفاتيح دلالية فقط، لا قيم خام جديدة. هذه هي هوية الموقع (اتجاه C)؛ اللوحة والمؤسس يبقيان على الطبقة الفاتحة أعلاه.",
+
+    "$note": "سلّم ink ينقلب كاملاً: ink-900 هو الأغمق على الفاتح والأفتح على الداكن. بدون قلبه يصير `text-ink` أسودَ على أسود.",
+    "ink": {
+      "300": "{base.graphite.ink-300}",
+      "500": "{base.graphite.ink-500}",
+      "700": "{base.graphite.ink-700}",
+      "900": "{base.graphite.ink-900}"
     },
+
+    "$note2": "العنّابي يفتح درجةً على الداكن: #9E2226 على #0D0E10 تباينه 2.6:1 — تحت أي عتبة مقروئية.",
+    "primary": {
+      "50":  "#2A1416",
+      "100": "#3D1A1D",
+      "300": "#E06468",
+      "500": "{base.primary.300}",
+      "700": "{base.primary.500}",
+      "900": "{base.primary.700}"
+    },
+
+    "$note3": "الذهبي ينقلب أيضاً: 100 يصير الأغمق (خلفية وسام) و700 الأفتح (نص).",
+    "gold": {
+      "100": "#4A3D22",
+      "700": "#E8D4A8"
+    },
+
     "surface": {
-      "0": "{base.night.0}",
-      "1": "{base.night.50}",
-      "2": "{base.night.100}",
-      "3": "{base.night.200}"
+      "0": "{base.graphite.surface-0}",
+      "1": "{base.graphite.surface-1}",
+      "2": "{base.graphite.surface-2}",
+      "3": "{base.graphite.surface-3}"
     },
     "border": {
-      "subtle":  "{base.night.300}",
-      "default": "{base.night.400}",
-      "strong":  "{base.night.500}"
+      "subtle":  "{base.graphite.border-subtle}",
+      "default": "{base.graphite.border-default}",
+      "strong":  "{base.graphite.border-strong}"
     },
     "text": {
-      "primary":   "{base.night.900}",
-      "secondary": "{base.night.700}"
+      "primary":   "{base.graphite.text}",
+      "secondary": "{base.graphite.ink-500}",
+      "inverse":   "{base.graphite.surface-0}",
+      "on-primary":"{base.graphite.ink-900}"
     },
-    "success": "#4ADE80",
+    "success": "#34D399",
     "warning": "#FBBF24",
     "danger":  "#F87171",
     "info":    "#60A5FA"

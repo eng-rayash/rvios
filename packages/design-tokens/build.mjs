@@ -69,6 +69,7 @@ const colorsLight = flatten(color.semantic, color);
 const colorsDark = flatten(color.dark, color);
 const spaces = flatten(scale.space, scale);
 const radii = flatten(scale.radius, scale);
+const radiiDark = flatten(scale.radiusDark, scale);
 const leadings = flatten(scale.leading, scale);
 const shadows = flatten(effect.shadow, effect);
 const shadowsDark = flatten(effect.shadowDark, effect);
@@ -145,19 +146,24 @@ ${decl(zs, 'z')}
 }
 
 /* الوضع الداكن: عبر سمة صريحة أو تفضيل النظام.
-   السمة الصريحة تفوز دائماً حتى يعمل مبدّل المستخدم في الاتجاهين. */
+   السمة الصريحة تفوز دائماً حتى يعمل مبدّل المستخدم في الاتجاهين.
+
+   الحواف مدرَجة هنا لا في :root: «المعرض الداكن» يليّنها بينما تبقى
+   لوحة التحكم حادّة، وهما يتشاركان هذا الملف. */
 :root[data-theme="dark"] {
 ${decl(colorsDark, 'color')}
+${decl(radiiDark, 'radius')}
 ${decl(shadowsDark, 'shadow')}
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-${decl(colorsDark, 'color')
-  .split('\n')
-  .map((l) => '  ' + l)
-  .join('\n')}
-${decl(shadowsDark, 'shadow')
+${[
+  decl(colorsDark, 'color'),
+  decl(radiiDark, 'radius'),
+  decl(shadowsDark, 'shadow'),
+]
+  .join('\n')
   .split('\n')
   .map((l) => '  ' + l)
   .join('\n')}
