@@ -48,7 +48,7 @@ const SUB_SERVICES = [
 export default function CloudInfrastructurePage() {
   return (
     <>
-      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute -bottom-40 -right-20 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en bg-primary/20 border-primary/30 text-primary mb-6">
@@ -109,7 +109,7 @@ export default function CloudInfrastructurePage() {
       <section className="bg-primary py-20 px-6 text-center">
         <h2 className="font-display text-4xl text-ivory mb-4">جاهز لبنية سحابية احترافية؟</h2>
         <p className="font-body text-base text-ivory/70 mb-8">Ready for professional cloud infrastructure?</p>
-        <Link href="/contact" className="bg-ivory text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
+        <Link href="/contact" className="bg-surface-1 text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
           تواصل معنا — Get a Free Audit
         </Link>
       </section>

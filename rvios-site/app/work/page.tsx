@@ -103,7 +103,7 @@ export default async function WorkPage({ searchParams }: Props) {
   return (
     <main>
       {/* ── Hero ───────────────────────────────────────────── */}
-      <section className="bg-ink py-24 text-ivory">
+      <section className="bg-surface-2 py-24 text-ivory">
         <div className="mx-auto w-[min(100%-3rem,1200px)]">
           <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.22em] text-gold">
             <i aria-hidden className="h-px w-7 bg-gold" />
@@ -149,7 +149,7 @@ export default async function WorkPage({ searchParams }: Props) {
               href={`/work/${hero.slug}`}
               className="group grid gap-10 md:grid-cols-2 md:items-center"
             >
-              <div className="relative aspect-[4/3] overflow-hidden border border-border bg-gradient-to-br from-ink to-primary-900">
+              <div className="relative aspect-[4/3] overflow-hidden border border-border bg-gradient-to-br from-surface-2 to-primary-900">
                 {hero.coverImageUrl && (
                   <Image
                     src={hero.coverImageUrl}
@@ -210,9 +210,18 @@ export default async function WorkPage({ searchParams }: Props) {
           </div>
         ) : (
           <>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {/* شبكة ماسّونري بأعمدة CSS: البطاقات تتفاوت ارتفاعاً بحسب
+                طول الملخّص، فتنكسر الصفوف المتراصّة ويصير للشبكة إيقاع.
+                `columns` لا `grid` — لا مكتبة ولا قياس ارتفاعات بـ JS.
+                `break-inside` يمنع انقسام البطاقة بين عمودين. */}
+            <div className="columns-1 gap-8 sm:columns-2 lg:columns-3">
               {projects.map((p, i) => (
-                <Reveal key={p.id} as="div" delay={(i % 3) * 80}>
+                <Reveal
+                  key={p.id}
+                  as="div"
+                  delay={(i % 3) * 80}
+                  className="mb-8 break-inside-avoid"
+                >
                   <WorkCard project={p} priority={i < 3} />
                 </Reveal>
               ))}
@@ -267,7 +276,7 @@ export default async function WorkPage({ searchParams }: Props) {
           />
           <Link
             href="/contact"
-            className="mb-16 inline-flex items-center gap-2 self-end border border-gold px-8 py-3 font-bold text-ivory transition-all duration-fast ease-out hover:bg-gold hover:text-ink"
+            className="mb-16 inline-flex items-center gap-2 self-end border border-gold px-8 py-3 font-bold text-ivory transition-all duration-fast ease-out hover:bg-gold hover:text-fg-inverse"
           >
             ابدأ مشروعك ←
           </Link>

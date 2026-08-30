@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ProjectCard } from "@/lib/api/types";
+import { CoverFallback } from "./CoverFallback";
 
 /** ٢٠٢٥ → ٢٠٢٥ بالأرقام العربية-الهندية، لتوافق `metrics[].value` المزروعة. */
 const arabicDigits = (n: number | string) =>
@@ -23,10 +24,10 @@ export function WorkCard({
   const metric = project.metrics?.[0];
 
   return (
-    <article className="group border border-border bg-card transition-[border-color,transform] duration-base ease-out hover:-translate-y-[3px] hover:border-gold">
-      <Link href={`/work/${project.slug}`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold">
-        {/* الغلاف — وإن غاب فتدرّج حبري بالحرف الأول */}
-        <div className="relative grid aspect-[4/3] place-items-center overflow-hidden border-b border-border bg-gradient-to-br from-ink to-primary-900">
+    <article className="group overflow-hidden rounded-sm border border-border bg-card transition-[border-color,transform] duration-base ease-out hover:-translate-y-[3px] hover:border-gold">
+      <Link href={`/work/${project.slug}`} className="block">
+        {/* الغلاف — الصورة تكاد تكون البطاقة كلها، والبيانات تنزلق فوقها */}
+        <div className="relative aspect-[4/3] overflow-hidden border-b border-border">
           {project.coverImageUrl ? (
             <Image
               src={project.coverImageUrl}
@@ -39,43 +40,64 @@ export function WorkCard({
               className="object-cover transition-transform duration-slow ease-out group-hover:scale-[1.03]"
             />
           ) : (
-            <span
-              aria-hidden
-              className="font-display text-4xl font-extrabold text-ivory/[0.13]"
-            >
-              {project.title.trim().charAt(0)}
-            </span>
+            <CoverFallback
+              slug={project.slug}
+              title={project.title}
+              className="h-full w-full transition-transform duration-slow ease-out group-hover:scale-[1.03]"
+            />
           )}
 
           {project.year && (
-            <em className="absolute start-3 top-3 z-[2] bg-surface px-2 py-[2px] font-mono text-[11px] not-italic tracking-[0.1em] text-ink-muted">
+            <em className="absolute start-3 top-3 z-[2] rounded-xs border border-border-strong bg-surface-0/80 px-2 py-[2px] font-mono text-[11px] not-italic tracking-[0.1em] text-fg-muted backdrop-blur-sm">
               {arabicDigits(project.year)}
             </em>
+          )}
+
+          {/* المؤشّر ينزلق من الأسفل عند التحويم — نمط معارض الأعمال:
+              البطاقة صورة في السكون، والبيانات عند الاهتمام. */}
+          {metric && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-surface-0 via-surface-0/90 to-transparent p-4 opacity-0 transition-[transform,opacity] duration-base ease-out group-hover:translate-y-0 group-hover:opacity-100"
+            >
+              <div className="flex items-baseline gap-2">
+                <b className="font-display text-2xl text-primary-300">
+                  {metric.value}
+                  {metric.unit ?? ""}
+                </b>
+                <span className="text-xs text-fg-muted">{metric.label}</span>
+              </div>
+            </div>
           )}
         </div>
 
         <div className="p-6">
           {project.client && (
-            <span className="font-mono text-xs tracking-[0.12em] text-gold-700">
+            <span className="font-mono text-xs tracking-[0.12em] text-gold">
               {project.client}
             </span>
           )}
 
-          <h3 className="mb-3 mt-2 font-display text-lg font-bold text-ink">
+          <h3 className="mb-3 mt-2 font-display text-lg font-bold text-fg transition-colors duration-base group-hover:text-gold">
             {project.title}
           </h3>
 
-          <p className="line-clamp-2 text-sm text-ink-muted">{project.summary}</p>
+          <p className="line-clamp-2 text-sm text-fg-muted">{project.summary}</p>
 
+          {/* نسخة ثابتة للمس ولقارئ الشاشة: النسخة المتحرّكة فوق الغلاف
+              `aria-hidden` ولا تظهر بلا تحويم، فلا يجوز أن تكون الوحيدة. */}
           {metric && (
-            <div className="mt-5 flex items-baseline gap-2 border-t border-border-subtle pt-4">
-              <b className="font-display text-2xl text-primary">
+            <div className="mt-5 flex items-baseline gap-2 border-t border-border-subtle pt-4 md:hidden">
+              <b className="font-display text-2xl text-primary-300">
                 {metric.value}
                 {metric.unit ?? ""}
               </b>
-              <span className="text-xs text-ink-muted">{metric.label}</span>
+              <span className="text-xs text-fg-muted">{metric.label}</span>
             </div>
           )}
+          <span className="sr-only">
+            {metric ? `${metric.label}: ${metric.value}${metric.unit ?? ""}` : ""}
+          </span>
         </div>
       </Link>
     </article>
