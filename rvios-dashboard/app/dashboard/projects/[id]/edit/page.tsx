@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/Button";
 import { Input, Textarea, TagInput } from "@/components/ui/Field";
 import { StatusBadge } from "@/components/ui/Badge";
 import { ImageUploader } from "@/components/projects/ImageUploader";
+import { CoverImageField } from "@/components/projects/CoverImageField";
 
 const TABS = [
   { id: "basic", label: "أساسي" },
@@ -29,6 +30,33 @@ type TabId = (typeof TABS)[number]["id"];
 
 /** الحروف اللاتينية الصغيرة والأرقام والشرطات فقط — يطابق قيد الـ DTO. */
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/**
+ * الحقل الاختياري الفارغ يُرسَل `null` لا `undefined`.
+ *
+ * `undefined` يختفي من JSON فلا يصل الخادم شيء، والحقل يبقى على قيمته
+ * القديمة: كان المحرّر يمسح «العميل» ويحفظ فيعود كما كان.
+ */
+const orNull = (v: string | null | undefined) => (v?.trim() ? v.trim() : null);
+
+/**
+ * المؤشّرات تُرسَل بحقول الـ DTO وحدها.
+ *
+ * ما يرجّعه الخادم يحمل `id` و`projectId`، والتحقّق يعمل بـ
+ * `forbidNonWhitelisted` فيردّ 400 «property id should not exist» — أي أن
+ * أي مشروع له مؤشّر واحد كان يستحيل حفظه.
+ */
+function toMetricPayload(metrics: ProjectMetric[]) {
+  return metrics
+    .filter((m) => m.label.trim() && m.value.trim())
+    .map((m, i) => ({
+      label: m.label.trim(),
+      value: m.value.trim(),
+      unit: m.unit?.trim() || undefined,
+      direction: m.direction ?? "UP",
+      order: i,
+    }));
+}
 
 export default function EditProjectPage({
   params,
@@ -90,57 +118,62 @@ export default function EditProjectPage({
       ? "حروف لاتينية صغيرة وأرقام وشرطات فقط — الرابط يدخل في العنوان وخريطة الموقع"
       : undefined;
 
-  async function save() {
-    if (!p || slugError) return;
+  /** يرجّع نجاح الحفظ — `publish` يعتمد عليه فلا ينشر فوق تعديل لم يُحفظ. */
+  async function save(): Promise<boolean> {
+    if (!p || slugError) return false;
     setSaving(true);
     setError(null);
     setMissing([]);
     try {
       await projectsApi.update(token!, id, {
-        slug: p.slug, title: p.title, titleEn: p.titleEn || undefined,
+        slug: p.slug, title: p.title, titleEn: orNull(p.titleEn),
         summary: p.summary, description: p.description,
-        challenge: p.challenge || undefined,
-        solution: p.solution || undefined,
-        outcome: p.outcome || undefined,
-        approach,
-        client: p.client || undefined,
-        industry: p.industry || undefined,
-        year: p.year || undefined,
-        durationMonths: p.durationMonths || undefined,
-        role: p.role || undefined,
-        teamSize: p.teamSize || undefined,
+        challenge: orNull(p.challenge),
+        solution: orNull(p.solution),
+        outcome: orNull(p.outcome),
+        approach: approach.filter((s) => s.title.trim()),
+        client: orNull(p.client),
+        industry: orNull(p.industry),
+        year: p.year ?? null,
+        durationMonths: p.durationMonths ?? null,
+        role: orNull(p.role),
+        teamSize: p.teamSize ?? null,
         technologies: p.technologies,
-        categoryId: p.categoryId || undefined,
-        coverImageUrl: p.coverImageUrl || undefined,
-        coverImageAlt: p.coverImageAlt || undefined,
-        testimonialQuote: p.testimonialQuote || undefined,
-        testimonialAuthor: p.testimonialAuthor || undefined,
-        testimonialRole: p.testimonialRole || undefined,
-        liveUrl: p.liveUrl || undefined,
-        repoUrl: p.repoUrl || undefined,
+        categoryId: p.categoryId || null,
+        coverImageUrl: orNull(p.coverImageUrl),
+        coverImageAlt: orNull(p.coverImageAlt),
+        testimonialQuote: orNull(p.testimonialQuote),
+        testimonialAuthor: orNull(p.testimonialAuthor),
+        testimonialRole: orNull(p.testimonialRole),
+        liveUrl: orNull(p.liveUrl),
+        repoUrl: orNull(p.repoUrl),
         featured: p.featured,
-        metrics: metrics.filter((m) => m.label && m.value),
-        metaTitle: p.metaTitle || undefined,
-        metaDescription: p.metaDescription || undefined,
-        ogImageUrl: p.ogImageUrl || undefined,
+        metrics: toMetricPayload(metrics),
+        metaTitle: orNull(p.metaTitle),
+        metaDescription: orNull(p.metaDescription),
+        ogImageUrl: orNull(p.ogImageUrl),
       });
       setDirty(false);
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
       await load();
+      return true;
     } catch (e) {
       setError(e instanceof Error ? e.message : "تعذّر الحفظ");
+      return false;
     } finally {
       setSaving(false);
     }
   }
 
   async function publish() {
-    setSaving(true);
     setError(null);
     setMissing([]);
+    /* الحفظ أولاً: النشر يقرأ من قاعدة البيانات، فنشرٌ فوق تعديل لم يُحفظ
+       يفحص القيم القديمة ويعلن نقصاً غير موجود — أو ينشر نصّاً قديماً. */
+    if (dirty && !(await save())) return;
+    setSaving(true);
     try {
-      if (dirty) await save();
       await projectsApi.publish(token!, id);
       await load();
     } catch (e) {
@@ -278,8 +311,13 @@ export default function EditProjectPage({
 
           <TagInput label="التقنيات" value={p.technologies} onChange={(v) => set("technologies", v)} />
 
-          <Input label="رابط صورة الغلاف" value={p.coverImageUrl ?? ""} onChange={(e) => set("coverImageUrl", e.target.value)} hint="ارفع صورة من تبويب المعرض ثم الصق رابطها" />
-          <Input label="وصف صورة الغلاف" value={p.coverImageAlt ?? ""} onChange={(e) => set("coverImageAlt", e.target.value)} />
+          <CoverImageField
+            token={token!}
+            url={p.coverImageUrl ?? ""}
+            alt={p.coverImageAlt ?? ""}
+            onUrlChange={(v) => set("coverImageUrl", v)}
+            onAltChange={(v) => set("coverImageAlt", v)}
+          />
 
           <div className="grid gap-5 sm:grid-cols-2">
             <Input label="رابط الموقع الحيّ" value={p.liveUrl ?? ""} onChange={(e) => set("liveUrl", e.target.value)} />
@@ -419,7 +457,14 @@ export default function EditProjectPage({
       {/* ── المعرض ── */}
       {tab === "gallery" && (
         <div className="max-w-3xl">
-          <ImageUploader token={token!} projectId={id} images={gallery} onChange={setGallery} />
+          <ImageUploader
+            token={token!}
+            projectId={id}
+            images={gallery}
+            onChange={setGallery}
+            coverUrl={p.coverImageUrl}
+            onSetCover={(url) => set("coverImageUrl", url)}
+          />
         </div>
       )}
 

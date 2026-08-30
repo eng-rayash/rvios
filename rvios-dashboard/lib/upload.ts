@@ -33,7 +33,7 @@ export async function uploadToR2(
     throw new Error(`الملف أكبر من ٢٠ ميغابايت (${(file.size / 1048576).toFixed(1)}MB)`);
   }
 
-  const { uploadUrl, publicUrl }: PresignResult = await mediaApi.presign(
+  const { uploadUrl, key, publicUrl }: PresignResult = await mediaApi.presign(
     token,
     file.name,
     file.type,
@@ -52,9 +52,29 @@ export async function uploadToR2(
       xhr.status >= 200 && xhr.status < 300
         ? resolve()
         : reject(new Error(`فشل الرفع إلى التخزين (${xhr.status})`));
-    xhr.onerror = () => reject(new Error("انقطع الاتصال أثناء الرفع"));
+    /* المتصفح لا يكشف سبب فشل الطلب عبر النطاقات: الحالة صفر والرسالة
+       فارغة سواء انقطعت الشبكة أو رفض R2 طلب الـ preflight. وبما أن
+       السبب الأغلب هو غياب قواعد CORS على الدلو، نُسمّيه بدل «انقطع
+       الاتصال» التي أرسلت البحث في الاتجاه الخطأ. */
+    xhr.onerror = () =>
+      reject(
+        new Error(
+          "تعذّر الوصول إلى التخزين السحابي — تحقّق من قواعد CORS على دلو R2 (راجع DEPLOY.md)",
+        ),
+      );
     xhr.send(file);
   });
+
+  /* التسجيل في المكتبة لا يُفشل الرفع: الملف في الدلو ومرتبط بالمشروع،
+     وغيابه من مكتبة الوسائط أهون من ردّ رفعٍ نجح. */
+  await mediaApi
+    .register(token, {
+      key,
+      originalName: file.name,
+      contentType: file.type,
+      size: file.size,
+    })
+    .catch(() => undefined);
 
   const { width, height } = await readDimensions(file);
   return { url: publicUrl, width, height, alt: "" };
@@ -86,7 +106,9 @@ export async function uploadMany(
   files: File[],
   onItem: (index: number, pct: number) => void,
 ): Promise<{ uploaded: UploadedImage[]; errors: { name: string; message: string }[] }> {
-  const uploaded: UploadedImage[] = [];
+  /* النتائج تُكتب في مكانها من الفهرس لا بـ push: العمّال الثلاثة ينتهون
+     بترتيب غير ترتيب الاختيار، وترتيب المعرض يُبنى على ترتيب الرفع. */
+  const slots: (UploadedImage | undefined)[] = new Array(files.length);
   const errors: { name: string; message: string }[] = [];
   let cursor = 0;
 
@@ -94,7 +116,7 @@ export async function uploadMany(
     while (cursor < files.length) {
       const i = cursor++;
       try {
-        uploaded.push(await uploadToR2(token, files[i], (p) => onItem(i, p)));
+        slots[i] = await uploadToR2(token, files[i], (p) => onItem(i, p));
       } catch (e) {
         errors.push({
           name: files[i].name,
@@ -105,5 +127,5 @@ export async function uploadMany(
   };
 
   await Promise.all(Array.from({ length: Math.min(3, files.length) }, worker));
-  return { uploaded, errors };
+  return { uploaded: slots.filter((u): u is UploadedImage => !!u), errors };
 }
