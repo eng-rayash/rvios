@@ -21,7 +21,7 @@ export function Section({
   const tones = {
     surface: "bg-surface",
     alt: "bg-surface-alt",
-    ink: "bg-ink text-ivory",
+    ink: "bg-surface-2 text-ivory",
     none: "",
   };
   return (

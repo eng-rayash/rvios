@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "autoPort": true,
+  "configurations": [
+    {
+      "name": "rvios-site",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "rvios-site", "exec", "next", "dev"],
+      "autoPort": true,
+      "port": 3000
+    },
+    {
+      "name": "rvios-dashboard",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "rvios-dashboard", "exec", "next", "dev"],
+      "port": 3002
+    }
+  ]
+}

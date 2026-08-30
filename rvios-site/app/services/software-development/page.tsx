@@ -50,7 +50,7 @@ export default function SoftwareDevelopmentPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-primary/12 blur-[100px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <div className="flex items-center gap-3 mb-6">
@@ -108,7 +108,7 @@ export default function SoftwareDevelopmentPage() {
       <section className="bg-primary py-20 px-6 text-center">
         <h2 className="font-display text-4xl text-ivory mb-4">جاهز تبني نظامك الرقمي؟</h2>
         <p className="font-body text-base text-ivory/70 mb-8">Ready to build your digital system?</p>
-        <Link href="/contact" className="bg-ivory text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
+        <Link href="/contact" className="bg-surface-1 text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
           تواصل معنا — Let&apos;s Talk
         </Link>
       </section>

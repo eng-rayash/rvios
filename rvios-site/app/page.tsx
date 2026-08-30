@@ -129,7 +129,7 @@ export default function HomePage() {
               شريكك في التحول الرقمي.
             </p>
 
-            <p className="mt-3 font-mono text-xs uppercase tracking-[0.22em] text-ink-300">
+            <p className="mt-3 font-mono text-xs uppercase tracking-[0.22em] text-fg-muted">
               We build digital systems that drive growth
             </p>
 
@@ -173,7 +173,7 @@ export default function HomePage() {
                     <h3 className="font-display text-xl font-bold text-fg transition-colors duration-base group-hover:text-gold">
                       {s.nameAr}
                     </h3>
-                    <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-ink-300">
+                    <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-fg-muted">
                       {s.nameEn}
                     </p>
                     <p className="mt-4 max-w-2xl font-body text-base leading-normal text-fg-muted">
@@ -224,7 +224,7 @@ export default function HomePage() {
                 </div>
                 <DrawRule className="mx-auto mt-4 w-16" />
                 <p className="mt-4 font-body text-base font-bold text-fg">{stat.label}</p>
-                <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-ink-300">
+                <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-fg-muted">
                   {stat.en}
                 </p>
               </div>
@@ -270,7 +270,7 @@ export default function HomePage() {
                 <span className="font-display text-2xl font-bold text-primary">{p.step}</span>
                 <DrawRule className="mt-4 w-full" />
                 <h3 className="mt-5 font-display text-lg font-bold text-fg">{p.ar}</h3>
-                <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-300">
+                <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-fg-muted">
                   {p.en}
                 </p>
                 <p className="mt-3 font-body text-sm leading-normal text-fg-muted">{p.desc}</p>

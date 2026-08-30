@@ -263,7 +263,7 @@ export default function ContactForm() {
         </button>
       </div>
 
-      <p className="font-body text-xs text-ink-faint text-center">
+      <p className="font-body text-xs text-fg-muted text-center">
         سيتم التواصل معك خلال 24 ساعة من تلقّي رسالتك.
         <br />
         <span className="tracking-wider">We respond within 24 hours.</span>

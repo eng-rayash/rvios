@@ -95,7 +95,7 @@ export default async function ProjectPage({ params }: Props) {
       />
 
       {/* ── ١. Hero ─────────────────────────────────────────── */}
-      <section className="bg-ink py-20 text-ivory">
+      <section className="bg-surface-2 py-20 text-ivory">
         <div className="mx-auto w-[min(100%-3rem,1200px)]">
           <nav aria-label="مسار التنقّل" className="mb-6 font-mono text-xs text-ivory/50">
             <Link href="/work" className="hover:text-gold">أعمالنا</Link>
@@ -173,7 +173,7 @@ export default async function ProjectPage({ params }: Props) {
           <aside className="h-fit border border-border bg-card p-6">
             {services.length > 0 && (
               <>
-                <h3 className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+                <h3 className="font-mono text-[11px] tracking-[0.14em] text-fg-muted">
                   الخدمات
                 </h3>
                 <ul className="mt-3 grid gap-2">
@@ -193,7 +193,7 @@ export default async function ProjectPage({ params }: Props) {
 
             {p.teamSize && (
               <div className="mt-6 border-t border-border-subtle pt-4">
-                <h3 className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+                <h3 className="font-mono text-[11px] tracking-[0.14em] text-fg-muted">
                   حجم الفريق
                 </h3>
                 <p className="mt-1 font-display text-2xl font-bold text-ink">
@@ -341,7 +341,7 @@ export default async function ProjectPage({ params }: Props) {
                 href={`/work/${p.prev.slug}`}
                 className="group border border-border p-6 transition-all duration-base ease-out hover:border-gold"
               >
-                <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+                <span className="font-mono text-[11px] tracking-[0.14em] text-fg-muted">
                   المشروع السابق →
                 </span>
                 <h3 className="mt-2 font-display text-lg font-bold text-ink group-hover:text-primary">
@@ -354,7 +354,7 @@ export default async function ProjectPage({ params }: Props) {
                 href={`/work/${p.next.slug}`}
                 className="group border border-border p-6 text-end transition-all duration-base ease-out hover:border-gold sm:col-start-2"
               >
-                <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+                <span className="font-mono text-[11px] tracking-[0.14em] text-fg-muted">
                   ← المشروع التالي
                 </span>
                 <h3 className="mt-2 font-display text-lg font-bold text-ink group-hover:text-primary">
@@ -388,7 +388,7 @@ export default async function ProjectPage({ params }: Props) {
           />
           <Link
             href="/contact"
-            className="mb-16 inline-flex items-center gap-2 self-center border border-gold px-8 py-3 font-bold text-ivory transition-all duration-fast ease-out hover:bg-gold hover:text-ink"
+            className="mb-16 inline-flex items-center gap-2 self-center border border-gold px-8 py-3 font-bold text-ivory transition-all duration-fast ease-out hover:bg-gold hover:text-fg-inverse"
           >
             تواصل معنا ←
           </Link>
