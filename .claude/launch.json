@@ -3,6 +3,13 @@
   "autoPort": true,
   "configurations": [
     {
+      "name": "rvios-api",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "rvios-api", "dev"],
+      "autoPort": true,
+      "port": 3001
+    },
+    {
       "name": "rvios-site",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "rvios-site", "exec", "next", "dev"],
