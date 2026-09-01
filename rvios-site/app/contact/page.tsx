@@ -47,7 +47,7 @@ export default function ContactPage() {
             <br />
             <span className="text-primary">نحن هنا</span>
           </h1>
-          <p className="font-body text-base sm:text-lg tracking-[0.1em] text-fg-muted uppercase mb-4">
+          <p className="font-body text-base sm:text-lg tracking-[0.1em] text-ink-faint uppercase mb-4">
             Got a project? We&apos;re ready.
           </p>
           <p className="font-body text-base text-ink-muted leading-relaxed max-w-xl">
@@ -82,7 +82,7 @@ export default function ContactPage() {
                         {m.icon}
                       </span>
                       <div>
-                        <p className="font-body text-xs tracking-[0.18em] uppercase text-fg-muted mb-0.5">
+                        <p className="font-body text-xs tracking-[0.18em] uppercase text-ink-faint mb-0.5">
                           {m.sublabel}
                         </p>
                         <p className="font-body text-sm font-bold text-ink group-hover:text-primary transition-colors">
@@ -107,7 +107,7 @@ export default function ContactPage() {
                   نرد على جميع الاستفسارات خلال{" "}
                   <strong className="text-ink">24 ساعة</strong> من استلام رسالتك.
                 </p>
-                <p className="font-body text-xs text-fg-muted mt-2 tracking-wide">
+                <p className="font-body text-xs text-ink-faint mt-2 tracking-wide">
                   We respond to all inquiries within 24 hours.
                 </p>
               </div>
@@ -175,7 +175,7 @@ export default function ContactPage() {
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-body text-base font-bold text-ink group-hover:text-primary transition-colors">
                   {faq.q}
                   <svg
-                    className="w-5 h-5 text-fg-muted group-open:rotate-180 transition-transform duration-300 shrink-0"
+                    className="w-5 h-5 text-ink-faint group-open:rotate-180 transition-transform duration-300 shrink-0"
                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />

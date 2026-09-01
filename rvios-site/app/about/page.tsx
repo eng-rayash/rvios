@@ -60,7 +60,7 @@ export default function AboutPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-primary/10 blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en bg-primary/20 border-primary/30 text-primary mb-6">

@@ -55,7 +55,7 @@ const PROCESS = [
 export default function ConsultingPage() {
   return (
     <>
-      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en bg-primary/20 border-primary/30 text-primary mb-6">
@@ -131,7 +131,7 @@ export default function ConsultingPage() {
         <p className="font-body text-sm text-ivory/50 uppercase tracking-wider mb-8">
           Free 30-minute consultation — No commitment required
         </p>
-        <Link href="/contact" className="bg-surface-1 text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
+        <Link href="/contact" className="bg-ivory text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
           احجز استشارتك — Book Your Consultation
         </Link>
       </section>

@@ -70,7 +70,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
               className="object-cover transition-transform duration-slow ease-out group-hover:scale-[1.03]"
             />
             {img.caption && (
-              <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-surface-0/95 to-transparent p-4 text-start text-sm text-ivory">
+              <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 to-transparent p-4 text-start text-sm text-ivory">
                 {img.caption}
               </span>
             )}
@@ -83,7 +83,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
         onClose={() => setOpenAt(null)}
         /* النقر على الخلفية يغلق — الحدث يصل من العنصر نفسه لا من المحتوى */
         onClick={(e) => { if (e.target === dialogRef.current) close(); }}
-        className="max-h-[92vh] max-w-[92vw] bg-transparent p-0 backdrop:bg-surface-2/90"
+        className="max-h-[92vh] max-w-[92vw] bg-transparent p-0 backdrop:bg-ink/90"
       >
         {current && (
           <figure className="relative m-0">
@@ -107,7 +107,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
                   type="button"
                   onClick={() => move(-1)}
                   aria-label="الصورة السابقة"
-                  className="absolute end-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center border border-gold/40 bg-surface-2/70 text-ivory transition-all duration-fast hover:border-gold hover:text-gold"
+                  className="absolute end-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center border border-gold/40 bg-ink/70 text-ivory transition-all duration-fast hover:border-gold hover:text-gold"
                 >
                   →
                 </button>
@@ -115,7 +115,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
                   type="button"
                   onClick={() => move(1)}
                   aria-label="الصورة التالية"
-                  className="absolute start-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center border border-gold/40 bg-surface-2/70 text-ivory transition-all duration-fast hover:border-gold hover:text-gold"
+                  className="absolute start-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center border border-gold/40 bg-ink/70 text-ivory transition-all duration-fast hover:border-gold hover:text-gold"
                 >
                   ←
                 </button>

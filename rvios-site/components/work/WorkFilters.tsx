@@ -34,7 +34,7 @@ function Group({
   if (!items.length) return null;
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="font-mono text-[11px] tracking-[0.14em] text-fg-muted">
+      <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
         {label}
       </span>
       {items.map((it) => {

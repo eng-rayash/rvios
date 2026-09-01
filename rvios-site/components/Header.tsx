@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import SpecularButton from "@/components/SpecularButton";
 
 const NAV = [
   { href: "/", ar: "الرئيسية", en: "Home" },
@@ -17,177 +17,162 @@ const NAV = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* قفل تمرير الجسم أثناء فتح قائمة الهاتف */
+  /* lock body scroll when mobile menu is open */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  /* التنقّل يغلق القائمة: بدونه تبقى مفتوحة فوق الصفحة الجديدة */
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
-
-  /* Escape يغلق — قاعدة أي طبقة فوقية */
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuOpen(false); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [menuOpen]);
-
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
-
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-sticky transition-all duration-base ease-out ${
-          scrolled
-            ? "border-b border-border-subtle bg-surface-0/85 py-3 backdrop-blur-xl"
-            : "border-b border-transparent py-5"
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? "py-2" : "py-3"
+          }`}
       >
-        <div className="mx-auto flex w-[min(100%-3rem,1200px)] items-center justify-between gap-6">
-          {/* الشعار */}
-          <Link href="/" className="group flex items-center gap-3">
-            <span className="relative h-8 w-8 shrink-0">
+        <div
+          className={`mx-4 flex items-center justify-between rounded-2xl px-5 transition-all duration-500 ${scrolled
+            ? "bg-black/65 shadow-2xl backdrop-blur-xl border border-white/10 py-3"
+            : "bg-black/35 backdrop-blur-md border border-white/10 py-3"
+            } md:mx-8`}
+        >
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group" onClick={() => setMenuOpen(false)}>
+            <div className="relative w-8 h-8 shrink-0">
               <Image
                 src="/images/logo_icon.png"
-                alt=""
+                alt="RVIOS"
                 fill
-                className="object-contain transition-transform duration-slow ease-out group-hover:rotate-6"
+                className="object-contain transition-transform duration-500 group-hover:rotate-6"
               />
-            </span>
-            <span className="flex flex-col leading-none">
-              <span className="font-display text-lg tracking-[0.18em] text-fg">RVIOS</span>
-              <span className="font-mono text-[0.55rem] uppercase tracking-[0.22em] text-fg-muted">
-                Technologies
-              </span>
-            </span>
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="font-display text-lg tracking-[0.18em] text-ivory">RVIOS</span>
+              <span className="font-body text-[0.55rem] tracking-[0.22em] text-ivory/60 uppercase">Technologies</span>
+            </div>
           </Link>
 
-          {/* تنقّل سطح المكتب */}
+          {/* Desktop Nav */}
           <nav className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                aria-current={isActive(item.href) ? "page" : undefined}
-                className={`group relative px-4 py-2 font-body text-sm transition-colors duration-fast ${
-                  isActive(item.href) ? "text-gold" : "text-fg-muted hover:text-fg"
-                }`}
+                className="group relative flex flex-col items-center px-4 py-2 rounded-xl transition-colors hover:bg-white/10"
               >
-                {item.ar}
-                {/* شعيرة تحت العنصر النشط وعند التحويم — لا خلفية ولا حبّة */}
-                <span
-                  aria-hidden
-                  className={`absolute inset-x-3 bottom-0 h-px origin-right bg-gold transition-transform duration-base ease-out ${
-                    isActive(item.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
+                <span className="font-body text-sm font-bold text-ivory/90 transition-colors group-hover:text-primary">
+                  {item.ar}
+                </span>
+                <span className="font-body text-[0.6rem] tracking-[0.18em] text-ivory/50 uppercase transition-colors group-hover:text-primary/80">
+                  {item.en}
+                </span>
               </Link>
             ))}
           </nav>
 
+          {/* Header CTA with Specular animation */}
           <div className="flex items-center gap-3">
-            <Link href="/contact" className="btn-primary hidden text-xs sm:inline-flex">
-              ابدأ مشروعك
+            <Link href="/contact" className="inline-flex">
+              <SpecularButton
+                size="sm"
+                radius={16}
+                lineColor="#EF4444"
+                baseColor="#80000A"
+                tint="#80000A"
+                tintOpacity={0.85}
+                textColor="#ffffff"
+                intensity={1.2}
+                shineSize={12}
+                shineFade={35}
+                thickness={1.5}
+                followMouse={true}
+                proximity={200}
+                className="!px-3.5 !py-2 sm:!px-5 sm:!py-2.5"
+              >
+                <span className="font-bold text-xs sm:text-sm text-white">ابدأ مشروعك</span>
+                <span className="hidden sm:inline text-[#F87171] font-bold text-[0.65rem] tracking-wider uppercase">START A PROJECT</span>
+              </SpecularButton>
             </Link>
-
-            {/* زرّ قائمة الهاتف */}
-            <button
-              type="button"
-              className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
-              onClick={() => setMenuOpen((v) => !v)}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-nav"
-              aria-label={menuOpen ? "إغلاق القائمة" : "فتح القائمة"}
-            >
-              <span
-                className={`block h-0.5 w-5 bg-fg transition-transform duration-base ease-out ${
-                  menuOpen ? "translate-y-2 rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-fg transition-opacity duration-base ${
-                  menuOpen ? "opacity-0" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-fg transition-transform duration-base ease-out ${
-                  menuOpen ? "-translate-y-2 -rotate-45" : ""
-                }`}
-              />
-            </button>
           </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            id="mobile-menu-toggle"
+            className="flex md:hidden flex-col justify-center items-center w-10 h-10 gap-1.5 rounded-xl hover:bg-white/10 transition-colors"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span
+              className={`block w-5 h-0.5 bg-ivory rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""
+                }`}
+            />
+            <span
+              className={`block w-5 h-0.5 bg-ivory rounded-full transition-all duration-300 ${menuOpen ? "opacity-0" : ""
+                }`}
+            />
+            <span
+              className={`block w-5 h-0.5 bg-ivory rounded-full transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""
+                }`}
+            />
+          </button>
         </div>
       </header>
 
-      {/* طبقة قائمة الهاتف */}
+      {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-overlay md:hidden ${
-          menuOpen ? "pointer-events-auto" : "pointer-events-none"
-        }`}
-      >
-        <div
-          className={`absolute inset-0 bg-surface-0/70 backdrop-blur-sm transition-opacity duration-base ${
-            menuOpen ? "opacity-100" : "opacity-0"
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-400 ${menuOpen ? "pointer-events-auto" : "pointer-events-none"
           }`}
+      >
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-ink/40 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setMenuOpen(false)}
         />
-        <nav
-          id="mobile-nav"
-          aria-hidden={!menuOpen}
-          className={`absolute inset-y-0 end-0 flex w-72 flex-col border-s border-border-default bg-surface-1 px-6 pb-8 pt-24 transition-transform duration-base ease-out ${
-            menuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        {/* Drawer */}
+        <div
+          className={`absolute top-0 right-0 w-72 h-full bg-white shadow-2xl transition-transform duration-400 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
-          <div className="flex flex-1 flex-col gap-1">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                /* خارج ترتيب التبويب وهي مغلقة: بدونه يتنقّل التركيز إلى
-                   روابط لا يراها أحد خلف الطبقة */
-                tabIndex={menuOpen ? undefined : -1}
-                aria-current={isActive(item.href) ? "page" : undefined}
-                className="group flex items-center justify-between border-b border-border-subtle py-4"
-              >
-                <span>
-                  <span
-                    className={`block font-body text-base font-bold transition-colors ${
-                      isActive(item.href) ? "text-gold" : "text-fg group-hover:text-gold"
-                    }`}
-                  >
-                    {item.ar}
-                  </span>
-                  <span className="mt-0.5 block font-mono text-xs uppercase tracking-[0.18em] text-fg-muted">
-                    {item.en}
-                  </span>
-                </span>
-                <span aria-hidden className="font-mono text-fg-muted group-hover:text-gold">
-                  ←
-                </span>
-              </Link>
-            ))}
-          </div>
+          <div className="flex flex-col h-full pt-24 pb-8 px-6">
+            <nav className="flex flex-col gap-2 flex-1">
+              {NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center justify-between py-4 border-b border-black/5 group"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <div>
+                    <span className="block font-body text-base font-bold text-ink group-hover:text-primary transition-colors">
+                      {item.ar}
+                    </span>
+                    <span className="block font-body text-xs tracking-[0.18em] text-ink-faint uppercase mt-0.5">
+                      {item.en}
+                    </span>
+                  </div>
+                  <svg className="w-4 h-4 text-ink-faint group-hover:text-primary transition-colors rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              ))}
+            </nav>
 
-          <Link
-            href="/contact"
-            tabIndex={menuOpen ? undefined : -1}
-            className="btn-primary mt-6 justify-center"
-          >
-            ابدأ مشروعك
-          </Link>
-        </nav>
+            <Link
+              href="/contact"
+              className="btn-primary justify-center text-center mt-6"
+              onClick={() => setMenuOpen(false)}
+            >
+              ابدأ مشروعك — Start a Project
+            </Link>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -93,7 +93,7 @@ export default function ServicesPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-primary/12 blur-[100px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en mb-6 bg-primary/20 border-primary/30 text-primary">
@@ -131,7 +131,7 @@ export default function ServicesPage() {
             {SERVICES.map((s) => (
               <ScrollStackItem
                 key={s.id}
-                itemClassName="bg-surface-2 text-ivory border border-primary/30 hover:border-primary/60 transition-colors shadow-2xl"
+                itemClassName="bg-ink text-ivory border border-primary/30 hover:border-primary/60 transition-colors shadow-2xl"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 h-full">
                   <div className="space-y-4 max-w-2xl">
@@ -210,7 +210,7 @@ export default function ServicesPage() {
             Ready to start your project? Let&apos;s talk.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact" className="bg-surface-1 text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors">
+            <Link href="/contact" className="bg-ivory text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors">
               تواصل معنا — Contact Us
             </Link>
             <a

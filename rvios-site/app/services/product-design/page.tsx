@@ -49,7 +49,7 @@ const SUB_SERVICES = [
 export default function ProductDesignPage() {
   return (
     <>
-      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en bg-primary/20 border-primary/30 text-primary mb-6">
@@ -107,7 +107,7 @@ export default function ProductDesignPage() {
                 <span className="font-body text-sm px-4 py-2 rounded-full bg-white border border-primary/20 text-primary font-bold shadow-sm">
                   {step}
                 </span>
-                {i < 5 && <span className="text-fg-muted text-xs">→</span>}
+                {i < 5 && <span className="text-ink-faint text-xs">→</span>}
               </div>
             ))}
           </div>
@@ -117,7 +117,7 @@ export default function ProductDesignPage() {
       <section className="bg-primary py-20 px-6 text-center">
         <h2 className="font-display text-4xl text-ivory mb-4">هل تريد تصميماً يبهر مستخدميك؟</h2>
         <p className="font-body text-base text-ivory/70 mb-8">Want a design that wows your users?</p>
-        <Link href="/contact" className="bg-surface-1 text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
+        <Link href="/contact" className="bg-ivory text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
           تواصل معنا — Let&apos;s Design Together
         </Link>
       </section>

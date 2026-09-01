@@ -16,28 +16,17 @@ const config: Config = {
            و`text-ivory`. هذه الأسماء تُبقيها عاملة وتُوجّهها إلى
            التوكنز، فتنتقل الصفحات إلى الهوية الجديدة بلا تعديل ملف.
 
-           ⚠ بعد اعتماد «المعرض الداكن» صار الموقع داكناً دائماً، وسلّم
-           `ink` انقلب في الوضع الداكن (`ink-900` = أبيض). لذلك:
-
-             `text-ink`   → أبيض ✔ (نصّ أساسي على سطح داكن)
-             `text-ivory` → كان يشير إلى `text-inverse` أي أسود ✘
-                            صار يشير إلى `ink-900` أي أبيض ✔
-
-           و`bg-ink`/`bg-ivory` حُذفا من الشيفرة كلياً (استُبدلا بـ
-           `bg-surface-2`/`bg-surface-1`): اسم واحد لا يصلح خلفيةً ونصّاً
-           معاً بعد انقلاب السلّم.
-
            تُحذف عند هجرة آخر صفحة إلى السلّم الكامل.
            ══════════════════════════════════════════════════════ */
         surface:        "var(--color-surface-0)",
         "surface-alt":  "var(--color-surface-1)",
-        card:           "var(--color-surface-1)",
+        card:           "var(--color-surface-3)",
         ink:            "var(--color-ink-900)",
         "ink-muted":    "var(--color-ink-500)",
         "ink-faint":    "var(--color-ink-300)",
-        ivory:          "var(--color-ink-900)",
-        "ivory-soft":   "var(--color-surface-1)",
-        graphite:       "var(--color-surface-2)",
+        ivory:          "var(--color-text-inverse)",
+        "ivory-soft":   "var(--color-surface-0)",
+        graphite:       "var(--color-ink-900)",
         "primary-dark": "var(--color-primary-700)",
         "primary-light":"var(--color-primary-300)",
         "gold-soft":    "var(--color-gold-100)",
@@ -46,22 +35,20 @@ const config: Config = {
         display: ["var(--font-yapari)", "var(--font-maghfira)", "sans-serif"],
         body:    ["var(--font-panorama)", "var(--font-givonic)", "sans-serif"],
       },
-      /* التدرّجات تقرأ قنوات التوكنز، فتتبع السمة بدل تثبيت لون فاتح.
-         `-ch` هي صيغة "R G B" التي يولّدها build.mjs لأجل الشفافية. */
       backgroundImage: {
-        "gold-line":       "linear-gradient(90deg, transparent, rgb(var(--color-gold-500-ch)), transparent)",
-        "rvios-radial":    "radial-gradient(120% 120% at 15% 10%, rgb(var(--color-primary-500-ch) / 0.14) 0%, transparent 55%)",
-        "hero-vignette":   "linear-gradient(to bottom, rgb(var(--color-surface-0-ch) / 0.2) 0%, transparent 45%, rgb(var(--color-surface-0-ch) / 0.85) 100%)",
-        "primary-gradient":"linear-gradient(135deg, rgb(var(--color-primary-500-ch)) 0%, rgb(var(--color-primary-700-ch)) 100%)",
-        "card-shine":      "linear-gradient(135deg, transparent 40%, rgb(var(--color-gold-500-ch) / 0.10) 100%)",
-        "section-dark":    "linear-gradient(135deg, rgb(var(--color-surface-1-ch)) 0%, rgb(var(--color-surface-2-ch)) 100%)",
+        "gold-line":       "linear-gradient(90deg, transparent, #C8A45D, transparent)",
+        "rvios-radial":    "radial-gradient(120% 120% at 15% 10%, rgba(158,34,38,0.12) 0%, rgba(250,250,247,0) 55%)",
+        "hero-vignette":   "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.75) 100%)",
+        "primary-gradient":"linear-gradient(135deg, #9E2226 0%, #6E1518 100%)",
+        "card-shine":      "linear-gradient(135deg, rgba(255,255,255,0) 40%, rgba(255,239,223,0.45) 100%)",
+        "section-dark":    "linear-gradient(135deg, #1A1210 0%, #2C1C1A 100%)",
       },
       boxShadow: {
-        card:        "var(--shadow-sm)",
-        "card-hover":"var(--shadow-md)",
-        glass:       "var(--shadow-lg)",
-        "glass-gold":"0 0 0 1px rgb(var(--color-gold-500-ch) / 0.25), var(--shadow-md)",
-        "red-glow":  "var(--shadow-glow)",
+        card:       "0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08)",
+        "card-hover":"0 8px 24px rgba(158,34,38,0.14), 0 20px 48px rgba(158,34,38,0.10)",
+        glass:      "0 8px 32px rgba(0,0,0,0.35)",
+        "glass-gold":"0 0 0 1px rgba(200,164,93,0.25), 0 8px 32px rgba(0,0,0,0.35)",
+        "red-glow": "0 0 40px rgba(158,34,38,0.35)",
       },
       keyframes: {
         rise: {

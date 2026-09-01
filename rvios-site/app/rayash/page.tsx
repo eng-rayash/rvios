@@ -25,7 +25,7 @@ export default function RayashPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
@@ -99,7 +99,7 @@ export default function RayashPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="bg-surface-2 py-20 px-6 text-center">
+      <section className="bg-ink py-20 px-6 text-center">
         <div className="mx-auto max-w-2xl">
           <h2 className="font-display text-4xl text-ivory mb-4">
             هل تريد التعاون؟
