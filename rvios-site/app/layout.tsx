@@ -24,10 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    /* data-theme صريح: هوية الموقع «المعرض الداكن» (اتجاه C). بدونه تتبع
-       الصفحة تفضيل نظام التشغيل فتنقلب فاتحة عند من يفضّل الفاتح — وهي
-       ليست حالة مصمَّمة. لوحة التحكم والمؤسس يبقيان "light". */
-    <html lang="ar" dir="rtl" data-theme="dark">
+    /* data-theme صريح: الهوية المعتمدة فاتحة. بدونه تتبع الصفحة تفضيل نظام
+       التشغيل وتنقلب داكنة — سلوك لم يقرّره أحد. */
+    <html lang="ar" dir="rtl" data-theme="light">
       <head>
         {/* توكنز الهوية + @font-face. تُحمَّل قبل globals.css فتتوفّر
             المتغيّرات عند أول رسم. المصدر: packages/design-tokens */}

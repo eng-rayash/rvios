@@ -3,209 +3,250 @@
 @tailwind utilities;
 
 /* ============================================================
-   الخطوط و@font-face يأتيان من /styles/tokens.css المولَّد
-   (packages/design-tokens). لا تعرّف هنا عائلة ولا لوناً —
-   عرّفه في packages/design-tokens وأعد البناء.
+   خطوط الهوية — RVIOS Brand Fonts
    ============================================================ */
+@font-face {
+  font-family: "YAPARI";
+  src: url("/fonts/YapariTrial-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
 
+@font-face {
+  font-family: "RTL-Maghfira";
+  src: url("/fonts/rtl-maghfira-ramadan.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Givonic";
+  src: url("/fonts/Givonic-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Generator";
+  src: url("/fonts/Hacen Liner Screen.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Generator";
+  src: url("/fonts/Hacen Liner Screen.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --font-yapari: "YAPARI";
+  --font-maghfira: "RTL-Maghfira";
+  --font-givonic: "Givonic";
+  /* اسم العائلة المُعلَنة في @font-face أعلاه هو "Generator".
+     كان هنا "Hacen" — عائلة لا وجود لها — فكان font-body يسقط إلى
+     Givonic (لاتيني بلا محارف عربية) ومنه إلى خط النظام. */
+  --font-panorama: "Generator";
+}
+
+/* ============================================================
+   Base — Light Theme
+   ============================================================ */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--color-surface-0);
-  color: var(--color-text-primary);
+  background-color: #FAFAF7;
+  color: #1A1210;
 }
 
 /* ============================================================
-   البطاقة — «المعرض الداكن»
+   Glass — للاستخدام فوق الأسطح الداكنة (Hero, CTA داكن)
+   ============================================================ */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
 
-   على الجرافيت لا يُرى الظل، فالفصل بالحدّ والتوهّج. الحدّ يتحوّل
-   ذهبياً عند التحويم مع رفعة 3px: نفس نمط `WorkCard` الذي بُني
-   على المقترح المعتمد، معمَّماً هنا.
+.glass-dark {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.10));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================================
+   Card — للاستخدام على الأسطح الفاتحة
    ============================================================ */
 .card {
-  background: var(--color-surface-1);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  transition:
-    border-color var(--motion-base) var(--ease-out),
-    transform var(--motion-base) var(--ease-out),
-    box-shadow var(--motion-base) var(--ease-out);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.07);
+  border-radius: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card:hover {
-  border-color: var(--color-gold-500);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 8px 24px rgba(158, 34, 38, 0.12), 0 20px 48px rgba(158, 34, 38, 0.08);
+  border-color: rgba(158, 34, 38, 0.18);
+  transform: translateY(-4px);
 }
 
 /* ============================================================
-   حدّ متوهّج يتبع المؤشّر
-
-   يقرأ --mx/--my اللذين يحدّثهما `usePointerGlow`. القيم الافتراضية
-   تضع البؤرة خارج البطاقة، فما لم يتحرّك مؤشّر فوقها لا يظهر شيء —
-   وهو ما يجب أن يحدث على اللمس وقبل أول حركة.
+   Service Card — أرقام الخدمات
    ============================================================ */
-.glow-card {
+.service-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-right: 3px solid transparent;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.06);
+  border-radius: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  isolation: isolate;
+  overflow: hidden;
 }
 
-.glow-card::before {
+.service-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(
-    260px circle at var(--mx, -100%) var(--my, -100%),
-    rgb(var(--color-primary-500-ch) / 0.16),
-    transparent 70%
-  );
+  background: linear-gradient(135deg, rgba(255, 239, 223, 0) 50%, rgba(255, 239, 223, 0.5) 100%);
   opacity: 0;
-  transition: opacity var(--motion-base) var(--ease-out);
+  transition: opacity 0.4s ease;
 }
 
-.glow-card:hover::before {
+.service-card:hover {
+  border-right-color: #9E2226;
+  box-shadow: 0 8px 32px rgba(158, 34, 38, 0.14), 0 24px 56px rgba(158, 34, 38, 0.08);
+  transform: translateY(-6px);
+}
+
+.service-card:hover::before {
   opacity: 1;
 }
 
 /* ============================================================
-   الأزرار
+   Pill Badge
+   ============================================================ */
+.badge-en {
+  display: inline-block;
+  font-family: var(--font-givonic), sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #9E2226;
+  background: rgba(158, 34, 38, 0.07);
+  border: 1px solid rgba(158, 34, 38, 0.15);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+}
+
+.badge-number {
+  font-family: var(--font-givonic), var(--font-yapari), sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(158, 34, 38, 0.12);
+  letter-spacing: -0.03em;
+  transition: color 0.4s ease;
+}
+
+.service-card:hover .badge-number {
+  color: rgba(158, 34, 38, 0.22);
+}
+
+/* ============================================================
+   Buttons
    ============================================================ */
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  background: var(--color-primary-500);
-  color: var(--color-text-on-primary);
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-6);
-  font-family: var(--font-body), sans-serif;
-  font-size: var(--text-sm);
+  gap: 0.5rem;
+  background: #9E2226;
+  color: #FFEFDF;
+  border-radius: 999px;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-panorama), sans-serif;
+  font-size: 0.9rem;
   font-weight: 700;
-  transition:
-    background var(--motion-base) var(--ease-out),
-    transform var(--motion-base) var(--ease-out),
-    box-shadow var(--motion-base) var(--ease-out);
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 4px 16px rgba(158, 34, 38, 0.3);
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.18) 35%, transparent 50%);
+  transform: translateX(-120%);
+  z-index: -1;
 }
 
 .btn-primary:hover {
-  background: var(--color-primary-300);
+  background: #6E1518;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 8px 28px rgba(158, 34, 38, 0.4);
+}
+
+.btn-primary:hover::before {
+  animation: sheen 1.2s ease forwards;
 }
 
 .btn-outline {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 0.5rem;
   background: transparent;
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-6);
-  font-family: var(--font-body), sans-serif;
-  font-size: var(--text-sm);
+  color: #9E2226;
+  border: 1.5px solid #9E2226;
+  border-radius: 999px;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-panorama), sans-serif;
+  font-size: 0.9rem;
   font-weight: 700;
-  transition:
-    border-color var(--motion-base) var(--ease-out),
-    color var(--motion-base) var(--ease-out),
-    transform var(--motion-base) var(--ease-out);
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-outline:hover {
-  border-color: var(--color-gold-500);
-  color: var(--color-gold-500);
+  background: #9E2226;
+  color: #FFEFDF;
   transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(158, 34, 38, 0.25);
 }
 
-/* يبقى لأن سبع صفحات خارج نطاق إعادة التصميم تستعمله (الخدمات الستّ
-   و/rayash). كان يعني «محدَّد بالإيفوري فوق سطح داكن»، وهو على
-   «المعرض الداكن» سلوك `.btn-outline` نفسه — فيُوجَّه إليه بدل أن
-   يُترك يشير إلى هيكس محذوف. */
 .btn-outline-ivory {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 0.5rem;
   background: transparent;
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-6);
-  font-family: var(--font-body), sans-serif;
-  font-size: var(--text-sm);
+  color: #FFEFDF;
+  border: 1.5px solid rgba(255, 239, 223, 0.5);
+  border-radius: 999px;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-panorama), sans-serif;
+  font-size: 0.9rem;
   font-weight: 700;
-  transition:
-    border-color var(--motion-base) var(--ease-out),
-    color var(--motion-base) var(--ease-out),
-    transform var(--motion-base) var(--ease-out);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-outline-ivory:hover {
-  border-color: var(--color-gold-500);
-  color: var(--color-gold-500);
+  background: rgba(255, 239, 223, 0.12);
+  border-color: #FFEFDF;
   transform: translateY(-2px);
 }
 
 /* ============================================================
-   وسام الـ eyebrow — النمط المتكرر في رأس كل قسم
+   Marquee ticker
    ============================================================ */
-.badge-en {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-family: var(--font-mono), monospace;
-  font-size: var(--text-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-gold-500);
-}
-
-.badge-en::before {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: var(--color-gold-500);
-}
-
-/* ============================================================
-   حقول النماذج
-   ============================================================ */
-.form-input {
-  width: 100%;
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-4);
-  font-family: var(--font-body), sans-serif;
-  font-size: var(--text-base);
-  color: var(--color-text-primary);
-  transition:
-    border-color var(--motion-fast) var(--ease-out),
-    box-shadow var(--motion-fast) var(--ease-out);
-  outline: none;
-}
-
-.form-input:focus {
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgb(var(--color-primary-500-ch) / 0.15);
-}
-
-.form-input::placeholder {
-  color: var(--color-ink-300);
-}
-
-/* ============================================================
-   الشريط المتحرّك
-   ============================================================ */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
 .marquee-track {
   display: flex;
   width: max-content;
@@ -217,59 +258,142 @@ body {
 }
 
 /* ============================================================
-   دخول كلمات العنوان الرئيسي
-
-   يُرندَر على الخادم: كل كلمة span بتأخير مضمَّن، والحركة تبدأ مع أول
-   رسم. لا JS ولا GSAP على المسار الحرج — وهو أهمّ ما في الصفحة.
+   Section divider — خط فاصل بسيط وأنيق
    ============================================================ */
-@keyframes wordRise {
-  from { opacity: 0; transform: translateY(0.4em); }
-  to   { opacity: 1; transform: translateY(0); }
+.section-divider {
+  width: 64px;
+  height: 3px;
+  background: #9E2226;
+  border-radius: 999px;
+  margin: 0 auto;
 }
 
-.word-rise > span {
-  display: inline-block;
-  animation: wordRise var(--motion-slow) var(--ease-out) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .word-rise > span { animation: none; }
+.section-divider-start {
+  width: 64px;
+  height: 3px;
+  background: #9E2226;
+  border-radius: 999px;
 }
 
 /* ============================================================
-   الشعيرة الذهبية — تُرسم عند دخول القسم
-
-   `scaleX` من الصفر: توقيع بصري متكرر يربط الأقسام. تُشغَّل بإضافة
-   `.is-in` من `Reveal`.
+   Process Step — connector line
    ============================================================ */
-.rule-draw {
+.process-connector {
+  position: absolute;
+  top: 32px;
+  left: -50%;
+  width: 100%;
   height: 1px;
-  background: linear-gradient(to left, var(--color-gold-500), transparent);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform var(--motion-slow) var(--ease-out);
-}
-
-.rule-draw.is-in {
-  transform: scaleX(1);
+  background: linear-gradient(90deg, transparent, rgba(158, 34, 38, 0.25), transparent);
 }
 
 /* ============================================================
-   حلقة التركيز — ظاهرة على الجرافيت
-
-   الافتراضية في المتصفح رفيعة وداكنة فتضيع على #0D0E10. التنقّل
-   بلوحة المفاتيح يجب أن يبقى مرئياً.
+   Scroll Reveal — يُفعَّل بواسطة IntersectionObserver
    ============================================================ */
-:where(a, button, input, textarea, select, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-gold-500);
-  outline-offset: 2px;
-  border-radius: var(--radius-xs);
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+
+.reveal-delay-5 {
+  transition-delay: 0.5s;
 }
 
 /* ============================================================
-   تقليل الحركة — يُلغي الحركة ويُبقي الوظيفة
+   Glass button (dark surface)
+   ============================================================ */
+.glass-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.glass-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.22) 35%, transparent 50%);
+  transform: translateX(-120%);
+  z-index: -1;
+}
+
+.glass-btn:hover::before {
+  animation: sheen 1s ease forwards;
+}
+
+/* ============================================================
+   Hero scroll indicator
+   ============================================================ */
+@keyframes scrollBounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(8px);
+    opacity: 0.5;
+  }
+}
+
+.scroll-indicator {
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   Form inputs
+   ============================================================ */
+.form-input {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.875rem;
+  padding: 0.875rem 1.25rem;
+  font-family: var(--font-panorama), sans-serif;
+  font-size: 0.95rem;
+  color: #1A1210;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #9E2226;
+  box-shadow: 0 0 0 3px rgba(158, 34, 38, 0.1);
+}
+
+.form-input::placeholder {
+  color: #A09088;
+}
+
+/* ============================================================
+   Reduced motion
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -277,10 +401,5 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  /* الشعيرة لا تُرسم، لكنها يجب أن تبقى موجودة لا معدومة العرض */
-  .rule-draw {
-    transform: scaleX(1);
   }
 }

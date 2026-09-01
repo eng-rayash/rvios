@@ -9,12 +9,11 @@
   },
 
   "shadowDark": {
-    "$description": "على الداكن الظلّ لا يُرى — الفصل بالتوهّج والحدود. القيم من design/proposals/c-gallery.",
-    "xs":   "0 0 0 1px rgba(255,255,255,.03)",
-    "sm":   "0 2px 8px rgba(0,0,0,.4)",
-    "md":   "0 8px 24px rgba(0,0,0,.5)",
-    "lg":   "0 20px 48px rgba(0,0,0,.6)",
-    "glow": "0 0 28px rgba(199,72,76,.28)"
+    "xs":   "0 1px 0 rgba(0,0,0,.3)",
+    "sm":   "0 1px 2px rgba(0,0,0,.4)",
+    "md":   "0 2px 8px rgba(0,0,0,.5)",
+    "lg":   "0 8px 28px rgba(0,0,0,.6)",
+    "glow": "0 0 0 1px #C8A45D"
   },
 
   "motion": {

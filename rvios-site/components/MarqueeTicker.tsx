@@ -11,21 +11,19 @@ export default function MarqueeTicker() {
   const doubled = [...TECHS, ...TECHS];
 
   return (
-    /* aria-hidden: قائمة تقنيات مكرّرة مرّتين لأجل الحلقة البصرية — قارئ
-       الشاشة كان يقرأ خمسين اسماً بلا معنى. */
-    <div
-      aria-hidden
-      className="relative select-none overflow-hidden border-y border-border-subtle bg-surface-1 py-4"
-    >
-      {/* تلاشي الحافتين — يخفي بداية الحلقة ونهايتها */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-surface-1 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-surface-1 to-transparent" />
+    <div className="relative overflow-hidden bg-surface-alt border-y border-black/6 py-4 select-none">
+      {/* Fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-surface-alt to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0  w-24 z-10 bg-gradient-to-r from-surface-alt to-transparent" />
 
       <div className="marquee-track">
         {doubled.map((tech, i) => (
-          <span key={i} className="mx-6 flex shrink-0 items-center gap-3">
-            <span className="h-1 w-1 shrink-0 bg-gold/50" />
-            <span className="whitespace-nowrap font-mono text-xs tracking-[0.16em] text-fg-muted">
+          <span
+            key={i}
+            className="flex items-center gap-3 mx-6 shrink-0"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
+            <span className="font-body text-sm tracking-[0.12em] text-ink-muted whitespace-nowrap">
               {tech}
             </span>
           </span>

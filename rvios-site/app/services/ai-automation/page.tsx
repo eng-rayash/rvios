@@ -48,7 +48,7 @@ const SUB_SERVICES = [
 export default function AiAutomationPage() {
   return (
     <>
-      <section className="bg-surface-2 text-ivory py-28 px-6 relative overflow-hidden">
+      <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] rounded-full bg-primary/8 blur-[120px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en bg-primary/20 border-primary/30 text-primary mb-6">
@@ -94,7 +94,7 @@ export default function AiAutomationPage() {
       </section>
 
       {/* Impact stats */}
-      <section className="bg-surface-2 py-20 px-6">
+      <section className="bg-ink py-20 px-6">
         <div className="mx-auto max-w-4xl">
           <h2 className="font-display text-3xl text-ivory text-center mb-12">
             ما يمكن تحقيقه بالأتمتة
@@ -118,7 +118,7 @@ export default function AiAutomationPage() {
       <section className="bg-primary py-20 px-6 text-center">
         <h2 className="font-display text-4xl text-ivory mb-4">جاهز لأتمتة أعمالك؟</h2>
         <p className="font-body text-base text-ivory/70 mb-8">Ready to automate your business?</p>
-        <Link href="/contact" className="bg-surface-1 text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
+        <Link href="/contact" className="bg-ivory text-primary rounded-full px-8 py-4 font-body text-base font-bold hover:bg-ivory-soft transition-colors inline-block">
           تواصل معنا — Let&apos;s Automate
         </Link>
       </section>
