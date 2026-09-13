@@ -76,3 +76,6 @@ rvios-shop-saas/
 tmp/
 temp/
 *.tmp
+
+# أصول التصميم الخام (PNG ثقيلة) — النسخ المضغوطة في public/images
+design-assets/
