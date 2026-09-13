@@ -18,19 +18,23 @@ const config: Config = {
 
            تُحذف عند هجرة آخر صفحة إلى السلّم الكامل.
            ══════════════════════════════════════════════════════ */
-        surface:        "var(--color-surface-0)",
-        "surface-alt":  "var(--color-surface-1)",
-        card:           "var(--color-surface-3)",
-        ink:            "var(--color-ink-900)",
-        "ink-muted":    "var(--color-ink-500)",
-        "ink-faint":    "var(--color-ink-300)",
-        ivory:          "var(--color-text-inverse)",
-        "ivory-soft":   "var(--color-surface-0)",
-        graphite:       "var(--color-ink-900)",
-        "primary-dark": "var(--color-primary-700)",
-        "primary-light":"var(--color-primary-300)",
-        "gold-soft":    "var(--color-gold-100)",
+        /* الصيغة rgb(var(--…-ch) / <alpha-value>) لا var(--color-…): الثانية قيمة hex جاهزة لا يقبل Tailwind حقن الشفافية فيها، فكان كل bg-ink/60 وtext-ivory/65 يسقط بصمت. والأسماء المفردة كائنات لا نصوصاً كي تندمج مع سلالم الـpreset بدل أن تمحوها — كان ink-900 مفقوداً لهذا. */
+        surface:        { DEFAULT: "rgb(var(--color-surface-0-ch) / <alpha-value>)" },
+        "surface-alt":  "rgb(var(--color-surface-1-ch) / <alpha-value>)",
+        card:           "rgb(var(--color-surface-3-ch) / <alpha-value>)",
+        ink:            { DEFAULT: "rgb(var(--color-ink-900-ch) / <alpha-value>)" },
+        "ink-muted":    "rgb(var(--color-ink-500-ch) / <alpha-value>)",
+        "ink-faint":    "rgb(var(--color-ink-300-ch) / <alpha-value>)",
+        ivory:          { DEFAULT: "rgb(var(--color-text-inverse-ch) / <alpha-value>)" },
+        "ivory-soft":   "rgb(var(--color-surface-0-ch) / <alpha-value>)",
+        graphite:       "rgb(var(--color-ink-900-ch) / <alpha-value>)",
+        "primary-dark": "rgb(var(--color-primary-700-ch) / <alpha-value>)",
+        "primary-light":"rgb(var(--color-primary-300-ch) / <alpha-value>)",
+        "gold-soft":    "rgb(var(--color-gold-100-ch) / <alpha-value>)",
       },
+      /* خطوات الشفافية عند Tailwind من ٥ إلى ٥، وهذه القيم مستعملة في الصفحات
+         (bg-primary/8، bg-ivory/8، border-black/6 …) فكانت تسقط بلا أثر. */
+      opacity: { 4: "0.04", 6: "0.06", 7: "0.07", 8: "0.08", 12: "0.12" },
       fontFamily: {
         display: ["var(--font-yapari)", "var(--font-maghfira)", "sans-serif"],
         body:    ["var(--font-panorama)", "var(--font-givonic)", "sans-serif"],

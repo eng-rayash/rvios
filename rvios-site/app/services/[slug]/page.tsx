@@ -41,10 +41,10 @@ export default async function ServiceDetailPage({ params }: Props) {
         />
         {/* حاجب ثابت + تدرّج اتجاهي: الصور نفسها فاتحة ومزدحمة، والتدرّج
             وحده لم يكن يكفي لقراءة العنوان والفقرة فوقها. */}
-        <div aria-hidden className="absolute inset-0 bg-[rgb(var(--color-ink-900-ch)/0.4)]" />
+        <div aria-hidden className="absolute inset-0 bg-ink/40" />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-[rgb(var(--color-ink-900-ch))] via-[rgb(var(--color-ink-900-ch)/0.9)] to-[rgb(var(--color-ink-900-ch)/0.55)] md:bg-gradient-to-l md:from-[rgb(var(--color-ink-900-ch))] md:via-[rgb(var(--color-ink-900-ch)/0.9)] md:to-[rgb(var(--color-ink-900-ch)/0.3)]"
+          className="absolute inset-0 bg-gradient-to-t from-ink via-ink/90 to-ink/55 md:bg-gradient-to-l md:from-ink md:via-ink/90 md:to-ink/30"
         />
         <div
           aria-hidden
@@ -58,7 +58,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 يُضاف إليه — فتخرج الشارة بخلفية حمراء ٧٪ ونص داكن فوق صورة
                 داكنة. تُبنى بالأدوات مباشرة لتبقى مقروءة. */}
             <span
-              className="inline-block rounded-full border border-primary/40 bg-[rgb(var(--color-ink-900-ch)/0.72)] px-3 py-1 text-[0.65rem] uppercase tracking-[0.25em] text-ivory/90 backdrop-blur-sm"
+              className="inline-block rounded-full border border-primary/40 bg-ink/70 px-3 py-1 text-[0.65rem] uppercase tracking-[0.25em] text-ivory/90 backdrop-blur-sm"
               style={{ fontFamily: "var(--font-givonic), sans-serif" }}
             >
               {s.id} — {s.nameEn}

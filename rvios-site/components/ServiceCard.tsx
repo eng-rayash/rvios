@@ -30,10 +30,10 @@ export default function ServiceCard({
       />
       {/* حاجب ثابت ثم تدرّج اتجاهي: رأسي على الجوال (النص تحت) وأفقي من جهة
           النص على الشاشات الأوسع. التدرّج وحده لا يكفي فوق صور فاتحة. */}
-      <div aria-hidden className="absolute inset-0 bg-[rgb(var(--color-ink-900-ch)/0.3)]" />
+      <div aria-hidden className="absolute inset-0 bg-ink/30" />
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-[rgb(var(--color-ink-900-ch))] via-[rgb(var(--color-ink-900-ch)/0.9)] to-[rgb(var(--color-ink-900-ch)/0.45)] md:bg-gradient-to-l md:from-[rgb(var(--color-ink-900-ch))] md:via-[rgb(var(--color-ink-900-ch)/0.85)] md:to-[rgb(var(--color-ink-900-ch)/0.2)]"
+        className="absolute inset-0 bg-gradient-to-t from-ink via-ink/90 to-ink/45 md:bg-gradient-to-l md:from-ink md:via-ink/85 md:to-ink/20"
       />
 
       <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 h-full">
@@ -49,7 +49,7 @@ export default function ServiceCard({
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="text-xs px-3 py-1.5 rounded-full bg-[rgb(var(--color-ink-900-ch)/0.55)] backdrop-blur-sm border border-primary/25 text-primary font-medium"
+                className="text-xs px-3 py-1.5 rounded-full bg-ink/55 backdrop-blur-sm border border-primary/25 text-primary font-medium"
               >
                 {tag}
               </span>
