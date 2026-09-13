@@ -1,13 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-
-const SERVICES_LINKS = [
-  { href: "/services/software-development", ar: "تطوير البرمجيات", en: "Software Dev" },
-  { href: "/services/product-design", ar: "تصميم المنتجات", en: "Product Design" },
-  { href: "/services/cloud-infrastructure", ar: "البنية السحابية", en: "Cloud Infra" },
-  { href: "/services/ai-automation", ar: "الأتمتة والذكاء", en: "AI & Automation" },
-  { href: "/services/consulting", ar: "الاستشارات", en: "Consulting" },
-];
+import { SERVICES } from "@/lib/services";
 
 const COMPANY_LINKS = [
   { href: "/about", ar: "من نحن", en: "About" },
@@ -41,10 +34,10 @@ export default function Footer() {
               </div>
             </Link>
             <p className="font-body text-sm leading-relaxed text-ivory/65 max-w-xs">
-              حلول تقنية متكاملة لبناء أعمال رقمية أكثر ذكاءً.
+              نصمم ونطوّر مواقع ويب تنمو معها أعمالك.
             </p>
             <p className="font-body text-xs tracking-[0.15em] text-ivory/40 mt-1 uppercase">
-              Integrated tech solutions for smarter digital businesses.
+              Custom websites that help businesses grow online.
             </p>
 
             {/* Contact Info */}
@@ -84,14 +77,14 @@ export default function Footer() {
               الخدمات — Services
             </h4>
             <ul className="space-y-3">
-              {SERVICES_LINKS.map((s) => (
-                <li key={s.href}>
+              {SERVICES.map((s) => (
+                <li key={s.slug}>
                   <Link
-                    href={s.href}
+                    href={`/services/${s.slug}`}
                     className="group flex flex-col hover:translate-x-[-4px] transition-transform duration-200"
                   >
-                    <span className="font-body text-sm text-ivory/70 group-hover:text-ivory transition-colors">{s.ar}</span>
-                    <span className="font-body text-[0.65rem] tracking-[0.15em] text-ivory/35 uppercase">{s.en}</span>
+                    <span className="font-body text-sm text-ivory/70 group-hover:text-ivory transition-colors">{s.nameAr}</span>
+                    <span className="font-body text-[0.65rem] tracking-[0.15em] text-ivory/35 uppercase">{s.nameEn}</span>
                   </Link>
                 </li>
               ))}
@@ -101,7 +94,7 @@ export default function Footer() {
           {/* Company */}
           <div className="md:col-span-4">
             <h4 className="font-body text-xs tracking-[0.25em] uppercase text-primary mb-5">
-              الشركة — Company
+              المنصة — Platform
             </h4>
             <ul className="space-y-3 mb-8">
               {COMPANY_LINKS.map((c) => (

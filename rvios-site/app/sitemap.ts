@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getProjectSlugs, getPublishedPosts } from "@/lib/api/client";
+import { SERVICES } from "@/lib/services";
 
 const BASE = "https://rvios.com";
 
@@ -13,13 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/about",
     "/contact",
     "/blog",
-    "/services/software-development",
-    "/services/product-design",
-    "/services/cloud-infrastructure",
-    "/services/ai-automation",
-    "/services/consulting",
-    /* كانت مفقودة رغم وجود الصفحة — فلم تُفهرس قط */
-    "/services/software-solutions",
+    ...SERVICES.map((s) => `/services/${s.slug}`),
   ].map((route) => ({
     url: `${BASE}${route}`,
     lastModified: today,

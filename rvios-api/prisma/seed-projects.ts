@@ -256,7 +256,7 @@ async function main() {
         metrics: { create: metrics.map((m, i) => ({ ...m, order: i })) },
         gallery: { create: gallery.map((g, i) => ({ ...g, order: i })) },
         services: {
-          create: ['software-development', 'product-design']
+          create: ['web-design', 'web-development']
             .map((s) => svcBySlug.get(s))
             .filter((id): id is string => Boolean(id))
             .map((serviceId) => ({ serviceId })),

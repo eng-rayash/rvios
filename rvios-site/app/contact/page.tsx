@@ -4,7 +4,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "تواصل معنا — RVIOS Technologies | Contact Us",
   description:
-    "تواصل مع فريق RVIOS لمناقشة مشروعك التقني. نرد خلال 24 ساعة.",
+    "تواصل مع فريق RVIOS لمناقشة مشروع موقعك. نرد خلال 24 ساعة.",
 };
 
 const CONTACT_METHODS = [
@@ -51,7 +51,7 @@ export default function ContactPage() {
             Got a project? We&apos;re ready.
           </p>
           <p className="font-body text-base text-ink-muted leading-relaxed max-w-xl">
-            تواصل معنا لمناقشة فكرتك أو مشروعك التقني. فريقنا جاهز للرد خلال 24 ساعة
+            تواصل معنا لمناقشة فكرتك أو مشروع موقعك. فريقنا جاهز للرد خلال 24 ساعة
             وتقديم استشارة أولية مجانية.
           </p>
         </div>
@@ -117,10 +117,10 @@ export default function ContactPage() {
                 <h3 className="font-display text-lg text-ink mb-4">ماذا ستحصل؟</h3>
                 <ul className="space-y-3">
                   {[
-                    "استشارة تقنية أولية مجانية",
+                    "استشارة أولية مجانية",
                     "عرض سعر تفصيلي خلال 48 ساعة",
                     "خطة عمل واضحة ومحددة",
-                    "فريق تقني متخصص ومحترف",
+                    "فريق تصميم وتطوير متخصص",
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-3 font-body text-sm text-ink-muted">
                       <svg className="w-4 h-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -153,15 +153,15 @@ export default function ContactPage() {
             {[
               {
                 q: "ما هي التقنيات التي تعمل بها RVIOS؟",
-                a: "نعمل بمجموعة واسعة من التقنيات تشمل React, Next.js, Node.js, Python, Flutter, AWS, وغيرها. الأهم هو اختيار الأنسب لمشروعك.",
+                a: "نبني المواقع بتقنيات ويب حديثة مثل React وNext.js وTypeScript، ونصمم بأدوات مثل Figma. الأهم هو اختيار الأنسب لموقعك.",
               },
               {
-                q: "كم يستغرق تطوير مشروع؟",
-                a: "يعتمد على حجم ونوع المشروع. التطبيق البسيط يستغرق 4-8 أسابيع، بينما الأنظمة الكبيرة تحتاج 3-6 أشهر. نحدد جدولاً زمنياً دقيقاً قبل البدء.",
+                q: "كم يستغرق تنفيذ الموقع؟",
+                a: "يعتمد على نوع الموقع وحجمه؛ فصفحة الهبوط أسرع بكثير من متجر إلكتروني متكامل. نحدد جدولاً زمنياً دقيقاً في عرض السعر قبل البدء.",
               },
               {
                 q: "هل تقدمون خدمة الصيانة بعد الإطلاق؟",
-                a: "نعم، نوفر خدمات دعم وصيانة مستمرة بعد الإطلاق لضمان استمرارية وتطوير منتجك.",
+                a: "نعم، خدمة «العناية بالموقع» تشمل تحديث المحتوى، وإصلاح الأخطاء، والتحديثات الأمنية، والتحسين المستمر بعد الإطلاق.",
               },
               {
                 q: "What languages do you work in?",
