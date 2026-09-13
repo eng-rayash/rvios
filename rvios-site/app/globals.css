@@ -132,17 +132,23 @@ body {
 /* ============================================================
    Pill Badge
    ============================================================ */
-.badge-en {
-  display: inline-block;
-  font-family: var(--font-givonic), sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #9E2226;
-  background: rgba(158, 34, 38, 0.07);
-  border: 1px solid rgba(158, 34, 38, 0.15);
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
+/* داخل @layer components كي تتغلّب عليه الأدوات المساعدة: كان معرّفاً
+   خارج الطبقات وبعد @tailwind utilities في الملف، فيفوز `background`
+   و`color` فيه على أي `bg-primary/20` أو `text-ivory` يُضاف إلى العنصر
+   — ولهذا كانت الشارة فوق الأبطال الداكنة بخلفية حمراء ٧٪ ونص داكن. */
+@layer components {
+  .badge-en {
+    display: inline-block;
+    font-family: var(--font-givonic), sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #9E2226;
+    background: rgba(158, 34, 38, 0.07);
+    border: 1px solid rgba(158, 34, 38, 0.15);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+  }
 }
 
 .badge-number {
