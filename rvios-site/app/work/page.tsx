@@ -12,7 +12,7 @@ import { FeaturedCoverflow } from "@/components/work/FeaturedCoverflow";
 export const metadata: Metadata = {
   title: "أعمالنا — RVIOS Technologies",
   description:
-    "دراسات حالة من مشاريع RVIOS: أنظمة مؤسسات، تقنية مالية، قطاع حكومي، وصحة رقمية — بأرقام النتائج.",
+    "دراسات حالة من مشاريع RVIOS في تصميم وتطوير المواقع والأنظمة والمتاجر الإلكترونية — بأرقام النتائج.",
   openGraph: {
     title: "أعمال RVIOS",
     description: "دراسات حالة بأرقام نتائج حقيقية",

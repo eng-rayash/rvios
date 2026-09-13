@@ -5,57 +5,11 @@ import StatCounter from "@/components/StatCounter";
 import Plasma from "@/components/Plasma";
 import SpecularButton from "@/components/SpecularButton";
 import SplitText from "@/components/SplitText";
-import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
+import ScrollStack from "@/components/ScrollStack";
+import ServiceCard from "@/components/ServiceCard";
+import { SERVICES } from "@/lib/services";
 
 /* ─── Data ───────────────────────────────────────────────── */
-
-const SERVICES = [
-  {
-    id: "01",
-    href: "/services/software-development",
-    nameAr: "تطوير البرمجيات والأنظمة",
-    nameEn: "Software Development",
-    descAr: "نبني تطبيقات ومنصات رقمية مخصصة تساعدك على إدارة عملياتك بكفاءة وتوسّع نطاق أعمالك بثقة.",
-    icon: "code",
-    tags: ["Web Apps", "Mobile", "ERP", "API"],
-  },
-  {
-    id: "02",
-    href: "/services/product-design",
-    nameAr: "تصميم المنتجات وتجربة المستخدم",
-    nameEn: "Product Design & UX",
-    descAr: "نصمم واجهات وتجارب مستخدم استثنائية تجمع الجمال بالوظيفة وتحوّل الزوار إلى عملاء.",
-    icon: "design",
-    tags: ["UI/UX", "Figma", "Prototyping", "Branding"],
-  },
-  {
-    id: "03",
-    href: "/services/cloud-infrastructure",
-    nameAr: "البنية التحتية السحابية",
-    nameEn: "Cloud Infrastructure",
-    descAr: "نؤهّل بنيتك التحتية للعمل في السحابة بأعلى معايير الأمان والأداء والتوسّع.",
-    icon: "cloud",
-    tags: ["AWS", "GCP", "Docker", "DevOps"],
-  },
-  {
-    id: "04",
-    href: "/services/ai-automation",
-    nameAr: "الأتمتة والذكاء الاصطناعي",
-    nameEn: "Automation & AI",
-    descAr: "ندمج الذكاء الاصطناعي والأتمتة في عملياتك لتقليل التكلفة وزيادة الكفاءة والإنتاجية.",
-    icon: "ai",
-    tags: ["AI Agents", "ML", "Workflows", "Chatbots"],
-  },
-  {
-    id: "05",
-    href: "/services/consulting",
-    nameAr: "الاستشارات التقنية والتحول الرقمي",
-    nameEn: "Tech Consulting & Digital Transformation",
-    descAr: "نرافقك في رحلة التحول الرقمي الكاملة — من التخطيط الاستراتيجي إلى التنفيذ والقياس.",
-    icon: "consulting",
-    tags: ["Strategy", "Audit", "Roadmap", "Training"],
-  },
-];
 
 const PILLARS = [
   {
@@ -144,7 +98,7 @@ export default function HomePage() {
           <div className="mb-4">
             <SplitText
               tag="h1"
-              text="نبني أنظمة رقمية تدفع نمو أعمالك"
+              text="نبني مواقع وأنظمة ويب تدفع نمو أعمالك"
               className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] text-ivory"
               delay={70}
               duration={1}
@@ -157,12 +111,12 @@ export default function HomePage() {
 
           {/* English subtitle */}
           <p className="font-body text-base sm:text-lg tracking-[0.12em] text-ivory/50 uppercase mb-6">
-            We build digital systems that drive your business growth
+            We build websites and web systems that drive your business growth
           </p>
 
           {/* Description */}
           <p className="font-body text-base sm:text-lg leading-relaxed text-ivory/75 max-w-2xl mx-auto mb-10">
-            من تطوير البرمجيات إلى الذكاء الاصطناعي والاستشارات التقنية — نحن شريكك في التحول الرقمي
+            تصميم وتطوير المواقع، وأنظمة وتطبيقات الويب، والمتاجر الإلكترونية — منصة ويب تبني حضورك الرقمي وتطوّره باستمرار
           </p>
 
           {/* CTA Buttons */}
@@ -229,7 +183,7 @@ export default function HomePage() {
             <span className="badge-en mb-4">Our Services — خدماتنا</span>
             <SplitText
               tag="h2"
-              text="حلول تقنية متكاملة لكل مرحلة من مشروعك"
+              text="من التصميم إلى الإطلاق وما بعده"
               className="font-display text-4xl md:text-5xl text-ink leading-tight max-w-2xl"
               delay={60}
               duration={1}
@@ -238,47 +192,14 @@ export default function HomePage() {
               textAlign="start"
             />
             <p className="mt-4 font-body text-base text-ink-muted max-w-xl leading-relaxed">
-              نقدّم خدمات رقمية شاملة تبدأ من الفكرة وتصل إلى الإطلاق والدعم المستمر.
+              نصمم ونطوّر مواقع ويب مخصصة تمنح أعمالك حضوراً أجمل، وأداءً أسرع، ونمواً حقيقياً على الإنترنت.
             </p>
           </div>
 
           {/* ScrollStack Cards */}
           <ScrollStack useWindowScroll={true} itemDistance={50} itemStackDistance={20} baseScale={0.92} itemScale={0.02}>
             {SERVICES.map((s) => (
-              <ScrollStackItem
-                key={s.id}
-                itemClassName="bg-ink text-ivory border border-primary/30 hover:border-primary/60 transition-colors shadow-2xl"
-              >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 h-full">
-                  <div className="space-y-4 max-w-2xl">
-                    <div className="flex items-center gap-3">
-                      <span className="font-display text-xl text-primary font-bold">{s.id}</span>
-                      <span className="w-8 h-px bg-primary/40" />
-                      <span className="font-body text-xs tracking-widest text-ivory/60 uppercase">{s.nameEn}</span>
-                    </div>
-                    <h3 className="font-display text-2xl md:text-3xl text-ivory font-bold">{s.nameAr}</h3>
-                    <p className="font-body text-base leading-relaxed text-ivory/80">{s.descAr}</p>
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {s.tags.map((tag) => (
-                        <span key={tag} className="text-xs px-3 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary font-medium">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="self-end md:self-center">
-                    <Link
-                      href={s.href}
-                      className="btn-primary text-sm px-6 py-3.5 inline-flex items-center gap-2"
-                    >
-                      تفاصيل الخدمة — Details
-                      <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              </ScrollStackItem>
+              <ServiceCard key={s.id} service={s} maxTags={4} />
             ))}
           </ScrollStack>
 
@@ -420,7 +341,7 @@ export default function HomePage() {
           <div className="mb-4">
             <SplitText
               tag="h2"
-              text="هل لديك مشروع تقني؟"
+              text="هل لديك مشروع ويب؟"
               className="font-display text-4xl sm:text-5xl text-ivory leading-tight"
               delay={60}
               duration={1}
@@ -430,7 +351,7 @@ export default function HomePage() {
             />
           </div>
           <p className="font-body text-base sm:text-lg tracking-[0.1em] text-ivory/40 uppercase mb-6">
-            Got a tech project in mind?
+            Got a web project in mind?
           </p>
           <p className="font-body text-base text-ivory/65 leading-relaxed mb-10 max-w-xl mx-auto">
             تواصل معنا اليوم ونبدأ العمل معاً على تحويل فكرتك إلى واقع رقمي مؤثر.

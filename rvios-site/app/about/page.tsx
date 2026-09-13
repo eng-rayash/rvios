@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { SERVICES } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "من نحن — RVIOS Technologies | About Us",
   description:
-    "RVIOS شركة تقنية متخصصة في تطوير البرمجيات، تصميم المنتجات، والحلول الرقمية المتكاملة.",
+    "RVIOS منصة متخصصة في تصميم وتطوير مواقع الويب وأنظمة وتطبيقات الويب والمتاجر الإلكترونية.",
 };
 
 const VALUES = [
@@ -70,11 +71,11 @@ export default function AboutPage() {
             RVIOS Technologies
           </h1>
           <p className="font-body text-base sm:text-lg text-ivory/65 leading-relaxed max-w-2xl mb-4">
-            شركة تقنية متخصصة في بناء الحلول الرقمية المتكاملة للشركات والمؤسسات — من تطوير البرمجيات
-            والتصميم إلى الاستضافة السحابية والذكاء الاصطناعي.
+            منصة متخصصة في تصميم وتطوير مواقع الويب للشركات والأعمال — من تصميم التجربة وتطوير
+            الموقع إلى الأنظمة والتطبيقات والمتاجر الإلكترونية والعناية المستمرة بعد الإطلاق.
           </p>
           <p className="font-body text-sm tracking-[0.12em] text-ivory/35 uppercase">
-            A tech company specialized in integrated digital solutions for businesses and enterprises.
+            A platform specialized in web design and development for businesses.
           </p>
         </div>
       </section>
@@ -86,16 +87,16 @@ export default function AboutPage() {
             <span className="badge-en mb-4">Vision — الرؤية</span>
             <h2 className="font-display text-2xl text-ink mb-4">الرؤية</h2>
             <p className="font-body text-base leading-relaxed text-ink-muted">
-              تمكين الشركات والمؤسسات من بناء بيئة عمل رقمية ذكية من خلال أنظمة تقنية متكاملة وحلول
-              أعمال مبتكرة تُحدث فارقاً حقيقياً.
+              أن تجد كل شركة في RVIOS منصّتها لبناء حضور رقمي متكامل — موقع وأنظمة وتجربة
+              تليق بعلامتها وتنمو معها.
             </p>
           </div>
           <div className="card p-8">
             <span className="badge-en mb-4">Mission — الرسالة</span>
             <h2 className="font-display text-2xl text-ink mb-4">الرسالة</h2>
             <p className="font-body text-base leading-relaxed text-ink-muted">
-              تطوير حلول تقنية تجمع بين البرمجيات الاحترافية وتجربة المستخدم الاستثنائية وأفضل ممارسات
-              إدارة الأعمال — لمساعدة عملائنا على النمو والتميز في السوق الرقمي.
+              نصمم ونطوّر مواقع وأنظمة ويب مخصصة تجمع بين تصميم يخدم الهدف وتقنية سريعة وآمنة،
+              ونرافق عملاءنا بالعناية والتحسين بعد الإطلاق.
             </p>
           </div>
         </div>
@@ -127,20 +128,14 @@ export default function AboutPage() {
       <section className="bg-surface py-20 px-6">
         <div className="mx-auto max-w-4xl text-center">
           <span className="badge-en mb-4">What We Do — ماذا نقدم</span>
-          <h2 className="font-display text-4xl text-ink mb-4">حلول تقنية متكاملة</h2>
+          <h2 className="font-display text-4xl text-ink mb-4">كل ما يحتاجه موقعك</h2>
           <p className="font-body text-base text-ink-muted mb-10 max-w-xl mx-auto">
-            نغطي كل جوانب التحول الرقمي — من الفكرة إلى الإطلاق والدعم المستمر.
+            من التصميم والتطوير إلى الإطلاق والعناية المستمرة — في مكان واحد.
           </p>
           <div className="flex flex-wrap justify-center gap-3 mb-10">
-            {[
-              "تطوير البرمجيات",
-              "تصميم المنتجات",
-              "البنية السحابية",
-              "الذكاء الاصطناعي",
-              "الاستشارات التقنية",
-            ].map((s) => (
-              <span key={s} className="font-body text-sm px-5 py-2.5 rounded-full bg-surface-alt border border-primary/15 text-ink font-bold">
-                {s}
+            {SERVICES.map((s) => (
+              <span key={s.slug} className="font-body text-sm px-5 py-2.5 rounded-full bg-surface-alt border border-primary/15 text-ink font-bold">
+                {s.nameAr}
               </span>
             ))}
           </div>

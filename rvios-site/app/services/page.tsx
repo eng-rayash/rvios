@@ -1,66 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
+import ScrollStack from "@/components/ScrollStack";
+import ServiceCard from "@/components/ServiceCard";
 import SplitText from "@/components/SplitText";
+import { SERVICES } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "خدماتنا — RVIOS Technologies | Our Services",
   description:
-    "تطوير البرمجيات، تصميم المنتجات، البنية السحابية، الذكاء الاصطناعي، والاستشارات التقنية. حلول رقمية متكاملة.",
+    "تصميم المواقع، تطوير المواقع، أنظمة وتطبيقات الويب، المتاجر الإلكترونية، صفحات الهبوط، والعناية بالموقع بعد الإطلاق. RVIOS — منصة تصميم وتطوير ويب.",
 };
-
-const SERVICES = [
-  {
-    id: "01",
-    href: "/services/software-development",
-    nameAr: "تطوير البرمجيات والأنظمة",
-    nameEn: "Software Development",
-    descAr:
-      "نبني تطبيقات ويب وموبايل وأنظمة ERP مخصصة تساعدك على إدارة عملياتك بكفاءة وتوسّع نطاق أعمالك بثقة.",
-    icon: "code",
-    tags: ["Web Apps", "Mobile", "ERP", "API", "Backend"],
-  },
-  {
-    id: "02",
-    href: "/services/product-design",
-    nameAr: "تصميم المنتجات وتجربة المستخدم",
-    nameEn: "Product Design & UX",
-    descAr:
-      "نصمم واجهات وتجارب مستخدم استثنائية تجمع الجمال بالوظيفة وتحوّل الزوار إلى عملاء مخلصين.",
-    icon: "design",
-    tags: ["UI/UX", "Figma", "Prototyping", "Design System", "Branding"],
-  },
-  {
-    id: "03",
-    href: "/services/cloud-infrastructure",
-    nameAr: "البنية التحتية السحابية",
-    nameEn: "Cloud Infrastructure",
-    descAr:
-      "نؤهّل بنيتك التحتية التقنية للعمل في السحابة بأعلى معايير الأمان والأداء والتوسّع.",
-    icon: "cloud",
-    tags: ["AWS", "GCP", "Azure", "Docker", "CI/CD", "DevOps"],
-  },
-  {
-    id: "04",
-    href: "/services/ai-automation",
-    nameAr: "الأتمتة والذكاء الاصطناعي",
-    nameEn: "Automation & AI",
-    descAr:
-      "ندمج الذكاء الاصطناعي والأتمتة في عملياتك لتقليل التكلفة وزيادة الكفاءة والإنتاجية بشكل ملموس.",
-    icon: "ai",
-    tags: ["AI Agents", "ML Models", "Chatbots", "RPA", "Data Analytics"],
-  },
-  {
-    id: "05",
-    href: "/services/consulting",
-    nameAr: "الاستشارات التقنية والتحول الرقمي",
-    nameEn: "Tech Consulting & Digital Transformation",
-    descAr:
-      "نرافقك في رحلة التحول الرقمي الكاملة — من التخطيط الاستراتيجي وتدقيق البنية التقنية إلى التنفيذ والقياس.",
-    icon: "consulting",
-    tags: ["Strategy", "Tech Audit", "Roadmap", "Training", "Change Mgmt"],
-  },
-];
 
 const APPROACH = [
   {
@@ -102,7 +51,7 @@ export default function ServicesPage() {
           <div className="mb-6">
             <SplitText
               tag="h1"
-              text="حلول تقنية متكاملة لأعمال أكثر ذكاءً"
+              text="مواقع ويب مخصصة تنمو معها أعمالك"
               className="font-display text-5xl sm:text-6xl md:text-7xl text-ivory leading-tight"
               delay={70}
               duration={1}
@@ -112,8 +61,8 @@ export default function ServicesPage() {
             />
           </div>
           <p className="font-body text-base sm:text-lg text-ivory/65 leading-relaxed max-w-2xl mb-10">
-            نقدّم خدمات رقمية شاملة تبدأ من الفكرة الأولى وتصل إلى الإطلاق والدعم المستمر — شريكك
-            التقني الاستراتيجي في كل مرحلة.
+            نصمم ونطوّر مواقع ويب مخصصة تمنح أعمالك حضوراً أجمل، وأداءً أسرع، ونمواً حقيقياً على
+            الإنترنت — من الفكرة الأولى إلى الإطلاق والعناية المستمرة.
           </p>
           <Link href="/contact" className="btn-primary text-base px-8 py-4">
             ابدأ مشروعك الآن
@@ -129,40 +78,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-7xl">
           <ScrollStack useWindowScroll={true} itemDistance={50} itemStackDistance={20} baseScale={0.92} itemScale={0.02}>
             {SERVICES.map((s) => (
-              <ScrollStackItem
-                key={s.id}
-                itemClassName="bg-ink text-ivory border border-primary/30 hover:border-primary/60 transition-colors shadow-2xl"
-              >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 h-full">
-                  <div className="space-y-4 max-w-2xl">
-                    <div className="flex items-center gap-3">
-                      <span className="font-display text-xl text-primary font-bold">{s.id}</span>
-                      <span className="w-8 h-px bg-primary/40" />
-                      <span className="font-body text-xs tracking-widest text-ivory/60 uppercase">{s.nameEn}</span>
-                    </div>
-                    <h3 className="font-display text-2xl md:text-3xl text-ivory font-bold">{s.nameAr}</h3>
-                    <p className="font-body text-base leading-relaxed text-ivory/80">{s.descAr}</p>
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {s.tags.map((tag) => (
-                        <span key={tag} className="text-xs px-3 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary font-medium">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="self-end md:self-center">
-                    <Link
-                      href={s.href}
-                      className="btn-primary text-sm px-6 py-3.5 inline-flex items-center gap-2"
-                    >
-                      تفاصيل الخدمة — Details
-                      <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              </ScrollStackItem>
+              <ServiceCard key={s.id} service={s} />
             ))}
           </ScrollStack>
         </div>

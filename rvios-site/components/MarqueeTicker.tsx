@@ -1,8 +1,8 @@
 const TECHS = [
   "React", "Next.js", "TypeScript", "Node.js", "Python",
-  "AWS", "Google Cloud", "Docker", "Kubernetes", "PostgreSQL",
-  "MongoDB", "Redis", "GraphQL", "REST API", "Flutter",
-  "React Native", "TailwindCSS", "Figma", "AI / ML", "FastAPI",
+  "AWS", "Google Cloud", "Docker", "PostgreSQL",
+  "MongoDB", "Redis", "GraphQL", "REST API",
+  "TailwindCSS", "Figma", "FastAPI",
   "Laravel", "Django", "Firebase", "Nginx", "CI/CD",
 ];
 

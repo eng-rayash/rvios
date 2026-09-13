@@ -22,6 +22,24 @@ const nextConfig = {
    */
   turbopack: { root: join(here, "..") },
 
+  /**
+   * مسارات الخدمات القديمة — قبل إعادة التموضع كمنصة ويب.
+   *
+   * 301 تنقل رصيد الفهرسة إلى الصفحة الجديدة الأقرب، وتُبقي روابط الخدمات
+   * في صفحات المشاريع (تُبنى من قاعدة البيانات بالـslug القديم) صالحة.
+   * الخدمات التي لا مقابل لها تذهب إلى صفحة الخدمات.
+   */
+  async redirects() {
+    return [
+      { source: "/services/product-design", destination: "/services/web-design", permanent: true },
+      { source: "/services/software-development", destination: "/services/web-development", permanent: true },
+      { source: "/services/software-solutions", destination: "/services/web-systems", permanent: true },
+      { source: "/services/cloud-infrastructure", destination: "/services", permanent: true },
+      { source: "/services/ai-automation", destination: "/services", permanent: true },
+      { source: "/services/consulting", destination: "/services", permanent: true },
+    ];
+  },
+
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.r2.cloudflarestorage.com" },

@@ -2,14 +2,9 @@
 
 import { useState } from "react";
 import { submitContact } from "@/lib/api/client";
+import { SERVICES, type ServiceSlug } from "@/lib/services";
 
-type ServiceType =
-  | "software-development"
-  | "product-design"
-  | "cloud-infrastructure"
-  | "ai-automation"
-  | "consulting"
-  | "other";
+type ServiceType = ServiceSlug | "other";
 
 interface FormState {
   name:        string;
@@ -20,12 +15,8 @@ interface FormState {
 }
 
 const SERVICE_OPTIONS: { value: ServiceType; ar: string; en: string }[] = [
-  { value: "software-development",  ar: "تطوير البرمجيات والأنظمة",              en: "Software Development" },
-  { value: "product-design",        ar: "تصميم المنتجات وتجربة المستخدم",        en: "Product Design & UX" },
-  { value: "cloud-infrastructure",  ar: "البنية التحتية السحابية",               en: "Cloud Infrastructure" },
-  { value: "ai-automation",         ar: "الأتمتة والذكاء الاصطناعي",             en: "AI & Automation" },
-  { value: "consulting",            ar: "الاستشارات التقنية والتحول الرقمي",     en: "Tech Consulting" },
-  { value: "other",                 ar: "أخرى",                                  en: "Other" },
+  ...SERVICES.map((s) => ({ value: s.slug, ar: s.nameAr, en: s.nameEn })),
+  { value: "other", ar: "أخرى", en: "Other" },
 ];
 
 export default function ContactForm() {
