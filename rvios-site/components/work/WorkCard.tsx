@@ -61,7 +61,7 @@ export function WorkCard({
             </span>
           )}
 
-          <h3 className="mb-3 mt-2 font-display text-lg font-bold text-ink">
+          <h3 className="mb-3 mt-2 font-subhead text-lg font-bold text-ink">
             {project.title}
           </h3>
 

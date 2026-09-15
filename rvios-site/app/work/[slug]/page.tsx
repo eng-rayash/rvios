@@ -263,7 +263,7 @@ export default async function ProjectPage({ params }: Props) {
                       {arabicDigits(String(i + 1).padStart(2, "0"))}
                     </span>
                     <div>
-                      <h3 className="mb-2 font-display text-xl font-bold text-ink">
+                      <h3 className="mb-2 font-subhead text-xl font-bold text-ink">
                         {step.title}
                       </h3>
                       <p className="max-w-[68ch] text-ink-muted">{step.desc}</p>
@@ -344,7 +344,7 @@ export default async function ProjectPage({ params }: Props) {
                 <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
                   المشروع السابق →
                 </span>
-                <h3 className="mt-2 font-display text-lg font-bold text-ink group-hover:text-primary">
+                <h3 className="mt-2 font-subhead text-lg font-bold text-ink group-hover:text-primary">
                   {p.prev.title}
                 </h3>
               </Link>
@@ -357,7 +357,7 @@ export default async function ProjectPage({ params }: Props) {
                 <span className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
                   ← المشروع التالي
                 </span>
-                <h3 className="mt-2 font-display text-lg font-bold text-ink group-hover:text-primary">
+                <h3 className="mt-2 font-subhead text-lg font-bold text-ink group-hover:text-primary">
                   {p.next.title}
                 </h3>
               </Link>

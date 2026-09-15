@@ -100,11 +100,11 @@ export default async function ServiceDetailPage({ params }: Props) {
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-display text-xl text-ink mb-1 relative">{sub.title}</h3>
+                <h3 className="font-subhead text-xl text-ink mb-1 relative">{sub.title}</h3>
                 <p className="font-body text-xs tracking-[0.18em] uppercase text-primary/60 mb-4 relative">
                   {sub.en}
                 </p>
-                <p className="font-body text-sm leading-relaxed text-ink-muted relative">{sub.desc}</p>
+                <p className="font-subhead text-sm leading-relaxed text-ink-muted relative">{sub.desc}</p>
               </div>
             ))}
           </div>
@@ -145,7 +145,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 <span className="font-display text-xs text-primary/50 group-hover:text-primary transition-colors">
                   {o.id}
                 </span>
-                <span className="font-body text-sm font-bold text-ink">{o.nameAr}</span>
+                <span className="font-subhead text-sm font-bold text-ink">{o.nameAr}</span>
                 <span className="font-body text-[0.65rem] tracking-[0.15em] uppercase text-ink-faint">
                   {o.nameEn}
                 </span>

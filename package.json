@@ -21,12 +21,12 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down"
   },
-  "devDependencies": {
-    "turbo": "^2.5.4"
-  },
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@10.33.2",
+  "optionalDependencies": {
+    "turbo": "2.10.12"
+  }
 }
