@@ -38,6 +38,9 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-yapari)", "var(--font-maghfira)", "sans-serif"],
         body:    ["var(--font-panorama)", "var(--font-givonic)", "sans-serif"],
+        /* العناوين العربية الصغيرة. font-display يبدأ بـ Yapari وهو لاتيني
+           بلا محارف عربية، فكانت تسقط إلى Maghfira (خط رمضاني زخرفي). */
+        subhead: ["var(--font-thmanyah)", "var(--font-panorama)", "serif"],
       },
       backgroundImage: {
         "gold-line":       "linear-gradient(90deg, transparent, #C8A45D, transparent)",

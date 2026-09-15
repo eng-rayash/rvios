@@ -40,6 +40,30 @@
   font-display: swap;
 }
 
+/* ثمانية سيرف (نسخة Text لا Display): خط العناوين العربية الصغيرة —
+   عناوين البطاقات واللوحات. نسخة Text مرسومة للأحجام الصغيرة، بخلاف
+   Display المخصّصة للعناوين الضخمة. */
+@font-face {
+  font-family: "Thmanyah Serif Text";
+  src: url("/fonts/ThmanyahSerifText-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Text";
+  src: url("/fonts/ThmanyahSerifText-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Thmanyah Serif Text";
+  src: url("/fonts/ThmanyahSerifText-Black.otf") format("opentype");
+  font-weight: 900;
+  font-display: swap;
+}
+
 :root {
   --font-yapari: "YAPARI";
   --font-maghfira: "RTL-Maghfira";
@@ -48,6 +72,7 @@
      كان هنا "Hacen" — عائلة لا وجود لها — فكان font-body يسقط إلى
      Givonic (لاتيني بلا محارف عربية) ومنه إلى خط النظام. */
   --font-panorama: "Generator";
+  --font-thmanyah: "Thmanyah Serif Text";
 }
 
 /* ============================================================
@@ -55,6 +80,22 @@
    ============================================================ */
 html {
   scroll-behavior: smooth;
+}
+
+/* ScrollStack يشغّل Lenis للتمرير الناعم، وهو يضع .lenis على عنصر html.
+   وجود scroll-behavior: smooth معه يعني محرّكَي تمرير يتنازعان الصفحة
+   فيظهر التقطيع. القاعدة الرسمية من Lenis: */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+html.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
 }
 
 body {

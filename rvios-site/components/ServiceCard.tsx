@@ -43,7 +43,7 @@ export default function ServiceCard({
             <span className="w-8 h-px bg-primary/40" />
             <span className="font-body text-xs tracking-widest text-ivory/60 uppercase">{s.nameEn}</span>
           </div>
-          <h3 className="font-display text-2xl md:text-3xl text-ivory font-bold">{s.nameAr}</h3>
+          <h3 className="font-subhead text-2xl md:text-3xl text-ivory font-bold">{s.nameAr}</h3>
           <p className="font-body text-base leading-relaxed text-ivory/80">{s.descAr}</p>
           <div className="flex flex-wrap gap-2 pt-2">
             {tags.map((tag) => (

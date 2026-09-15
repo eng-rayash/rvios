@@ -85,7 +85,7 @@ export default function ContactPage() {
                         <p className="font-body text-xs tracking-[0.18em] uppercase text-ink-faint mb-0.5">
                           {m.sublabel}
                         </p>
-                        <p className="font-body text-sm font-bold text-ink group-hover:text-primary transition-colors">
+                        <p className="font-subhead text-sm font-bold text-ink group-hover:text-primary transition-colors">
                           {m.label}
                         </p>
                         <p className="font-body text-xs text-ink-muted mt-0.5">{m.value}</p>
@@ -103,7 +103,7 @@ export default function ContactPage() {
                     Available — متاح
                   </span>
                 </div>
-                <p className="font-body text-sm text-ink-muted leading-relaxed">
+                <p className="font-subhead text-sm text-ink-muted leading-relaxed">
                   نرد على جميع الاستفسارات خلال{" "}
                   <strong className="text-ink">24 ساعة</strong> من استلام رسالتك.
                 </p>
@@ -114,7 +114,7 @@ export default function ContactPage() {
 
               {/* Why choose RVIOS mini list */}
               <div>
-                <h3 className="font-display text-lg text-ink mb-4">ماذا ستحصل؟</h3>
+                <h3 className="font-subhead text-lg text-ink mb-4">ماذا ستحصل؟</h3>
                 <ul className="space-y-3">
                   {[
                     "استشارة أولية مجانية",
@@ -122,7 +122,7 @@ export default function ContactPage() {
                     "خطة عمل واضحة ومحددة",
                     "فريق تصميم وتطوير متخصص",
                   ].map((item) => (
-                    <li key={item} className="flex items-center gap-3 font-body text-sm text-ink-muted">
+                    <li key={item} className="flex items-center gap-3 font-subhead text-sm text-ink-muted">
                       <svg className="w-4 h-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
@@ -181,7 +181,7 @@ export default function ContactPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                   </svg>
                 </summary>
-                <div className="px-6 pb-6 font-body text-sm text-ink-muted leading-relaxed border-t border-black/4 pt-4">
+                <div className="px-6 pb-6 font-subhead text-sm text-ink-muted leading-relaxed border-t border-black/4 pt-4">
                   {faq.a}
                 </div>
               </details>

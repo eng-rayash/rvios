@@ -43,6 +43,18 @@ export default function ServicesPage() {
     <>
       {/* ── Hero ── */}
       <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
+        {/* خلفية الرأس — صورة خدمة تطوير المواقع، بالمعالجة نفسها المستعملة
+            في رؤوس صفحات الخدمات: حاجب ثم تدرّج من جهة النص. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/services/web-development.webp')" }}
+        />
+        <div aria-hidden className="absolute inset-0 bg-ink/40" />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-ink via-ink/90 to-ink/55 md:bg-gradient-to-l md:from-ink md:via-ink/90 md:to-ink/30"
+        />
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-primary/12 blur-[100px] pointer-events-none" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en mb-6 bg-primary/20 border-primary/30 text-primary">
@@ -107,9 +119,9 @@ export default function ServicesPage() {
                 <div className="w-12 h-12 rounded-full border-2 border-primary/20 flex items-center justify-center mb-5">
                   <span className="font-display text-sm text-primary">{a.step}</span>
                 </div>
-                <h3 className="font-display text-xl text-ink mb-1">{a.title}</h3>
+                <h3 className="font-subhead text-xl text-ink mb-1">{a.title}</h3>
                 <p className="font-body text-xs tracking-[0.18em] uppercase text-primary/50 mb-3">{a.en}</p>
-                <p className="font-body text-sm leading-relaxed text-ink-muted">{a.desc}</p>
+                <p className="font-subhead text-sm leading-relaxed text-ink-muted">{a.desc}</p>
               </div>
             ))}
           </div>

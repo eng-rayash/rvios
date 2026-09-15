@@ -33,7 +33,7 @@ export default function Footer() {
                 <span className="font-body text-[0.6rem] tracking-[0.22em] text-ivory/50 uppercase">Technologies</span>
               </div>
             </Link>
-            <p className="font-body text-sm leading-relaxed text-ivory/65 max-w-xs">
+            <p className="font-subhead text-sm leading-relaxed text-ivory/65 max-w-xs">
               نصمم ونطوّر مواقع ويب تنمو معها أعمالك.
             </p>
             <p className="font-body text-xs tracking-[0.15em] text-ivory/40 mt-1 uppercase">
@@ -59,7 +59,7 @@ export default function Footer() {
                 href="https://wa.me/967739008083"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 font-body text-sm text-ivory/60 hover:text-ivory transition-colors group"
+                className="flex items-center gap-3 font-subhead text-sm text-ivory/60 hover:text-ivory transition-colors group"
               >
                 <span className="w-8 h-8 rounded-full bg-ivory/8 flex items-center justify-center group-hover:bg-green-900/50 transition-colors shrink-0">
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -73,7 +73,7 @@ export default function Footer() {
 
           {/* Services */}
           <div className="md:col-span-4">
-            <h4 className="font-body text-xs tracking-[0.25em] uppercase text-primary mb-5">
+            <h4 className="font-subhead text-xs uppercase text-primary mb-5">
               الخدمات — Services
             </h4>
             <ul className="space-y-3">
@@ -83,7 +83,7 @@ export default function Footer() {
                     href={`/services/${s.slug}`}
                     className="group flex flex-col hover:translate-x-[-4px] transition-transform duration-200"
                   >
-                    <span className="font-body text-sm text-ivory/70 group-hover:text-ivory transition-colors">{s.nameAr}</span>
+                    <span className="font-subhead text-sm text-ivory/70 group-hover:text-ivory transition-colors">{s.nameAr}</span>
                     <span className="font-body text-[0.65rem] tracking-[0.15em] text-ivory/35 uppercase">{s.nameEn}</span>
                   </Link>
                 </li>
@@ -93,7 +93,7 @@ export default function Footer() {
 
           {/* Company */}
           <div className="md:col-span-4">
-            <h4 className="font-body text-xs tracking-[0.25em] uppercase text-primary mb-5">
+            <h4 className="font-subhead text-xs uppercase text-primary mb-5">
               المنصة — Platform
             </h4>
             <ul className="space-y-3 mb-8">
@@ -103,7 +103,7 @@ export default function Footer() {
                     href={c.href}
                     className="group flex flex-col hover:translate-x-[-4px] transition-transform duration-200"
                   >
-                    <span className="font-body text-sm text-ivory/70 group-hover:text-ivory transition-colors">{c.ar}</span>
+                    <span className="font-subhead text-sm text-ivory/70 group-hover:text-ivory transition-colors">{c.ar}</span>
                     <span className="font-body text-[0.65rem] tracking-[0.15em] text-ivory/35 uppercase">{c.en}</span>
                   </Link>
                 </li>
@@ -113,7 +113,7 @@ export default function Footer() {
             {/* CTA */}
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-primary text-ivory rounded-full px-5 py-2.5 font-body text-sm font-bold hover:bg-primary-dark transition-all duration-300 hover:shadow-red-glow"
+              className="inline-flex items-center gap-2 bg-primary text-ivory rounded-full px-5 py-2.5 font-subhead text-sm font-bold hover:bg-primary-dark transition-all duration-300 hover:shadow-red-glow"
             >
               ابدأ مشروعك
               <svg className="w-3.5 h-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -127,7 +127,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-ivory/8">
         <div className="mx-auto max-w-7xl px-6 py-5 flex flex-col items-center justify-between gap-3 md:flex-row">
-          <span className="font-body text-xs text-ivory/35">
+          <span className="font-subhead text-xs text-ivory/35">
             © {year} RVIOS Technologies. جميع الحقوق محفوظة. All rights reserved.
           </span>
           <div className="flex items-center gap-4">

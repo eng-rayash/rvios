@@ -66,7 +66,7 @@ export default function Header() {
                 href={item.href}
                 className="group relative flex flex-col items-center px-4 py-2 rounded-xl transition-colors hover:bg-white/10"
               >
-                <span className="font-body text-sm font-bold text-ivory/90 transition-colors group-hover:text-primary">
+                <span className="font-subhead text-sm font-bold text-ivory/90 transition-colors group-hover:text-primary">
                   {item.ar}
                 </span>
                 <span className="font-body text-[0.6rem] tracking-[0.18em] text-ivory/50 uppercase transition-colors group-hover:text-primary/80">

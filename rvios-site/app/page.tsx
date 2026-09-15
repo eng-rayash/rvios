@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import MarqueeTicker from "@/components/MarqueeTicker";
-import StatCounter from "@/components/StatCounter";
-import Plasma from "@/components/Plasma";
 import SpecularButton from "@/components/SpecularButton";
 import SplitText from "@/components/SplitText";
 import ScrollStack from "@/components/ScrollStack";
@@ -67,20 +65,17 @@ export default function HomePage() {
   return (
     <>
       {/* ══════════════════ HERO ══════════════════ */}
-      <section className="relative min-h-[96vh] flex items-center justify-center overflow-hidden bg-black">
-        {/* Lightfall WebGL Background */}
-        <div className="absolute inset-0 z-0">
-          <Plasma
-            color="#EF4444"
-            speed={0.6}
-            direction="forward"
-            scale={1.1}
-            opacity={0.85}
-            mouseInteractive={true}
-          />
-        </div>
-        {/* Layered Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80 pointer-events-none z-[1]" />
+      <section className="relative min-h-[96vh] flex items-center justify-center overflow-hidden bg-ink">
+        {/* خلفية الهيرو — الصورة حلّت محل تأثير Plasma الحركي */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/hero-home.webp')" }}
+        />
+        {/* حاجب ثم تدرّجات: النص في منتصف الصورة حيث أفتح مناطقها، وأسفلها
+            يُعتم بالكامل ليذوب في الشريط الذي يليه. */}
+        <div aria-hidden className="absolute inset-0 bg-ink/55 pointer-events-none z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/20 to-ink pointer-events-none z-[1]" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-transparent pointer-events-none z-[1]" />
 
         {/* Hero Content */}
@@ -98,7 +93,7 @@ export default function HomePage() {
           <div className="mb-4">
             <SplitText
               tag="h1"
-              text="نبني مواقع وأنظمة ويب تدفع نمو أعمالك"
+              text="نحوّل أعمالك إلى أنظمة رقمية ذكية"
               className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] text-ivory"
               delay={70}
               duration={1}
@@ -111,7 +106,7 @@ export default function HomePage() {
 
           {/* English subtitle */}
           <p className="font-body text-base sm:text-lg tracking-[0.12em] text-ivory/50 uppercase mb-6">
-            We build websites and web systems that drive your business growth
+            We turn your business into smart digital systems
           </p>
 
           {/* Description */}
@@ -183,7 +178,7 @@ export default function HomePage() {
             <span className="badge-en mb-4">Our Services — خدماتنا</span>
             <SplitText
               tag="h2"
-              text="من التصميم إلى الإطلاق وما بعده"
+              text="من التصميم إلى مابعد الإطلاق "
               className="font-display text-4xl md:text-5xl text-ink leading-tight max-w-2xl"
               delay={60}
               duration={1}
@@ -207,34 +202,13 @@ export default function HomePage() {
           <div className="mt-10 text-center">
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 font-body text-sm text-primary hover:text-primary-dark font-bold transition-colors border-b border-primary/30 pb-0.5"
+              className="inline-flex items-center gap-2 font-subhead text-sm text-primary hover:text-primary-dark font-bold transition-colors border-b border-primary/30 pb-0.5"
             >
               استعرض جميع الخدمات — View All Services
               <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════ STATS ══════════════════ */}
-      <section className="bg-ink py-20 px-6">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-ivory/10">
-            {[
-              { end: 50, suffix: "+", label: "مشروع منجز", en: "Projects Delivered" },
-              { end: 5, suffix: "+", label: "سنوات خبرة", en: "Years of Experience" },
-              { end: 100, suffix: "%", label: "رضا العملاء", en: "Client Satisfaction" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center py-6 md:py-0 md:px-12">
-                <div className="font-display text-6xl md:text-7xl text-ivory mb-2 leading-none">
-                  <StatCounter end={stat.end} suffix={stat.suffix} />
-                </div>
-                <p className="font-body text-base font-bold text-ivory/85">{stat.label}</p>
-                <p className="font-body text-xs tracking-[0.18em] uppercase text-ivory/35 mt-1">{stat.en}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -264,9 +238,9 @@ export default function HomePage() {
                 <div className="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center text-primary mb-5">
                   {p.icon}
                 </div>
-                <h3 className="font-display text-lg text-ink mb-1">{p.titleAr}</h3>
+                <h3 className="font-subhead text-lg text-ink mb-1">{p.titleAr}</h3>
                 <p className="font-body text-xs tracking-[0.15em] uppercase text-primary/60 mb-3">{p.titleEn}</p>
-                <p className="font-body text-sm leading-relaxed text-ink-muted">{p.descAr}</p>
+                <p className="font-subhead text-sm leading-relaxed text-ink-muted">{p.descAr}</p>
               </div>
             ))}
           </div>
@@ -312,9 +286,9 @@ export default function HomePage() {
                   <div className="w-12 h-12 rounded-full bg-primary/8 border border-primary/15 flex items-center justify-center mb-5">
                     <span className="font-display text-sm text-primary font-bold">{p.step}</span>
                   </div>
-                  <h3 className="font-display text-xl text-ink mb-1">{p.ar}</h3>
+                  <h3 className="font-subhead text-xl text-ink mb-1">{p.ar}</h3>
                   <p className="font-body text-xs tracking-[0.18em] uppercase text-primary/50 mb-3">{p.en}</p>
-                  <p className="font-body text-sm leading-relaxed text-ink-muted">{p.desc}</p>
+                  <p className="font-subhead text-sm leading-relaxed text-ink-muted">{p.desc}</p>
                 </div>
               </div>
             ))}

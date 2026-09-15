@@ -62,6 +62,32 @@ export default function AboutPage() {
     <>
       {/* ── Hero ── */}
       <section className="bg-ink text-ivory py-28 px-6 relative overflow-hidden">
+        {/* خلفية الرأس — الشعار الكامل. صورة مصمتة بخلفية حمراء لا شعار شفاف،
+            فلو مُدّدت bg-cover لتشوّهت الكلمة وزاحمت العنوان. تُعرض بحجمها
+            محتواةً وبشفافية هادئة فتقرأ كعلامة مائية. */}
+        {/* القناع الدائري يُذيب حواف المستطيل الأحمر للصورة في الخلفية،
+            فتقرأ الكلمة وحدها لا كصندوق ملصق. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-no-repeat opacity-[0.22] bg-[length:min(460px,52%)] bg-[position:left_center]"
+          style={{
+            backgroundImage: "url('/images/logo_full.png')",
+            WebkitMaskImage:
+              "radial-gradient(42% 46% at 26% 50%, #000 30%, transparent 78%)",
+            maskImage:
+              "radial-gradient(42% 46% at 26% 50%, #000 30%, transparent 78%)",
+          }}
+        />
+        {/* تدرّجان: أفقي يُصمت جهة النص (اليمين في RTL) فلا تزاحم الكلمةُ
+            العنوان، ورأسي يُذيب حافّتي المستطيل الأحمر في خلفية الصفحة. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-l from-ink via-ink/85 to-transparent"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/60"
+        />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-primary/10 blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
         <div className="mx-auto max-w-4xl relative z-10">
           <span className="badge-en bg-primary/20 border-primary/30 text-primary mb-6">
@@ -115,9 +141,9 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center text-primary mx-auto mb-4 group-hover:bg-primary group-hover:text-ivory transition-all duration-300">
                   {v.icon}
                 </div>
-                <h3 className="font-display text-lg text-ink mb-1">{v.nameAr}</h3>
+                <h3 className="font-subhead text-lg text-ink mb-1">{v.nameAr}</h3>
                 <p className="font-body text-[0.65rem] tracking-[0.18em] uppercase text-primary/60 mb-3">{v.nameEn}</p>
-                <p className="font-body text-xs leading-relaxed text-ink-muted">{v.desc}</p>
+                <p className="font-subhead text-xs leading-relaxed text-ink-muted">{v.desc}</p>
               </div>
             ))}
           </div>
@@ -134,7 +160,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3 mb-10">
             {SERVICES.map((s) => (
-              <span key={s.slug} className="font-body text-sm px-5 py-2.5 rounded-full bg-surface-alt border border-primary/15 text-ink font-bold">
+              <span key={s.slug} className="font-subhead text-sm px-5 py-2.5 rounded-full bg-surface-alt border border-primary/15 text-ink font-bold">
                 {s.nameAr}
               </span>
             ))}

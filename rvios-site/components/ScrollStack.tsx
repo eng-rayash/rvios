@@ -61,6 +61,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const lastTransformsRef = useRef<Map<number, any>>(new Map());
   const isUpdatingRef = useRef(false);
 
+  /* مواضع البطاقات في التخطيط — تُقاس عند التركيب وعند تغيّر المقاس فقط.
+     كان القياس يجري بـ getBoundingClientRect داخل حلقة التمرير، فيقرأ
+     موضع البطاقة *بعد* تطبيق translate عليها، ويُبنى translate التالي على
+     قراءة مشوّهة — حلقة تغذية راجعة تهتزّ معها البطاقات أثناء التمرير.
+     offsetTop قياس تخطيطي لا يتأثر بالـtransform. */
+  const cardTopsRef = useRef<number[]>([]);
+  const endTopRef = useRef(0);
+
   const calculateProgress = useCallback((scrollTop: number, start: number, end: number) => {
     if (scrollTop < start) return 0;
     if (scrollTop > end) return 1;
@@ -94,14 +102,29 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const getElementOffset = useCallback(
     (element: HTMLElement) => {
       if (useWindowScroll) {
-        const rect = element.getBoundingClientRect();
-        return rect.top + window.scrollY;
+        let top = 0;
+        let node: HTMLElement | null = element;
+        while (node) {
+          top += node.offsetTop;
+          node = node.offsetParent as HTMLElement | null;
+        }
+        return top;
       } else {
         return element.offsetTop;
       }
     },
     [useWindowScroll]
   );
+
+  const measureLayout = useCallback(() => {
+    cardTopsRef.current = cardsRef.current.map(card => getElementOffset(card));
+
+    const endElement = useWindowScroll
+      ? document.querySelector('.scroll-stack-end')
+      : scrollerRef.current?.querySelector('.scroll-stack-end');
+
+    endTopRef.current = endElement ? getElementOffset(endElement as HTMLElement) : 0;
+  }, [getElementOffset, useWindowScroll]);
 
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
@@ -112,16 +135,12 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
-    const endElement = useWindowScroll
-      ? document.querySelector('.scroll-stack-end')
-      : scrollerRef.current?.querySelector('.scroll-stack-end');
-
-    const endElementTop = endElement ? getElementOffset(endElement as HTMLElement) : 0;
+    const endElementTop = endTopRef.current;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      const cardTop = getElementOffset(card);
+      const cardTop = cardTopsRef.current[i] ?? 0;
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
@@ -136,7 +155,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       if (blurAmount) {
         let topCardIndex = 0;
         for (let j = 0; j < cardsRef.current.length; j++) {
-          const jCardTop = getElementOffset(cardsRef.current[j]);
+          const jCardTop = cardTopsRef.current[j] ?? 0;
           const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
           if (scrollTop >= jTriggerStart) {
             topCardIndex = j;
@@ -296,10 +315,24 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       card.style.webkitPerspective = '1000px';
     });
 
+    measureLayout();
     setupLenis();
     updateCardTransforms();
 
+    /* يُعاد القياس عند تغيّر التخطيط لا عند كل تمرير: تدوير الشاشة، تحميل
+       صور البطاقات، أو تبدّل ارتفاع النص بعد تحميل الخط. تغيّر الـtransform
+       لا يغيّر صندوق العنصر فلا يوقظ المراقب — ولا تعود الحلقة. */
+    const remeasure = () => {
+      measureLayout();
+      updateCardTransforms();
+    };
+    window.addEventListener('resize', remeasure);
+    const resizeObserver = new ResizeObserver(remeasure);
+    cards.forEach(card => resizeObserver.observe(card));
+
     return () => {
+      window.removeEventListener('resize', remeasure);
+      resizeObserver.disconnect();
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -324,7 +357,8 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     useWindowScroll,
     onStackComplete,
     setupLenis,
-    updateCardTransforms
+    updateCardTransforms,
+    measureLayout
   ]);
 
   const containerStyles = useWindowScroll

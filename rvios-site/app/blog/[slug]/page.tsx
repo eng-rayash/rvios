@@ -16,7 +16,7 @@ function formatPostContent(content: string = ""): string {
   // Basic markdown to styled HTML tags
   let html = cleaned
     .replace(/^---$/gm, '<hr class="my-8 border-t border-gray-200" />')
-    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-bold text-[#1A120F] mt-8 mb-3">$1</h3>')
+    .replace(/^### (.*$)/gim, '<h3 class="font-subhead text-xl font-bold text-[#1A120F] mt-8 mb-3">$1</h3>')
     .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold text-[#1A120F] mt-10 mb-4 border-b border-gray-200 pb-2">$1</h2>')
     .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold text-[#1A120F] mt-10 mb-4">$1</h1>')
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>')
@@ -141,7 +141,7 @@ export default async function BlogPostPage({ params }: Props) {
           {/* Tags */}
           {post.tags?.length > 0 && (
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
-              <h3 className="font-bold text-sm mb-4 text-gray-500 uppercase tracking-wider">الوسوم</h3>
+              <h3 className="font-subhead font-bold text-sm mb-4 text-gray-500 uppercase">الوسوم</h3>
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag: string) => (
                   <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">{tag}</span>
@@ -152,7 +152,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* CTA */}
           <div className="bg-[#9e2226] rounded-2xl p-6 text-white">
-            <h3 className="font-bold mb-2">هل تحتاج مساعدة تقنية؟</h3>
+            <h3 className="font-subhead font-bold mb-2">هل تحتاج مساعدة تقنية؟</h3>
             <p className="text-white/70 text-sm mb-4">فريق RVIOS جاهز لمساعدتك في مشروعك</p>
             <Link href="/contact" className="block text-center bg-white text-[#9e2226] rounded-xl py-2.5 font-bold text-sm hover:bg-[#FFEFDF] transition-colors">
               تواصل معنا
@@ -162,7 +162,7 @@ export default async function BlogPostPage({ params }: Props) {
           {/* Keywords */}
           {post.keywords?.length > 0 && (
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
-              <h3 className="font-bold text-sm mb-4 text-gray-500 uppercase tracking-wider">كلمات مفتاحية</h3>
+              <h3 className="font-subhead font-bold text-sm mb-4 text-gray-500 uppercase">كلمات مفتاحية</h3>
               <div className="flex flex-wrap gap-2">
                 {post.keywords.map((kw: string) => (
                   <span key={kw} className="text-xs bg-[#9e2226]/5 text-[#9e2226] px-2 py-1 rounded">{kw}</span>
